@@ -1,0 +1,33 @@
+---
+const socials = [
+  { label: "Email", href: "mailto:bookings@josefanolin.com" },
+  { label: "Instagram", href: "https://www.instagram.com/comedianjoe510/" },
+  { label: "TikTok", href: "https://www.tiktok.com/@comedianjoe510" },
+  { label: "YouTube", href: "https://www.youtube.com/@comedianjoe510" },
+  { label: "Facebook", href: "https://www.facebook.com/JosefAnolinComedian" },
+  { label: "Threads", href: "https://www.threads.com/@comedianjoe510" },
+];
+---
+
+<section class="max-w-6xl mx-auto px-6 py-14">
+  <div class="section-rule mb-10"></div>
+  <h2 class="font-[family-name:var(--font-display)] text-5xl md:text-6xl tracking-wide mb-6">
+    HIT ME!
+  </h2>
+  <ul class="flex flex-wrap gap-3">
+    {
+      socials.map((s) => (
+        <li>
+          <a
+            href={s.href}
+            target={s.href.startsWith("http") ? "_blank" : undefined}
+            rel={s.href.startsWith("http") ? "noopener noreferrer" : undefined}
+            class="inline-block px-5 py-2 border border-white/15 rounded-full text-sm tracking-wider hover:border-[color:var(--color-accent)] hover:text-[color:var(--color-accent)] transition-colors"
+          >
+            {s.label}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</section>

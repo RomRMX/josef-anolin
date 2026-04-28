@@ -1,0 +1,66 @@
+---
+// The form posts to Formspree by default — replace FORMSPREE_ID with your endpoint
+// (https://formspree.io). Until then, the form falls back to a mailto link.
+const FORMSPREE_ID = "";
+const action = FORMSPREE_ID ? `https://formspree.io/f/${FORMSPREE_ID}` : "mailto:bookings@josefanolin.com";
+---
+
+<section id="contact" class="max-w-3xl mx-auto px-6 py-14 scroll-mt-24">
+  <div class="section-rule mb-10"></div>
+  <h2 class="font-[family-name:var(--font-display)] text-5xl md:text-6xl tracking-wide mb-3">
+    BOOK ME!
+  </h2>
+  <p class="text-neutral-400 mb-8">
+    Bookings, press, and general hellos. I read everything.
+  </p>
+
+  <form
+    action={action}
+    method="POST"
+    class="grid gap-4"
+  >
+    <div class="grid md:grid-cols-2 gap-4">
+      <label class="grid gap-1.5">
+        <span class="text-xs tracking-widest text-neutral-400">NAME</span>
+        <input
+          type="text"
+          name="name"
+          required
+          class="bg-neutral-900 border border-white/10 rounded-md px-4 py-3 text-base focus:outline-none focus:border-[color:var(--color-accent)]"
+        />
+      </label>
+      <label class="grid gap-1.5">
+        <span class="text-xs tracking-widest text-neutral-400">EMAIL</span>
+        <input
+          type="email"
+          name="email"
+          required
+          class="bg-neutral-900 border border-white/10 rounded-md px-4 py-3 text-base focus:outline-none focus:border-[color:var(--color-accent)]"
+        />
+      </label>
+    </div>
+    <label class="grid gap-1.5">
+      <span class="text-xs tracking-widest text-neutral-400">SUBJECT</span>
+      <input
+        type="text"
+        name="subject"
+        class="bg-neutral-900 border border-white/10 rounded-md px-4 py-3 text-base focus:outline-none focus:border-[color:var(--color-accent)]"
+      />
+    </label>
+    <label class="grid gap-1.5">
+      <span class="text-xs tracking-widest text-neutral-400">MESSAGE</span>
+      <textarea
+        name="message"
+        rows="5"
+        required
+        class="bg-neutral-900 border border-white/10 rounded-md px-4 py-3 text-base focus:outline-none focus:border-[color:var(--color-accent)]"
+      ></textarea>
+    </label>
+    <button
+      type="submit"
+      class="justify-self-start text-xs font-bold tracking-widest px-6 py-3 bg-[color:var(--color-accent)] text-black rounded-sm hover:scale-[1.03] active:scale-[0.98] transition-transform"
+    >
+      SEND
+    </button>
+  </form>
+</section>
