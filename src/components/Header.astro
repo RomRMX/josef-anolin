@@ -10,20 +10,26 @@ const links = [
 <header
   class="sticky top-0 z-50 backdrop-blur-md bg-[color:var(--color-bg)]/80 border-b border-[color:var(--color-panel)]"
 >
-  <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between gap-6">
-    <a href="#top" class="text-sm font-bold tracking-widest text-[color:var(--color-accent)]">
+  <div class="max-w-6xl mx-auto px-4 md:px-6 py-3 md:py-4 flex items-center justify-between gap-4">
+    <a
+      href="#top"
+      class="hidden md:inline text-sm font-bold tracking-widest text-[color:var(--color-accent)]"
+    >
       JOSEF&nbsp;ANOLIN
     </a>
-    <nav class="hidden md:flex items-center gap-7 text-xs font-semibold tracking-widest">
+    <nav
+      class="flex w-full md:w-auto justify-between md:justify-end items-center gap-3 md:gap-7 text-[11px] md:text-xs font-semibold tracking-widest"
+    >
       {
         links.map((l) => (
-          <a href={l.href} class="text-neutral-300 hover:text-[color:var(--color-accent)] transition-colors">
+          <a
+            href={l.href}
+            class="text-neutral-300 hover:text-[color:var(--color-accent)] transition-colors"
+          >
             {l.label}
           </a>
         ))
       }
     </nav>
-    {/* BOOK ME button lives in the hero panel itself, not the header. */}
-    <span class="w-[60px]" aria-hidden="true"></span>
   </div>
 </header>

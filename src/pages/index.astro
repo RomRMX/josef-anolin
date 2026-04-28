@@ -94,8 +94,26 @@ import Footer from "../components/Footer.astro";
     padding-top: 4.5rem; /* clear the sticky header */
   }
 
+  /* Below the md breakpoint the stacking deck doesn't pay off — the grouped
+     cards (Shows, Media) overflow 100dvh and the overflow:hidden silently
+     clips half the content. Drop the sticky stack and let cards flow naturally
+     on phones. Hero/Shop keep their full-viewport feel. */
+  @media (max-width: 767px) {
+    .card { position: relative; height: auto; }
+    .card-hero, .card-shop { height: 100dvh; }
+    .card-grouped .card-inner {
+      height: auto;
+      overflow: visible;
+      padding-top: 5rem;
+      padding-bottom: 2.5rem;
+      justify-content: flex-start;
+    }
+    .card-clone { display: none; }
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    .card { position: relative; max-height: none; }
+    .card { position: relative; height: auto; }
+    .card-grouped .card-inner { height: auto; overflow: visible; justify-content: flex-start; }
     .card-clone { display: none; }
   }
 </style>
@@ -106,8 +124,9 @@ import Footer from "../components/Footer.astro";
   // imperceptible. Loop only fires while scrolling down.
   const clone = document.querySelector<HTMLElement>(".card-clone");
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const isMobile = window.matchMedia("(max-width: 767px)").matches;
 
-  if (clone && !reduceMotion) {
+  if (clone && !reduceMotion && !isMobile) {
     let snapping = false;
     let lastY = window.scrollY;
 
