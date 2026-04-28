@@ -3,28 +3,27 @@
 const reels: string[] = [];
 ---
 
-<section id="videos" class="max-w-6xl mx-auto px-6 py-14 scroll-mt-24">
-  <div class="section-rule mb-10"></div>
-  <h2 class="font-[family-name:var(--font-display)] text-5xl md:text-6xl tracking-wide mb-8">
+<section id="videos" class="max-w-6xl mx-auto px-6 py-6 scroll-mt-24">
+  <h2 class="font-[family-name:var(--font-display)] text-4xl md:text-5xl tracking-wide mb-5">
     VIDEOS
   </h2>
 
   {
     reels.length === 0 ? (
-      <div class="rounded-lg border border-dashed border-white/15 p-10 text-center text-neutral-400">
-        <p class="mb-4">Drop your Instagram reel URLs into <code class="text-[color:var(--color-accent)]">src/components/Videos.astro</code> to embed them here.</p>
+      <div class="rounded-lg border border-solid border-[color:var(--color-panel)] p-6 text-center text-neutral-400">
+        <p class="mb-3 text-sm">Drop your Instagram reel URLs into <code class="text-[color:var(--color-accent)]">src/components/Videos.astro</code> to embed them here.</p>
         <a
           href="https://www.instagram.com/comedianjoe510/"
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-block px-5 py-2 border border-white/20 rounded-full text-sm tracking-wider hover:border-[color:var(--color-accent)] hover:text-[color:var(--color-accent)] transition-colors"
+          class="inline-block px-4 py-1.5 border border-[color:var(--color-panel)] rounded-full text-sm tracking-wider hover:border-[color:var(--color-accent)] hover:text-[color:var(--color-accent)] transition-colors"
         >
           Watch on Instagram →
         </a>
       </div>
     ) : (
       <>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {reels.map((url) => (
             <blockquote
               class="instagram-media bg-neutral-900 rounded-lg overflow-hidden"
@@ -40,3 +39,4 @@ const reels: string[] = [];
     )
   }
 </section>
+<hr class="rule" />

@@ -3,21 +3,20 @@
 const pics: string[] = [];
 ---
 
-<section id="pics" class="max-w-6xl mx-auto px-6 py-14 scroll-mt-24">
-  <div class="section-rule mb-10"></div>
-  <h2 class="font-[family-name:var(--font-display)] text-5xl md:text-6xl tracking-wide mb-8">
+<section id="pics" class="max-w-6xl mx-auto px-6 py-6 scroll-mt-24">
+  <h2 class="font-[family-name:var(--font-display)] text-4xl md:text-5xl tracking-wide mb-5">
     PICS
   </h2>
 
   {
     pics.length === 0 ? (
-      <div class="rounded-lg border border-dashed border-white/15 p-10 text-center text-neutral-400">
+      <div class="rounded-lg border border-solid border-[color:var(--color-panel)] p-6 text-center text-neutral-400 text-sm">
         Drop photos into <code class="text-[color:var(--color-accent)]">/public/pics/</code> and list them in <code class="text-[color:var(--color-accent)]">src/components/Pics.astro</code>.
       </div>
     ) : (
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5">
         {pics.map((src, i) => (
-          <a href={src} target="_blank" rel="noopener noreferrer" class="block aspect-square overflow-hidden rounded-md bg-neutral-900">
+          <a href={src} target="_blank" rel="noopener noreferrer" class="block aspect-square overflow-hidden rounded-md bg-[color:var(--color-panel)]">
             <img src={src} alt={`Josef Anolin photo ${i + 1}`} loading="lazy" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
           </a>
         ))}

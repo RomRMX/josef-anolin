@@ -24,34 +24,38 @@ const dates = [
 ];
 ---
 
-<section id="dates" class="max-w-6xl mx-auto px-6 py-14 scroll-mt-24">
-  <div class="section-rule mb-10"></div>
-  <h2 class="font-[family-name:var(--font-display)] text-5xl md:text-6xl tracking-wide mb-8">
+<section id="dates" class="max-w-6xl mx-auto px-6 py-6 scroll-mt-24">
+  <h2 class="font-[family-name:var(--font-display)] text-4xl md:text-5xl tracking-wide mb-5">
     DATES
   </h2>
-  <ul class="divide-y divide-white/10 border-y border-white/10">
+  <ul>
     {
-      dates.map((d) => (
-        <li class="grid grid-cols-1 md:grid-cols-[140px_1fr_auto] gap-4 md:gap-8 py-5 items-center">
-          <div class="font-mono text-[color:var(--color-accent)] text-sm tracking-wider">
-            {d.date}
-          </div>
-          <div>
-            <div class="font-semibold text-lg">
-              {d.venue} <span class="text-neutral-400 font-normal">— {d.city}</span>
+      dates.map((d, i) => (
+        <>
+          {i === 0 && <hr class="rule" />}
+          <li class="grid grid-cols-1 md:grid-cols-[140px_1fr_auto] gap-3 md:gap-8 py-3.5 items-center">
+            <div class="font-mono text-[color:var(--color-accent)] text-sm tracking-wider">
+              {d.date}
             </div>
-            <div class="text-sm text-neutral-400">{d.address}</div>
-          </div>
-          <a
-            href={d.tickets}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-xs font-bold tracking-widest px-4 py-2 bg-[color:var(--color-accent)] text-black rounded-sm justify-self-start md:justify-self-end hover:scale-[1.03] transition-transform"
-          >
-            TICKETS
-          </a>
-        </li>
+            <div>
+              <div class="font-semibold text-base">
+                {d.venue} <span class="text-neutral-400 font-normal">— {d.city}</span>
+              </div>
+              <div class="text-xs text-neutral-400">{d.address}</div>
+            </div>
+            <a
+              href={d.tickets}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-xs font-bold tracking-widest px-4 py-2 bg-[color:var(--color-accent)] text-black rounded-sm justify-self-start md:justify-self-end hover:scale-[1.03] transition-transform"
+            >
+              TICKETS
+            </a>
+          </li>
+          <hr class="rule" />
+        </>
       ))
     }
   </ul>
 </section>
+<hr class="rule" />

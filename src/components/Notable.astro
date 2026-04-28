@@ -26,19 +26,18 @@ const groups = [
 ];
 ---
 
-<section id="notable" class="max-w-6xl mx-auto px-6 py-14 scroll-mt-24">
-  <div class="section-rule mb-10"></div>
-  <h2 class="font-[family-name:var(--font-display)] text-5xl md:text-6xl tracking-wide mb-8">
+<section id="notable" class="max-w-6xl mx-auto px-6 py-6 scroll-mt-24">
+  <h2 class="font-[family-name:var(--font-display)] text-4xl md:text-5xl tracking-wide mb-5">
     NOTABLE ACTS
   </h2>
-  <div class="grid md:grid-cols-3 gap-8">
+  <div class="grid md:grid-cols-3 gap-6">
     {
       groups.map((g) => (
         <div>
-          <h3 class="text-xs font-bold tracking-widest text-[color:var(--color-accent)] mb-3">
+          <h3 class="text-xs font-bold tracking-widest text-[color:var(--color-accent)] mb-2">
             {g.label.toUpperCase()}
           </h3>
-          <ul class="space-y-2 text-neutral-200">
+          <ul class="space-y-1 text-neutral-200 text-sm">
             {g.items.map((item) => (
               <li>{item}</li>
             ))}

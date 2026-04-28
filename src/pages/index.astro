@@ -7,6 +7,7 @@ import Dates from "../components/Dates.astro";
 import Videos from "../components/Videos.astro";
 import Pics from "../components/Pics.astro";
 import Notable from "../components/Notable.astro";
+import Shop from "../components/Shop.astro";
 import Contact from "../components/Contact.astro";
 import Footer from "../components/Footer.astro";
 ---
@@ -31,6 +32,10 @@ import Footer from "../components/Footer.astro";
         <Videos />
         <Pics />
       </div>
+    </article>
+
+    <article id="shop" class="card card-shop" data-card="shop">
+      <Shop />
     </article>
 
     <article id="contact" class="card card-grouped" data-card="contact">
@@ -67,22 +72,21 @@ import Footer from "../components/Footer.astro";
     isolation: isolate;
   }
   .card-grouped {
-    border-top: 1px solid color-mix(in srgb, var(--color-accent) 18%, transparent);
-    box-shadow: 0 -20px 60px -20px rgba(0, 0, 0, 0.6);
+    border-top: 1px solid var(--color-panel);
+  }
+  /* SHOP card paints on a brand color instead of the dark bg. */
+  .card-shop {
+    background: var(--color-accent-2);
+    border-top: 1px solid var(--color-panel);
   }
   .card-grouped .card-inner {
     height: 100%;
-    overflow-y: auto;
-    overscroll-behavior: contain;
+    /* No scrollbar inside cards — content is sized to fit 100dvh. */
+    overflow: hidden;
     padding-top: 4.5rem; /* clear the sticky header */
-  }
-  /* Tighten the inner sections when grouped together inside one card. */
-  .card-grouped .card-inner > section {
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-  }
-  .card-grouped .card-inner > section:first-child {
-    padding-top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
   /* The hero card lets its component lay out full-bleed. */
   .card-hero > section {
