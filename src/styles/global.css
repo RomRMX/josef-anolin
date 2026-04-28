@@ -37,3 +37,12 @@ hr.rule,
   width: 100%;
   margin: 0;
 }
+
+/* Keyboard-only focus ring. Outline (not box-shadow) so it never affects
+   layout. Components that opt out with focus:outline-none should use
+   focus-visible:* equivalents below. */
+:where(a, button):focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
