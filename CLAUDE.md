@@ -24,7 +24,22 @@ There are no tests, linter, or formatter configured.
 
 ## Architecture
 
-One page (`src/pages/index.astro`) composes section components from `src/components/`. Each section is a self-contained `.astro` file holding both its data (in frontmatter) and markup. To edit content, edit the section file directly:
+One page (`src/pages/index.astro`) composes section components from `src/components/` into a **stacking-cards scroll layout** (inspired by https://scroll-driven-animations.style/demos/stacking-cards/css/). Each card is a sticky, full-viewport `<article>` that stays pinned to the top while later cards slide up over it.
+
+Cards (in DOM order):
+1. Hero
+2. Shows = Socials + Dates + Notable
+3. Media = Videos + Pics
+4. Contact
+5. Hero clone (`aria-hidden`, identical to card 1)
+
+The clone exists for the **seamless infinite loop**: a small inline script in `index.astro` listens for scroll and snaps `scrollY` back to 0 the moment the clone reaches the top. Because the clone and card 1 are visually identical, the snap is invisible.
+
+Critical CSS gotcha: `.stack` must be `display: block`, **not** `display: grid`. With grid, each card's containing block becomes its own grid track, which kills the sticky stacking range — cards swap instead of stacking. Stick with block layout. Tested 2026-04-27.
+
+`prefers-reduced-motion: reduce` falls back to a non-sticky linear scroll and hides the clone.
+
+To edit content, edit the section file directly:
 
 - `Hero.astro` — bio paragraph
 - `Socials.astro` — `socials[]` array of `{label, href}`

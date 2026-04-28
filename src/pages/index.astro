@@ -13,14 +13,121 @@ import Footer from "../components/Footer.astro";
 
 <Base>
   <Header />
-  <main>
-    <Hero />
-    <Socials />
-    <Dates />
-    <Videos />
-    <Pics />
-    <Notable />
-    <Contact />
+  <main class="stack">
+    <article class="card card-hero" data-card="hero">
+      <Hero />
+    </article>
+
+    <article id="shows" class="card card-grouped" data-card="shows">
+      <div class="card-inner">
+        <Socials />
+        <Dates />
+        <Notable />
+      </div>
+    </article>
+
+    <article id="media" class="card card-grouped" data-card="media">
+      <div class="card-inner">
+        <Videos />
+        <Pics />
+      </div>
+    </article>
+
+    <article id="contact" class="card card-grouped" data-card="contact">
+      <div class="card-inner">
+        <Contact />
+      </div>
+    </article>
+
+    <article class="card card-hero card-clone" data-card="hero-clone" aria-hidden="true">
+      <Hero />
+    </article>
   </main>
   <Footer />
 </Base>
+
+<style is:global>
+  /* Stacking-cards layout. Each card is sticky to the top of the viewport.
+     As the user scrolls, the next card slides up from below and stacks over
+     the previous one. The final card is a Hero clone — when reached, the
+     loop script snaps scrollY back to 0 for a seamless infinite scroll. */
+  /* Plain block layout so every card shares .stack as its containing block.
+     This is what gives sticky cards a range to stick over — display:grid
+     would put each card in its own row and break the stacking effect. */
+  .stack {
+    display: block;
+  }
+  .card {
+    position: sticky;
+    top: 0;
+    height: 100dvh;
+    background: var(--color-bg);
+    overflow: hidden;
+    /* Each card paints on its own layer so the one below is hidden cleanly. */
+    isolation: isolate;
+  }
+  .card-grouped {
+    border-top: 1px solid color-mix(in srgb, var(--color-accent) 18%, transparent);
+    box-shadow: 0 -20px 60px -20px rgba(0, 0, 0, 0.6);
+  }
+  .card-grouped .card-inner {
+    height: 100%;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding-top: 4.5rem; /* clear the sticky header */
+  }
+  /* Tighten the inner sections when grouped together inside one card. */
+  .card-grouped .card-inner > section {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+  .card-grouped .card-inner > section:first-child {
+    padding-top: 0;
+  }
+  /* The hero card lets its component lay out full-bleed. */
+  .card-hero > section {
+    height: 100%;
+    padding-top: 4.5rem; /* clear the sticky header */
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card { position: relative; max-height: none; }
+    .card-clone { display: none; }
+  }
+</style>
+
+<script>
+  // Seamless loop: when the clone hero is fully revealed, snap back to top.
+  // Both the original and the clone are visually identical, so the snap is
+  // imperceptible. Loop only fires while scrolling down.
+  const clone = document.querySelector<HTMLElement>(".card-clone");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (clone && !reduceMotion) {
+    let snapping = false;
+    let lastY = window.scrollY;
+
+    const onScroll = () => {
+      if (snapping) return;
+      const y = window.scrollY;
+      const goingDown = y > lastY;
+      lastY = y;
+      // clone.offsetTop is the scroll position at which the clone fully covers
+      // the previous card (i.e. it just stuck to the top of the viewport).
+      if (goingDown && y >= clone.offsetTop) {
+        snapping = true;
+        window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
+        // Two RAFs to make sure the scroll position has settled before we
+        // re-enable, otherwise the next scroll event sees stale state.
+        requestAnimationFrame(() =>
+          requestAnimationFrame(() => {
+            lastY = 0;
+            snapping = false;
+          }),
+        );
+      }
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+  }
+</script>
