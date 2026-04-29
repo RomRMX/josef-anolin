@@ -121,7 +121,9 @@ import Footer from "../components/Footer.astro";
       overflow: visible;
       padding-top: 5rem;
       padding-bottom: 2.5rem;
-      justify-content: flex-start;
+      /* Block flow on mobile so section children with `mx-auto` aren't
+         shrunk to min-content by flex auto-margins. */
+      display: block;
     }
     .card-clone { display: none; }
   }
