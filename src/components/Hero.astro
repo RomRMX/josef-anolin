@@ -5,8 +5,8 @@
   {/* Background — halftone grunge, covers ~72% from top. Below is a solid
       dark band that hosts the bio paragraph. */}
   <div
-    class="absolute inset-x-0 top-0 h-[72%] bg-cover bg-center"
-    style="background-image: url('/joe-bg.webp');"
+    class="absolute inset-x-0 h-[72%] bg-cover bg-center"
+    style="background-image: url('/joe-bg.webp'); top: -110px;"
   >
   </div>
   <div class="absolute inset-x-0 top-[72%] bottom-0 bg-[color:var(--color-bg)]"></div>
@@ -16,9 +16,9 @@
         responsive; portrait is hidden below md so it can't overlap content). */}
     <div class="flex-1 min-h-0">
       <div
-        class="relative h-full max-w-6xl mx-auto px-8 md:px-12 lg:px-16 grid grid-cols-1 md:grid-cols-[1.1fr_1fr] place-items-center gap-4 md:gap-6 pt-8 md:pt-10 pb-12 md:pb-16"
+        class="relative h-full max-w-6xl mx-auto px-8 md:px-12 lg:px-16 grid grid-cols-1 md:grid-cols-[1.1fr_1fr] place-items-center gap-4 md:gap-6 pt-8 md:pt-10 pb-8 md:pb-10"
       >
-        <div class="flex flex-col items-center md:items-start gap-5 md:gap-6 z-10 self-center text-center md:text-left">
+        <div class="flex flex-col items-center gap-5 md:gap-6 z-10 self-center text-center">
           <img
             src="/joe-logo.png"
             alt="Josef Anolin — Stand-Up Comedian"
