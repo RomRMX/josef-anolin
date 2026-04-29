@@ -40,8 +40,7 @@
     height: 100%;
     /* Targets: 200px from window-top to subject's hat, 250px guard at the
        bottom. Locked to those exact values at typical desktop heights
-       (1080+); shrinks proportionally on shorter viewports so the comp +
-       button + bio always fit. */
+       (1080+); shrinks proportionally on shorter viewports. */
     padding-top: clamp(120px, 20dvh, 200px);
     padding-bottom: clamp(160px, 25dvh, 250px);
     padding-left: 1.5rem;
@@ -49,16 +48,16 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    gap: 1.5rem;
+    /* flex-start keeps comp+button+bio packed tight at the top — no
+       flex distribution gap between elements. The 250px buffer becomes
+       empty space at the bottom of the card. */
+    justify-content: flex-start;
+    gap: 1.25rem;
   }
 
   .hero-top {
     position: relative;
-    /* Cap width by viewport height so comp + button + bio + the 200/250
-       padding all fit within 100dvh. Reserve ~280px for button + gaps + bio
-       beneath the comp; remaining height = comp height; width = height*1.3. */
-    width: min(85%, 900px, calc((100dvh - 650px) * 1.3));
+    width: min(85%, 900px);
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -68,38 +67,42 @@
   .hero-comp {
     position: relative;
     width: 100%;
-    /* Portrait sits flush to comp top (so portrait-hat top = comp top =
-       section padding-top = 200px from window). Aspect-ratio keeps the
-       layered comp scaling as one unit. */
-    aspect-ratio: 1.3 / 1;
+    /* Aspect ratio chosen so the comp's bottom edge meets the bottom of
+       the visible artwork (logo bottom). Tweak in concert with
+       .hero-logo bottom/width if the layered images change. */
+    aspect-ratio: 2.4 / 1;
   }
 
   .hero-portrait {
     position: absolute;
     top: 0;
-    right: 4%;
-    width: 42%;
+    right: 5%;
+    /* Width chosen so portrait's hat sits at comp top and shoulders
+       reach near comp bottom. */
+    width: 40%;
     height: auto;
     z-index: 1;
   }
 
   .hero-logo {
     position: absolute;
-    /* Logo top sits below the face — overlaps the shoulder/chest area. */
-    top: 32%;
-    left: 6%;
-    /* Was 70%; ~30% smaller per spec. */
-    width: 50%;
+    /* Anchor logo's bottom flush with comp bottom. With logo width 40%
+       (~30% smaller than the 70% it had in the flat composite), logo
+       height ≈ 27% of comp_w which ≈ 64% of comp_h, so the JOSEF/ANOLIN
+       stack lands across the shoulder/chest area — clear of the face. */
+    bottom: 0;
+    left: 5%;
+    width: 40%;
     height: auto;
     z-index: 2;
   }
 
   .hero-cta {
-    /* Logo spans left:6% to 56% of comp width — its center is at 31%.
-       margin-left:31% + translateX(-50%) anchors the button's center to
-       the logo's center, so "BOOK ME" sits centered under the title. */
+    /* Logo spans left:5% to 45% of comp width — its center is at 25%.
+       margin-left:25% + translateX(-50%) anchors the button's center
+       to the logo's center, so "BOOK ME" sits centered under the title. */
     margin-top: 1rem;
-    margin-left: 31%;
+    margin-left: 25%;
     transform: translateX(-50%);
     display: inline-flex;
     align-items: center;
