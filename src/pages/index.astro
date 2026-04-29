@@ -107,27 +107,20 @@ import Footer from "../components/Footer.astro";
      pinned through the contact handoff. */
   .stack-tail { height: 150dvh; }
 
-  /* Below the md breakpoint the stacking deck doesn't pay off — the grouped
-     cards (Shows, Media) overflow 100dvh and the overflow:hidden silently
-     clips half the content. Drop the sticky stack and let cards flow naturally
-     on phones. Hero/Shop keep their full-viewport feel. */
+  /* Mobile keeps the desktop deck stacking. Cards stay sticky 100dvh; the
+     mobile-only header sits at top:0 above the deck. card-inner switches to
+     block layout so section children with `mx-auto` fill the row instead of
+     shrinking to min-content. */
   @media (max-width: 767px) {
-    .card { position: relative; height: auto; }
-    .card-hero, .card-shop { height: 100dvh; }
-    .card-shop > section { height: auto; }
-    .stack-tail { display: none; }
     .card-grouped .card-inner {
-      height: auto;
-      overflow: visible;
-      /* Floating header is ~52px tall starting at top:12; 4rem clears it
-         comfortably without wasting vertical space on short phones. */
-      padding-top: 4rem;
-      padding-bottom: 2.5rem;
-      /* Block flow on mobile so section children with `mx-auto` aren't
-         shrunk to min-content by flex auto-margins. */
+      /* Mobile header is ~66px (two-row), so push content below it. */
+      padding-top: 6rem;
+      padding-bottom: 2rem;
       display: block;
+      /* If a card's content is taller than the viewport at small sizes,
+         allow internal scroll so nothing gets silently clipped. */
+      overflow-y: auto;
     }
-    .card-clone { display: none; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -155,9 +148,8 @@ import Footer from "../components/Footer.astro";
   // imperceptible. Loop only fires while scrolling down.
   const clone = document.querySelector<HTMLElement>(".card-clone");
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const isMobile = window.matchMedia("(max-width: 767px)").matches;
 
-  if (clone && !reduceMotion && !isMobile) {
+  if (clone && !reduceMotion) {
     let snapping = false;
     let lastY = window.scrollY;
 

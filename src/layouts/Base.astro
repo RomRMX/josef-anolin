@@ -42,5 +42,39 @@ const {
     </a>
     <Header />
     <slot />
+
+    {/* Floating back-to-top. Hidden until the user has scrolled past the
+        first viewport; clicking returns to the hero card. */}
+    <button
+      id="back-to-top"
+      type="button"
+      aria-label="Back to top"
+      class="fixed bottom-5 right-5 z-40 w-12 h-12 grid place-items-center rounded-full bg-black text-[color:var(--color-accent)] opacity-0 pointer-events-none translate-y-2 transition-[opacity,transform] duration-200 hover:bg-neutral-800"
+    >
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 19V5" />
+        <path d="m5 12 7-7 7 7" />
+      </svg>
+    </button>
+
+    <script>
+      const btn = document.getElementById("back-to-top");
+      if (btn) {
+        const update = () => {
+          const visible = window.scrollY > window.innerHeight * 0.6;
+          btn.classList.toggle("opacity-100", visible);
+          btn.classList.toggle("opacity-0", !visible);
+          btn.classList.toggle("pointer-events-auto", visible);
+          btn.classList.toggle("pointer-events-none", !visible);
+          btn.classList.toggle("translate-y-0", visible);
+          btn.classList.toggle("translate-y-2", !visible);
+        };
+        btn.addEventListener("click", () => {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+        window.addEventListener("scroll", update, { passive: true });
+        update();
+      }
+    </script>
   </body>
 </html>
