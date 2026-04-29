@@ -78,15 +78,16 @@ import Footer from "../components/Footer.astro";
     height: 100%;
     /* No scrollbar inside cards — content is sized to fit 100dvh. */
     overflow: hidden;
-    padding-top: 4.5rem; /* clear the sticky header */
+    /* 226 + the inner section's 24px py-6 top = 250px from card top to first element. */
+    padding-top: 226px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
   }
   /* The hero card lets its component lay out full-bleed. */
   .card-hero > section {
     height: 100%;
-    padding-top: 4.5rem; /* clear the sticky header */
+    padding-top: 250px;
   }
 
   /* Below the md breakpoint the stacking deck doesn't pay off — the grouped
