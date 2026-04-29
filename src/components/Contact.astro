@@ -21,7 +21,7 @@ const action = FORMSPREE_ID ? `https://formspree.io/f/${FORMSPREE_ID}` : "mailto
           type="text"
           name="name"
           required
-          class="bg-[#f9feab] text-black rounded-md px-5 py-4 text-xl focus:outline-none focus:bg-[#fbffc6]"
+          class="bg-[#f9feab] text-black rounded-md px-5 py-4 text-xl focus:outline-none focus:bg-[#fbffc6] focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--color-accent)]"
         />
       </label>
       <label class="grid gap-2">
@@ -30,7 +30,7 @@ const action = FORMSPREE_ID ? `https://formspree.io/f/${FORMSPREE_ID}` : "mailto
           type="email"
           name="email"
           required
-          class="bg-[#f9feab] text-black rounded-md px-5 py-4 text-xl focus:outline-none focus:bg-[#fbffc6]"
+          class="bg-[#f9feab] text-black rounded-md px-5 py-4 text-xl focus:outline-none focus:bg-[#fbffc6] focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--color-accent)]"
         />
       </label>
     </div>
@@ -39,7 +39,7 @@ const action = FORMSPREE_ID ? `https://formspree.io/f/${FORMSPREE_ID}` : "mailto
       <input
         type="text"
         name="subject"
-        class="bg-[#f9feab] text-black rounded-md px-5 py-4 text-xl focus:outline-none focus:bg-[#fbffc6]"
+        class="bg-[#f9feab] text-black rounded-md px-5 py-4 text-xl focus:outline-none focus:bg-[#fbffc6] focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--color-accent)]"
       />
     </label>
     <label class="grid gap-2">
@@ -48,7 +48,7 @@ const action = FORMSPREE_ID ? `https://formspree.io/f/${FORMSPREE_ID}` : "mailto
         name="message"
         rows="4"
         required
-        class="bg-[#f9feab] text-black rounded-md px-5 py-4 text-xl focus:outline-none focus:bg-[#fbffc6] resize-none"
+        class="bg-[#f9feab] text-black rounded-md px-5 py-4 text-xl focus:outline-none focus:bg-[#fbffc6] focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--color-accent)] resize-none"
       ></textarea>
     </label>
     <button
