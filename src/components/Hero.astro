@@ -2,17 +2,83 @@
 ---
 
 <section
-  class="relative h-full overflow-hidden bg-[color:var(--color-bg)]"
+  class="hero-section relative h-full overflow-hidden flex flex-col items-center justify-center gap-10 px-6"
   aria-label="Josef Anolin — Stand-Up Comedian"
 >
   <h1 class="sr-only">
-    Josef Anolin — Stand-Up Comedian. From Oakland, California currently living
-    in Los Angeles, Josef has opened for the likes of Tom Segura, Whitney
-    Cummings, and Michael Che.
+    Josef Anolin — Stand-Up Comedian
   </h1>
-  <img
-    src="/11.png"
-    alt="Josef Anolin — Stand-Up Comedian"
-    class="absolute inset-0 w-full h-full object-contain object-top select-none pointer-events-none"
-  />
+
+  <div class="hero-comp">
+    <img
+      src="/joe-hero.png"
+      alt=""
+      aria-hidden="true"
+      class="hero-portrait select-none pointer-events-none"
+    />
+    <img
+      src="/joe-logo.png"
+      alt="Josef Anolin — Stand Up Comedian"
+      class="hero-logo select-none pointer-events-none"
+    />
+  </div>
+
+  <p class="hero-bio">
+    From Oakland, California currently living in Los Angeles, Josef has opened
+    for the likes of Tom Segura, Whitney Cummings, and Michael Che. He likes
+    telling irreverent stories based on his life and observations. He has an
+    Android phone because he likes pissing you off with his green text bubbles.
+  </p>
 </section>
+
+<style>
+  .hero-section {
+    background: #000;
+  }
+
+  .hero-comp {
+    position: relative;
+    /* Cap width so height (= width / 1.6) leaves room for the bio + the
+       hero card's 250px sticky-header clearance + gaps. */
+    width: min(92%, 1100px, calc((100dvh - 420px) * 1.6));
+    aspect-ratio: 16 / 10;
+    flex-shrink: 0;
+  }
+
+  .hero-portrait {
+    position: absolute;
+    top: 50%;
+    right: 2%;
+    width: 55%;
+    height: auto;
+    transform: translateY(-50%);
+    z-index: 1;
+  }
+
+  .hero-logo {
+    position: absolute;
+    top: 50%;
+    left: 0%;
+    width: 70%;
+    height: auto;
+    transform: translateY(-45%);
+    z-index: 2;
+  }
+
+  .hero-bio {
+    max-width: 56ch;
+    text-align: center;
+    color: rgb(229 229 229);
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 640px) {
+    .hero-comp {
+      width: 96%;
+    }
+    .hero-bio {
+      font-size: 0.9rem;
+    }
+  }
+</style>
