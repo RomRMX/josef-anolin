@@ -21,7 +21,7 @@ const socials = [
             href={s.href}
             target={s.href.startsWith("http") ? "_blank" : undefined}
             rel={s.href.startsWith("http") ? "noopener noreferrer" : undefined}
-            class="inline-block px-4 py-1.5 border border-[color:var(--color-panel)] rounded-full text-sm tracking-wider hover:border-[color:var(--color-accent)] hover:text-[color:var(--color-accent)] transition-colors"
+            class="inline-block px-4 py-1.5 bg-[color:var(--color-panel)]/40 rounded-full text-sm tracking-wider hover:bg-[color:var(--color-panel)] hover:text-[color:var(--color-accent)] transition-colors"
           >
             {s.label}
           </a>
@@ -30,4 +30,3 @@ const socials = [
     }
   </ul>
 </section>
-<hr class="rule" />

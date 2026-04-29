@@ -32,7 +32,6 @@ const dates = [
     {
       dates.map((d, i) => (
         <>
-          {i === 0 && <hr class="rule" />}
           <li class="grid grid-cols-1 md:grid-cols-[110px_1fr_auto] gap-3 md:gap-8 py-3.5 items-center">
             <div class="font-mono text-[color:var(--color-accent)] text-sm tracking-wider">
               {d.date}
@@ -52,10 +51,8 @@ const dates = [
               TICKETS
             </a>
           </li>
-          <hr class="rule" />
         </>
       ))
     }
   </ul>
 </section>
-<hr class="rule" />

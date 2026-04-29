@@ -1,23 +1,42 @@
 ---
 // TODO: drop photo files into /public/pics/ and list them here, e.g. "/pics/01.jpg".
 const pics: string[] = [];
+// Placeholder grid count — visualizes the editorial photo grid until real pics ship.
+const placeholders = Array.from({ length: 20 });
 ---
 
-<section id="pics" class="max-w-6xl mx-auto px-6 py-6 scroll-mt-24">
-  <h2 class="font-[family-name:var(--font-display)] text-4xl md:text-5xl tracking-wide mb-5">
+<section
+  id="pics"
+  class="max-w-6xl mx-auto px-6 py-6 scroll-mt-24 grid grid-cols-1 md:grid-cols-[minmax(180px,1fr)_3fr] gap-4 md:gap-12 items-start"
+>
+  <h2
+    class="font-[family-name:var(--font-display)] text-4xl md:text-5xl tracking-wide"
+  >
     PICS
   </h2>
 
   {
     pics.length === 0 ? (
-      <div class="rounded-lg border border-solid border-[color:var(--color-panel)] p-6 text-center text-neutral-400 text-sm">
-        Drop photos into <code class="text-[color:var(--color-accent)]">/public/pics/</code> and list them in <code class="text-[color:var(--color-accent)]">src/components/Pics.astro</code>.
+      <div class="grid grid-cols-4 sm:grid-cols-5 gap-1.5 md:gap-2">
+        {placeholders.map(() => (
+          <div class="aspect-square rounded-sm bg-[color:var(--color-panel)]/60" />
+        ))}
       </div>
     ) : (
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5">
+      <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-1.5 md:gap-2">
         {pics.map((src, i) => (
-          <a href={src} target="_blank" rel="noopener noreferrer" class="block aspect-square overflow-hidden rounded-md bg-[color:var(--color-panel)]">
-            <img src={src} alt={`Josef Anolin photo ${i + 1}`} loading="lazy" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+          <a
+            href={src}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="block aspect-square overflow-hidden rounded-sm bg-[color:var(--color-panel)]"
+          >
+            <img
+              src={src}
+              alt={`Josef Anolin photo ${i + 1}`}
+              loading="lazy"
+              class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+            />
           </a>
         ))}
       </div>
