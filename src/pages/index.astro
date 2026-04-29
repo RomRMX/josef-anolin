@@ -122,6 +122,11 @@ import Footer from "../components/Footer.astro";
 </style>
 
 <script>
+  // Always land on the Hero card after a refresh — the deck loops, so a
+  // restored mid-deck scroll position is disorienting.
+  if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+  window.scrollTo(0, 0);
+
   // Seamless loop: when the clone hero is fully revealed, snap back to top.
   // Both the original and the clone are visually identical, so the snap is
   // imperceptible. Loop only fires while scrolling down.

@@ -39,7 +39,7 @@ const tees = [
         further wheel/touch input is captured here and scrolls the column instead
         of advancing the deck, until the user reaches the bottom of the column. */}
     <div
-      class="hidden md:block self-stretch h-[calc(100dvh-250px)] overflow-y-auto overscroll-contain pr-1 shop-tees"
+      class="hidden md:block self-stretch h-[calc(100dvh-250px)] overflow-y-auto overscroll-contain shop-tees"
     >
       <div class="flex flex-col gap-16 pb-16">
         {tees.map((t) => (
@@ -57,14 +57,7 @@ const tees = [
 </section>
 
 <style>
-  /* Subtle scrollbar inside the tee column so it's discoverable but not loud. */
-  .shop-tees {
-    scrollbar-width: thin;
-    scrollbar-color: rgba(0, 0, 0, 0.35) transparent;
-  }
-  .shop-tees::-webkit-scrollbar { width: 6px; }
-  .shop-tees::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.35);
-    border-radius: 3px;
-  }
+  /* Hide the scrollbar entirely — column still scrolls. */
+  .shop-tees { scrollbar-width: none; }
+  .shop-tees::-webkit-scrollbar { display: none; }
 </style>
