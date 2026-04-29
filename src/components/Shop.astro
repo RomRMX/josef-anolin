@@ -2,20 +2,25 @@
 // TODO: replace `#` with the real merch URL when it's live.
 const SHOP_URL = "#";
 
-// Tee cluster — each shirt links to its product page. Null for now.
-// Slight horizontal nudges keep the scattered look as the column scrolls.
+// Tee column — each shirt links to its product page. Null for now.
+// The track is taller than the visible window; a scroll listener translates
+// it upward across the shop card's scroll range so the tees scroll all the
+// way up and off-screen by the time Contact takes over.
 const tees = [
-  { src: "/t1.png", href: "#", offset: "ml-[6%]"   },
-  { src: "/t2.png", href: "#", offset: "ml-[22%]"  },
-  { src: "/t2.png", href: "#", offset: "ml-[2%]"   },
-  { src: "/t1.png", href: "#", offset: "ml-[24%]"  },
-  { src: "/t1.png", href: "#", offset: "ml-[12%]"  },
+  { src: "/t1.png", href: "#", offset: "ml-[6%]"  },
+  { src: "/t2.png", href: "#", offset: "ml-[24%]" },
+  { src: "/t2.png", href: "#", offset: "ml-[2%]"  },
+  { src: "/t1.png", href: "#", offset: "ml-[26%]" },
+  { src: "/t1.png", href: "#", offset: "ml-[14%]" },
 ];
 ---
 
 <section class="relative h-full overflow-hidden bg-[color:var(--color-accent-2)]">
+  {/* Title column — same grid as other section titles, so the left side is
+      unchanged. The tee column is positioned absolutely so its 800px width
+      can extend rightward without affecting col1. */}
   <div
-    class="relative h-full max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-[minmax(280px,1fr)_3fr] items-start gap-4 md:gap-12 pt-[250px]"
+    class="relative h-full max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-[minmax(280px,1fr)_3fr] items-start gap-4 md:gap-12 pt-[180px]"
   >
     <div class="flex flex-col md:items-end items-start gap-5 z-10 md:text-right">
       <h2
@@ -33,31 +38,76 @@ const tees = [
         SHOP NOW
       </a>
     </div>
+  </div>
 
-    {/* Tees: vertical stack with its own scroll once the shop card is fully in view.
-        The card itself is sticky inside .stack — once it's covered the viewport,
-        further wheel/touch input is captured here and scrolls the column instead
-        of advancing the deck, until the user reaches the bottom of the column. */}
-    <div
-      class="hidden md:block self-stretch h-[calc(100dvh-250px)] overflow-y-auto overscroll-contain shop-tees"
-    >
-      <div class="flex flex-col gap-16 pb-16">
-        {tees.map((t) => (
-          <a
-            href={t.href}
-            aria-label="Shop this tee"
-            class={`block w-[60%] ${t.offset} transition-transform duration-200 hover:scale-105 hover:-rotate-2 focus-visible:scale-105`}
-          >
-            <img src={t.src} alt="" class="w-full h-auto select-none" draggable="false" />
-          </a>
-        ))}
+  {/* Tee column: 800px wide, anchored to the right edge of the max-w-6xl
+      container (same right edge as DATES/HIT ME content). Extends right
+      relative to the original 776px col2 without nudging col1. */}
+  <div class="hidden md:block absolute top-[180px] left-1/2 w-full max-w-6xl -translate-x-1/2 px-6 pointer-events-none h-[calc(100dvh-180px)]">
+    <div class="ml-auto w-[800px] h-full shop-tees-window pointer-events-auto">
+      <div class="shop-tees-track relative will-change-transform">
+        <div class="flex flex-col gap-12 pb-12">
+          {tees.map((t) => (
+            // Visual-only: no destination yet. When the merch shop is live,
+            // swap to an <a href={t.href}> with the real product URL.
+            <button
+              type="button"
+              aria-label="Shop this tee (coming soon)"
+              class={`block w-[60%] ${t.offset} bg-transparent border-0 p-0 cursor-default transition-transform duration-200 hover:scale-105 hover:-rotate-2 focus-visible:scale-105`}
+            >
+              <img src={t.src} alt="" class="w-full h-auto select-none" draggable="false" />
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<style>
-  /* Hide the scrollbar entirely — column still scrolls. */
-  .shop-tees { scrollbar-width: none; }
-  .shop-tees::-webkit-scrollbar { display: none; }
-</style>
+<script>
+  // Translate the tee track upward as the user scrolls through the shop card's
+  // (extended) sticky range. The shop article is 250dvh in flow, so it covers
+  // 1.5 extra viewports of scroll — enough to scroll the tees fully off-screen
+  // before Contact stacks up.
+  const shop = document.getElementById("shop");
+  const teeTrack = document.querySelector<HTMLElement>(".shop-tees-track");
+  const teeWindow = document.querySelector<HTMLElement>(".shop-tees-window");
+
+  if (shop && teeTrack && teeWindow) {
+    // The shop article is sticky, so its `offsetTop` becomes equal to scrollY
+    // once stuck. Cache the static offset by walking offsetParent.
+    let start = 0;
+    const measure = () => {
+      let el: HTMLElement | null = shop;
+      let y = 0;
+      while (el) {
+        y += el.offsetTop;
+        el = el.offsetParent as HTMLElement | null;
+      }
+      start = y;
+    };
+    measure();
+
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      // Scroll range over which the article visually "covers" the viewport,
+      // before Contact (next sticky card) stacks on top of it.
+      const range = Math.max(1, shop.offsetHeight - window.innerHeight);
+      const p = Math.min(1, Math.max(0, (window.scrollY - start) / range));
+      // Travel = full track height + window height so every tee exits the top.
+      const travel = teeTrack.scrollHeight + teeWindow.clientHeight;
+      teeTrack.style.transform = `translate3d(0, ${-p * travel}px, 0)`;
+    };
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(update);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", () => {
+      measure();
+      update();
+    });
+    update();
+  }
+</script>

@@ -32,6 +32,8 @@ import Footer from "../components/Footer.astro";
       </div>
     </article>
 
+    {/* Shop article is taller than 100dvh so it stays sticky long enough
+        for the tees to scroll fully off-screen before Contact takes over. */}
     <article id="shop" class="card card-shop" data-card="shop">
       <Shop />
     </article>
@@ -45,6 +47,12 @@ import Footer from "../components/Footer.astro";
     <article class="card card-hero card-clone" data-card="hero-clone" aria-hidden="true">
       <Hero />
     </article>
+
+    {/* Tail spacer extends .stack so the shop card stays pinned at top:0 all
+        the way until the contact card starts stacking on top. Without it,
+        sticky math unsticks shop ~half a viewport early and the title slides
+        up before the next card covers it. */}
+    <div class="stack-tail" aria-hidden="true"></div>
   </main>
   <Footer />
 </Base>
@@ -78,8 +86,8 @@ import Footer from "../components/Footer.astro";
     height: 100%;
     /* No scrollbar inside cards — content is sized to fit 100dvh. */
     overflow: hidden;
-    /* 226 + the inner section's 24px py-6 top = 250px from card top to first element. */
-    padding-top: 226px;
+    /* 156 + the inner section's 24px py-6 top = 180px from card top to first element. */
+    padding-top: 156px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -89,6 +97,15 @@ import Footer from "../components/Footer.astro";
     height: 100%;
     padding-top: 250px;
   }
+  /* Shop is 250dvh tall so it stays sticky long enough for the tee column
+     to scroll off-screen before Contact stacks up. The visible content
+     inside is sized to 100dvh and pinned to the top of the article. */
+  .card-shop { height: 250dvh; }
+  .card-shop > section { height: 100dvh; }
+  /* See <div class="stack-tail"> above. 150dvh = the extra height shop has
+     beyond a normal card; that's exactly the slack needed to keep shop
+     pinned through the contact handoff. */
+  .stack-tail { height: 150dvh; }
 
   /* Below the md breakpoint the stacking deck doesn't pay off — the grouped
      cards (Shows, Media) overflow 100dvh and the overflow:hidden silently
@@ -97,6 +114,8 @@ import Footer from "../components/Footer.astro";
   @media (max-width: 767px) {
     .card { position: relative; height: auto; }
     .card-hero, .card-shop { height: 100dvh; }
+    .card-shop > section { height: auto; }
+    .stack-tail { display: none; }
     .card-grouped .card-inner {
       height: auto;
       overflow: visible;
