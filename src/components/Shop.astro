@@ -1,6 +1,15 @@
 ---
 // TODO: replace `#` with the real merch URL when it's live.
 const SHOP_URL = "#";
+
+// Tee cluster — each shirt links to its product page. Null for now.
+const tees = [
+  { src: "/t1.png", href: "#", style: "top:0%;  left:8%;"  },
+  { src: "/t2.png", href: "#", style: "top:8%;  left:48%;" },
+  { src: "/t2.png", href: "#", style: "top:36%; left:6%;"  },
+  { src: "/t1.png", href: "#", style: "top:44%; left:52%;" },
+  { src: "/t1.png", href: "#", style: "top:68%; left:28%;" },
+];
 ---
 
 <section class="relative h-full overflow-hidden bg-[color:var(--color-accent-2)]">
@@ -26,13 +35,18 @@ const SHOP_URL = "#";
           </a>
         </div>
 
-        {/* Tee cluster — scattered black/white silhouettes on the right. */}
-        <div class="relative hidden md:block h-[70vh] -mt-[150px]">
-          <img src="/t1.png" alt="" aria-hidden="true" class="absolute w-[36%] top-0 left-[8%] select-none pointer-events-none" />
-          <img src="/t2.png" alt="" aria-hidden="true" class="absolute w-[36%] top-[8%] left-[48%] select-none pointer-events-none" />
-          <img src="/t2.png" alt="" aria-hidden="true" class="absolute w-[36%] top-[36%] left-[6%] select-none pointer-events-none" />
-          <img src="/t1.png" alt="" aria-hidden="true" class="absolute w-[36%] top-[44%] left-[52%] select-none pointer-events-none" />
-          <img src="/t1.png" alt="" aria-hidden="true" class="absolute w-[36%] top-[68%] left-[28%] select-none pointer-events-none" />
+        {/* Tee cluster — separate clickable layer over the bg. */}
+        <div class="relative hidden md:block h-[70vh] -mt-[150px] z-20">
+          {tees.map((t) => (
+            <a
+              href={t.href}
+              aria-label="Shop this tee"
+              class="absolute w-[36%] block transition-transform duration-200 hover:scale-105 hover:-rotate-2 focus-visible:scale-105"
+              style={t.style}
+            >
+              <img src={t.src} alt="" class="w-full h-auto select-none" draggable="false" />
+            </a>
+          ))}
         </div>
       </div>
     </div>
