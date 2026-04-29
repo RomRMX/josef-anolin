@@ -39,15 +39,17 @@ const tees = [
       </button>
     </div>
 
-    {/* Mobile-only tee strip — horizontal snap scroller below the title block.
-        Hidden at md+ where the absolute parallax column takes over. */}
-    <div class="md:hidden -mx-6 mt-2 overflow-x-auto snap-x snap-mandatory shop-tees-strip">
-      <div class="flex gap-4 px-6 pb-6 w-max">
-        {tees.map((t) => (
+    {/* Mobile-only tee marquee — auto-scrolls right-to-left continuously.
+        The track is duplicated so the animation loops seamlessly. Hidden at
+        md+ where the absolute parallax column takes over. */}
+    <div class="md:hidden -mx-6 mt-2 overflow-hidden shop-tees-marquee">
+      <div class="shop-tees-marquee-track flex gap-4 w-max">
+        {[...tees, ...tees].map((t) => (
           <button
             type="button"
             aria-label="Shop this tee (coming soon)"
-            class="snap-center shrink-0 w-[60vw] max-w-[280px] bg-transparent border-0 p-0 cursor-default"
+            tabindex="-1"
+            class="shrink-0 w-[60vw] max-w-[280px] bg-transparent border-0 p-0 cursor-default"
           >
             <img src={t.src} alt="" class="w-full h-auto select-none" draggable="false" />
           </button>
