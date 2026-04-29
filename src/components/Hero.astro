@@ -2,29 +2,17 @@
 ---
 
 <section
-  class="relative h-full overflow-hidden bg-no-repeat bg-contain md:bg-cover bg-top md:bg-left-top"
-  style="background-image: url('/1.png'); background-color: var(--color-bg);"
+  class="relative h-full overflow-hidden bg-[color:var(--color-bg)]"
   aria-label="Josef Anolin — Stand-Up Comedian"
 >
-  <h1 class="sr-only">Josef Anolin — Stand-Up Comedian</h1>
-
-  {/* Bottom gradient to ensure bio is legible over any cropped image area */}
-  <div
-    class="absolute inset-x-0 bottom-0 h-[40%] pointer-events-none bg-gradient-to-t from-[color:var(--color-bg)] via-[color:var(--color-bg)]/80 to-transparent"
-  >
-  </div>
-
-  <div class="relative h-full flex flex-col justify-end md:pb-[160px]">
-    <div class="relative z-10 px-6 pb-6 md:pb-8 text-center">
-      <p
-        class="max-w-3xl mx-auto text-neutral-200 leading-[1.7] md:leading-[1.85] text-sm md:text-base"
-      >
-        From Oakland, California currently living in Los Angeles, Josef has
-        opened for the likes of Tom Segura, Whitney Cummings, and Michael Che.
-        He likes telling irreverent stories based on his life and observations.
-        He has an Android phone because he likes pissing you off with his green
-        text bubbles.
-      </p>
-    </div>
-  </div>
+  <h1 class="sr-only">
+    Josef Anolin — Stand-Up Comedian. From Oakland, California currently living
+    in Los Angeles, Josef has opened for the likes of Tom Segura, Whitney
+    Cummings, and Michael Che.
+  </h1>
+  <img
+    src="/11.png"
+    alt="Josef Anolin — Stand-Up Comedian"
+    class="absolute inset-0 w-full h-full object-contain object-center select-none pointer-events-none"
+  />
 </section>
