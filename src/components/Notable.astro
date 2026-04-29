@@ -26,24 +26,34 @@ const groups = [
 ];
 ---
 
-<section id="notable" class="max-w-6xl mx-auto px-6 py-6 scroll-mt-24">
-  <h2 class="font-[family-name:var(--font-display)] text-4xl md:text-5xl tracking-wide mb-5">
+<section id="notable" class="max-w-6xl mx-auto px-6 py-6 scroll-mt-24 grid grid-cols-1 md:grid-cols-[minmax(180px,1fr)_3fr] gap-4 md:gap-12 items-start">
+  <h2 class="font-[family-name:var(--font-display)] text-4xl md:text-5xl tracking-wide">
     NOTABLE ACTS
   </h2>
-  <div class="grid md:grid-cols-3 gap-6">
-    {
-      groups.map((g) => (
-        <div>
-          <h3 class="text-xs font-bold tracking-widest text-[color:var(--color-accent)] mb-2">
-            {g.label.toUpperCase()}
-          </h3>
-          <ul class="space-y-1 text-neutral-200 text-sm">
-            {g.items.map((item) => (
-              <li>{item}</li>
-            ))}
-          </ul>
-        </div>
-      ))
-    }
+  <div class="space-y-6">
+    <div>
+      <h3 class="text-xs font-bold tracking-widest text-[color:var(--color-accent)] mb-2">
+        {groups[0].label.toUpperCase()}
+      </h3>
+      <ul class="space-y-1 text-neutral-200 text-sm">
+        {groups[0].items.map((item) => <li>{item}</li>)}
+      </ul>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      {
+        groups.slice(1).map((g) => (
+          <div>
+            <h3 class="text-xs font-bold tracking-widest text-[color:var(--color-accent)] mb-2">
+              {g.label.toUpperCase()}
+            </h3>
+            <ul class="space-y-1 text-neutral-200 text-sm">
+              {g.items.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
   </div>
 </section>

@@ -24,8 +24,8 @@ const dates = [
 ];
 ---
 
-<section id="dates" class="max-w-6xl mx-auto px-6 py-6 scroll-mt-24">
-  <h2 class="font-[family-name:var(--font-display)] text-4xl md:text-5xl tracking-wide mb-5">
+<section id="dates" class="max-w-6xl mx-auto px-6 py-6 scroll-mt-24 grid grid-cols-1 md:grid-cols-[minmax(180px,1fr)_3fr] gap-4 md:gap-12 items-start">
+  <h2 class="font-[family-name:var(--font-display)] text-4xl md:text-5xl tracking-wide">
     DATES
   </h2>
   <ul>
@@ -33,7 +33,7 @@ const dates = [
       dates.map((d, i) => (
         <>
           {i === 0 && <hr class="rule" />}
-          <li class="grid grid-cols-1 md:grid-cols-[140px_1fr_auto] gap-3 md:gap-8 py-3.5 items-center">
+          <li class="grid grid-cols-1 md:grid-cols-[110px_1fr_auto] gap-3 md:gap-8 py-3.5 items-center">
             <div class="font-mono text-[color:var(--color-accent)] text-sm tracking-wider">
               {d.date}
             </div>

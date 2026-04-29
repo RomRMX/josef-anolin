@@ -1,31 +1,21 @@
 ---
 ---
 
-<section class="relative h-full overflow-hidden">
-  {/* Background — halftone grunge, covers ~72% from top. Below is a solid
-      dark band that hosts the bio paragraph. */}
+<section
+  class="relative h-full overflow-hidden bg-no-repeat bg-contain md:bg-cover bg-top md:bg-left-top"
+  style="background-image: url('/1.png'); background-color: var(--color-bg);"
+  aria-label="Josef Anolin — Stand-Up Comedian"
+>
+  <h1 class="sr-only">Josef Anolin — Stand-Up Comedian</h1>
+
+  {/* Bottom gradient to ensure bio is legible over any cropped image area */}
   <div
-    class="absolute inset-x-0 h-[72%] bg-cover bg-center"
-    style="background-image: url('/joe-bg.webp'); top: -110px;"
+    class="absolute inset-x-0 bottom-0 h-[40%] pointer-events-none bg-gradient-to-t from-[color:var(--color-bg)] via-[color:var(--color-bg)]/80 to-transparent"
   >
   </div>
-  <div class="absolute inset-x-0 top-[72%] bottom-0 bg-[color:var(--color-bg)]"></div>
 
-  <div class="relative h-full flex flex-col md:pb-[160px]">
-    {/* Visual area — logo+button left, portrait right (inline grid keeps it
-        responsive; portrait is hidden below md so it can't overlap content). */}
-    <div class="flex-1 min-h-0">
-      <div class="relative h-full max-w-6xl mx-auto px-8 md:px-12 lg:px-16 flex items-center justify-center pt-8 md:pt-10">
-        <img
-          src="/joe-header.png"
-          alt="Josef Anolin — Stand-Up Comedian"
-          class="w-auto max-w-full max-h-[60dvh] md:max-h-[68dvh] object-contain drop-shadow-[0_8px_30px_rgba(0,0,0,0.5)]"
-        />
-      </div>
-    </div>
-
-    {/* Bio band */}
-    <div class="relative z-10 px-6 pb-6 pt-0 md:pb-8 md:pt-0 text-center">
+  <div class="relative h-full flex flex-col justify-end md:pb-[160px]">
+    <div class="relative z-10 px-6 pb-6 md:pb-8 text-center">
       <p
         class="max-w-3xl mx-auto text-neutral-200 leading-[1.7] md:leading-[1.85] text-sm md:text-base"
       >
