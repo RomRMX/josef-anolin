@@ -6,54 +6,54 @@ const action = FORMSPREE_ID ? `https://formspree.io/f/${FORMSPREE_ID}` : "mailto
 ---
 
 <section id="contact" class="max-w-4xl mx-auto px-6 py-6 scroll-mt-24">
-  <h2 class="font-[family-name:var(--font-display)] text-6xl md:text-7xl tracking-wide mb-3">
+  <h2 class="font-[family-name:var(--font-display)] text-6xl md:text-7xl tracking-wide mb-3 text-black">
     BOOK ME!
   </h2>
-  <p class="text-neutral-400 mb-8 text-lg md:text-xl">
+  <p class="text-black/70 mb-8 text-lg md:text-xl">
     Bookings, press, and general hellos. I read everything.
   </p>
 
   <form action={action} method="POST" class="grid gap-5">
     <div class="grid md:grid-cols-2 gap-5">
       <label class="grid gap-2">
-        <span class="text-sm tracking-widest text-neutral-400">NAME</span>
+        <span class="text-sm tracking-widest text-black/70">NAME</span>
         <input
           type="text"
           name="name"
           required
-          class="bg-[color:var(--color-panel)]/50 rounded-md px-5 py-4 text-xl focus:outline-none focus:bg-[color:var(--color-panel)] focus-visible:ring-2 focus-visible:ring-[color:var(--color-accent)]/40"
+          class="bg-black/85 text-white rounded-md px-5 py-4 text-xl focus:outline-none focus:bg-black focus-visible:ring-2 focus-visible:ring-black/40"
         />
       </label>
       <label class="grid gap-2">
-        <span class="text-sm tracking-widest text-neutral-400">EMAIL</span>
+        <span class="text-sm tracking-widest text-black/70">EMAIL</span>
         <input
           type="email"
           name="email"
           required
-          class="bg-[color:var(--color-panel)]/50 rounded-md px-5 py-4 text-xl focus:outline-none focus:bg-[color:var(--color-panel)] focus-visible:ring-2 focus-visible:ring-[color:var(--color-accent)]/40"
+          class="bg-black/85 text-white rounded-md px-5 py-4 text-xl focus:outline-none focus:bg-black focus-visible:ring-2 focus-visible:ring-black/40"
         />
       </label>
     </div>
     <label class="grid gap-2">
-      <span class="text-sm tracking-widest text-neutral-400">SUBJECT</span>
+      <span class="text-sm tracking-widest text-black/70">SUBJECT</span>
       <input
         type="text"
         name="subject"
-        class="bg-[color:var(--color-panel)]/50 rounded-md px-5 py-4 text-xl focus:outline-none focus:bg-[color:var(--color-panel)] focus-visible:ring-2 focus-visible:ring-[color:var(--color-accent)]/40"
+        class="bg-black/85 text-white rounded-md px-5 py-4 text-xl focus:outline-none focus:bg-black focus-visible:ring-2 focus-visible:ring-black/40"
       />
     </label>
     <label class="grid gap-2">
-      <span class="text-sm tracking-widest text-neutral-400">MESSAGE</span>
+      <span class="text-sm tracking-widest text-black/70">MESSAGE</span>
       <textarea
         name="message"
         rows="4"
         required
-        class="bg-[color:var(--color-panel)]/50 rounded-md px-5 py-4 text-xl focus:outline-none focus:bg-[color:var(--color-panel)] focus-visible:ring-2 focus-visible:ring-[color:var(--color-accent)]/40 resize-none"
+        class="bg-black/85 text-white rounded-md px-5 py-4 text-xl focus:outline-none focus:bg-black focus-visible:ring-2 focus-visible:ring-black/40 resize-none"
       ></textarea>
     </label>
     <button
       type="submit"
-      class="cursor-pointer justify-self-start text-base font-bold tracking-widest px-9 py-5 bg-[color:var(--color-accent)] text-black rounded-sm hover:brightness-110 hover:shadow-[0_8px_24px_rgba(193,252,80,0.4)] active:brightness-95 transition"
+      class="cursor-pointer justify-self-start text-base font-bold tracking-widest px-9 py-5 bg-black text-[color:var(--color-accent)] rounded-sm hover:bg-neutral-800 hover:shadow-[0_8px_24px_rgba(0,0,0,0.35)] active:bg-black transition"
     >
       SEND
     </button>

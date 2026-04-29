@@ -17,7 +17,7 @@ import Footer from "../components/Footer.astro";
       <Hero />
     </article>
 
-    <article id="shows" class="card card-grouped" data-card="shows">
+    <article id="shows" class="card card-grouped card-shows" data-card="shows">
       <div class="card-inner">
         <Socials />
         <Dates />
@@ -25,7 +25,7 @@ import Footer from "../components/Footer.astro";
       </div>
     </article>
 
-    <article id="media" class="card card-grouped" data-card="media">
+    <article id="media" class="card card-grouped card-media" data-card="media">
       <div class="card-inner">
         <Videos />
         <Pics />
@@ -36,7 +36,7 @@ import Footer from "../components/Footer.astro";
       <Shop />
     </article>
 
-    <article id="contact" class="card card-grouped" data-card="contact">
+    <article id="contact" class="card card-grouped card-contact" data-card="contact">
       <div class="card-inner">
         <Contact />
       </div>
@@ -69,10 +69,11 @@ import Footer from "../components/Footer.astro";
     /* Each card paints on its own layer so the one below is hidden cleanly. */
     isolation: isolate;
   }
-  /* SHOP card paints on a brand color instead of the dark bg. */
-  .card-shop {
-    background: var(--color-accent-2);
-  }
+  /* Per-card brand backgrounds. */
+  .card-shows { background: #f9feab; }
+  .card-media { background: #f7f6f0; }
+  .card-shop { background: var(--color-accent-2); }
+  .card-contact { background: #c1fc50; }
   .card-grouped .card-inner {
     height: 100%;
     /* No scrollbar inside cards — content is sized to fit 100dvh. */

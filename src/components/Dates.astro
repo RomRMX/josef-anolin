@@ -25,7 +25,7 @@ const dates = [
 ---
 
 <section id="dates" class="max-w-6xl mx-auto px-6 py-6 scroll-mt-24 grid grid-cols-1 md:grid-cols-[minmax(280px,1fr)_3fr] gap-4 md:gap-12 items-start">
-  <h2 class="font-[family-name:var(--font-display)] text-4xl md:text-5xl tracking-wide md:text-right">
+  <h2 class="font-[family-name:var(--font-display)] text-4xl md:text-5xl tracking-wide md:text-right text-black">
     DATES
   </h2>
   <ul>
@@ -33,20 +33,20 @@ const dates = [
       dates.map((d, i) => (
         <>
           <li class="grid grid-cols-1 md:grid-cols-[110px_1fr_auto] gap-3 md:gap-8 py-3.5 items-center">
-            <div class="font-mono text-[color:var(--color-accent)] text-sm tracking-wider">
+            <div class="font-mono text-black text-sm tracking-wider">
               {d.date}
             </div>
             <div>
-              <div class="font-semibold text-base">
-                {d.venue} <span class="text-neutral-400 font-normal">— {d.city}</span>
+              <div class="font-semibold text-base text-black">
+                {d.venue} <span class="text-black/60 font-normal">— {d.city}</span>
               </div>
-              <div class="text-xs text-neutral-400">{d.address}</div>
+              <div class="text-xs text-black/60">{d.address}</div>
             </div>
             <a
               href={d.tickets}
               target="_blank"
               rel="noopener noreferrer"
-              class="text-xs font-bold tracking-widest px-4 py-2 bg-[color:var(--color-accent)] text-black rounded-sm justify-self-start md:justify-self-end hover:brightness-110 hover:shadow-[0_6px_18px_rgba(193,252,80,0.35)] active:brightness-95 transition"
+              class="text-xs font-bold tracking-widest px-4 py-2 bg-black text-[color:var(--color-accent)] rounded-sm justify-self-start md:justify-self-end hover:bg-neutral-800 hover:shadow-[0_6px_18px_rgba(0,0,0,0.25)] active:bg-black transition"
             >
               TICKETS
             </a>
