@@ -18,12 +18,12 @@ const tees = [
       <div
         class="relative h-full max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-[minmax(280px,1fr)_3fr] items-start gap-4 md:gap-12 pt-[250px]"
       >
-        <h2
-          class="font-[family-name:var(--font-display)] text-4xl md:text-5xl tracking-wide md:text-right text-black z-10"
-        >
-          SHOP
-        </h2>
-        <div class="flex flex-col items-start gap-5 z-10">
+        <div class="flex flex-col md:items-end items-start gap-5 z-10 md:text-right">
+          <h2
+            class="font-[family-name:var(--font-display)] text-4xl md:text-5xl tracking-wide text-black"
+          >
+            SHOP
+          </h2>
           <p class="text-black/85 text-base md:text-lg max-w-xs font-medium">
             Tees. hats, stickers<br />Official Merch right here
           </p>
@@ -34,7 +34,6 @@ const tees = [
             SHOP NOW
           </a>
         </div>
-
       </div>
 
       {/* Tee cluster — separate clickable layer above the bg, full-card area on the right. */}
