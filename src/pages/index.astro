@@ -119,7 +119,9 @@ import Footer from "../components/Footer.astro";
     .card-grouped .card-inner {
       height: auto;
       overflow: visible;
-      padding-top: 5rem;
+      /* Floating header is ~52px tall starting at top:12; 4rem clears it
+         comfortably without wasting vertical space on short phones. */
+      padding-top: 4rem;
       padding-bottom: 2.5rem;
       /* Block flow on mobile so section children with `mx-auto` aren't
          shrunk to min-content by flex auto-margins. */

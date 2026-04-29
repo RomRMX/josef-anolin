@@ -38,6 +38,22 @@ const tees = [
         SHOP NOW
       </button>
     </div>
+
+    {/* Mobile-only tee strip — horizontal snap scroller below the title block.
+        Hidden at md+ where the absolute parallax column takes over. */}
+    <div class="md:hidden -mx-6 mt-2 overflow-x-auto snap-x snap-mandatory shop-tees-strip">
+      <div class="flex gap-4 px-6 pb-6 w-max">
+        {tees.map((t) => (
+          <button
+            type="button"
+            aria-label="Shop this tee (coming soon)"
+            class="snap-center shrink-0 w-[60vw] max-w-[280px] bg-transparent border-0 p-0 cursor-default"
+          >
+            <img src={t.src} alt="" class="w-full h-auto select-none" draggable="false" />
+          </button>
+        ))}
+      </div>
+    </div>
   </div>
 
   {/* Tee column: 800px wide, anchored to the right edge of the max-w-6xl
@@ -74,6 +90,7 @@ const tees = [
   const teeWindow = document.querySelector<HTMLElement>(".shop-tees-window");
 
   if (shop && teeTrack && teeWindow) {
+    // Hide the mobile strip's native scrollbar (handled in <style> below).
     // The shop article is sticky, so its `offsetTop` becomes equal to scrollY
     // once stuck. Cache the static offset by walking offsetParent.
     let start = 0;
@@ -111,3 +128,8 @@ const tees = [
     update();
   }
 </script>
+
+<style>
+  .shop-tees-strip { scrollbar-width: none; }
+  .shop-tees-strip::-webkit-scrollbar { display: none; }
+</style>
