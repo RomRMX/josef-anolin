@@ -29,7 +29,8 @@
   <p class="hero-bio">
     From Oakland, California currently living in Los Angeles, Josef has opened
     for the likes of Tom Segura, Whitney Cummings, and Michael Che. He likes
-    telling irreverent stories based on his life and observations.
+    telling irreverent stories based on his life and observations. He has an
+    Android phone because he likes pissing you off with his green text bubbles.
   </p>
 </section>
 
@@ -172,12 +173,16 @@
       grid-row: 2;
       justify-self: center;
       margin-left: 0;
-      /* Pull the title (and BOOK ME beneath it) up 60px so it overlaps
-         the bottom of the portrait. z-index: 2 (inherited from desktop)
-         keeps the title visually on top of the portrait. */
-      margin-top: -60px;
+      /* Pull the title (and BOOK ME beneath it) up. -60 already overlaps
+         the portrait; another -45 = -105 total per the latest tightening. */
+      margin-top: -105px;
       width: 92%;
       max-width: 480px;
+    }
+    .hero-cta {
+      letter-spacing: 0;
+      font-size: 1.2rem;       /* +3px over the desktop 1rem */
+      padding: 0.55rem 1.4rem; /* less padding than desktop 0.85rem / 2rem */
     }
     .hero-bio {
       max-width: 100%;
