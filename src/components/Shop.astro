@@ -20,7 +20,7 @@ const tees = [
       unchanged. The tee column is positioned absolutely so its 800px width
       can extend rightward without affecting col1. */}
   <div
-    class="relative h-full max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-[minmax(280px,1fr)_3fr] items-start gap-4 md:gap-12 pt-24 md:pt-[180px]"
+    class="relative h-full max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-[minmax(280px,1fr)_3fr] items-start gap-4 md:gap-12 pt-16 md:pt-[180px]"
   >
     <div class="flex flex-col md:items-end items-start gap-5 z-10 md:text-right">
       <h2
@@ -91,9 +91,10 @@ const tees = [
   const shop = document.getElementById("shop");
   const teeTrack = document.querySelector<HTMLElement>(".shop-tees-track");
   const teeWindow = document.querySelector<HTMLElement>(".shop-tees-window");
+  const mobileTrack = document.querySelector<HTMLElement>(".shop-tees-marquee-track");
+  const mobileWindow = document.querySelector<HTMLElement>(".shop-tees-marquee");
 
-  if (shop && teeTrack && teeWindow) {
-    // Hide the mobile strip's native scrollbar (handled in <style> below).
+  if (shop) {
     // The shop article is sticky, so its `offsetTop` becomes equal to scrollY
     // once stuck. Cache the static offset by walking offsetParent.
     let start = 0;
@@ -115,9 +116,20 @@ const tees = [
       // before Contact (next sticky card) stacks on top of it.
       const range = Math.max(1, shop.offsetHeight - window.innerHeight);
       const p = Math.min(1, Math.max(0, (window.scrollY - start) / range));
-      // Travel = full track height + window height so every tee exits the top.
-      const travel = teeTrack.scrollHeight + teeWindow.clientHeight;
-      teeTrack.style.transform = `translate3d(0, ${-p * travel}px, 0)`;
+
+      // DESKTOP: vertical tee column scrolls upward.
+      if (teeTrack && teeWindow) {
+        const travel = teeTrack.scrollHeight + teeWindow.clientHeight;
+        teeTrack.style.transform = `translate3d(0, ${-p * travel}px, 0)`;
+      }
+
+      // MOBILE: horizontal tee marquee scrolls right-to-left during the
+      // shop card's full sticky range. Next card (Contact) only begins
+      // stacking once p reaches 1, i.e. all tees have scrolled off the left.
+      if (mobileTrack && mobileWindow) {
+        const travel = Math.max(0, mobileTrack.scrollWidth - mobileWindow.clientWidth);
+        mobileTrack.style.transform = `translate3d(${-p * travel}px, 0, 0)`;
+      }
     };
     const onScroll = () => {
       if (raf) return;

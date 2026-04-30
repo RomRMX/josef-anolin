@@ -71,10 +71,13 @@ import Footer from "../components/Footer.astro";
   .card {
     position: sticky;
     top: 0;
-    height: 100dvh;
+    /* 110dvh in flow gives ~10dvh of "resistance" — a brief stretch of
+       scrolling at the end of each card before the next one starts to
+       stack. Visible card content is sized to 100dvh; the extra 10dvh
+       at the bottom is empty card background. */
+    height: 110dvh;
     background: var(--color-bg);
     overflow: hidden;
-    /* Each card paints on its own layer so the one below is hidden cleanly. */
     isolation: isolate;
   }
   /* Per-card brand backgrounds. */
@@ -82,9 +85,11 @@ import Footer from "../components/Footer.astro";
   .card-media { background: #f7f6f0; }
   .card-shop { background: var(--color-accent-2); }
   .card-contact { background: #c1fc50; }
+  /* Inner content boxes stay at 100dvh — only the article's flow height
+     grows (110dvh) so the sticky range extends. The extra 10dvh below
+     the inner box is empty card background = the "resistance" range. */
   .card-grouped .card-inner {
-    height: 100%;
-    /* No scrollbar inside cards — content is sized to fit 100dvh. */
+    height: 100dvh;
     overflow: hidden;
     /* 156 + the inner section's 24px py-6 top = 180px from card top to first element. */
     padding-top: 156px;
@@ -94,7 +99,7 @@ import Footer from "../components/Footer.astro";
   }
   /* The hero card lets its component lay out full-bleed. */
   .card-hero > section {
-    height: 100%;
+    height: 100dvh;
     padding-top: 250px;
   }
   /* Shop is 250dvh tall so it stays sticky long enough for the tee column
@@ -131,29 +136,40 @@ import Footer from "../components/Footer.astro";
     .card-shows section { padding: 0.5rem 1rem !important; }
     .card-shows h2 { text-align: left !important; margin-bottom: 0.5rem !important; }
 
-    /* Dates: center-justified, single-line rows */
-    .card-shows #dates ul { text-align: center !important; }
-    .card-shows #dates ul li {
-      flex-direction: row !important;
-      align-items: center !important;
-      justify-content: center !important;
-      gap: 0.6rem !important;
-      padding: 0.5rem 0 !important;
-      text-align: left !important;
+    /* Dates: 3-column grid (date | city/venue | TICKETS), each cell
+       center-justified within its column. Remove the top divider above
+       the first row and the bottom divider below the last row — keep
+       the dividers BETWEEN rows. */
+    .card-shows #dates ul {
+      border-top: 0 !important;
+      text-align: center !important;
     }
+    .card-shows #dates ul li {
+      display: grid !important;
+      grid-template-columns: 1fr 1.4fr 1fr !important;
+      align-items: center !important;
+      justify-items: center !important;
+      gap: 0.5rem !important;
+      padding: 0.55rem 0 !important;
+      text-align: center !important;
+    }
+    .card-shows #dates ul li:last-child { border-bottom: 0 !important; }
     .card-shows #dates ul li > div:first-child {
-      font-size: 0.78rem !important;
+      font-size: 0.85rem !important;
       width: auto !important;
+      text-align: center !important;
     }
     .card-shows #dates ul li > div:nth-child(2) {
       flex: 0 1 auto !important;
       min-width: 0 !important;
+      text-align: center !important;
     }
     .card-shows #dates ul li > div:nth-child(2) > div:first-child { font-size: 0.95rem !important; }
     .card-shows #dates ul li > div:nth-child(2) > div:nth-child(2) { font-size: 0.75rem !important; }
     .card-shows #dates ul li > div:nth-child(2) > div:nth-child(3) { display: none !important; }
     .card-shows #dates ul li a {
       align-self: center !important;
+      justify-self: center !important;
       min-height: 2rem !important;
       padding: 0.35rem 0.85rem !important;
       font-size: 0.7rem !important;
