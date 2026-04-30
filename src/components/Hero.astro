@@ -64,7 +64,9 @@
   }
 
   /* Portrait — anchored right, width-only sizing (no dvh-based cap)
-     so vertical resizes don't shrink it. Behavior matches the logo. */
+     so vertical resizes don't shrink it. Behavior matches the logo.
+     margin-right shifts the portrait LEFT, increasing overlap with the
+     logo so the title sits ON TOP of the figure's shoulder/chest. */
   .hero-portrait {
     grid-column: 1;
     grid-row: 1;
@@ -73,6 +75,7 @@
     width: 42%;
     max-width: 540px;
     height: auto;
+    margin-right: 150px;
     display: block;
     z-index: 1;
   }
@@ -110,7 +113,7 @@
     font-size: 1rem;
     letter-spacing: 0.16em;
     padding: 0.85rem 2rem;
-    border-radius: 9999px;
+    border-radius: 8px;
     text-decoration: none;
     text-transform: uppercase;
     transition: filter 0.18s ease, transform 0.18s ease;
@@ -122,44 +125,23 @@
     transform: translateY(-2px);
   }
 
-  /* BIO — pinned to bottom of section flex container.
-     margin-top: auto pushes bio to bottom (= section's padding-bottom guard).
-     padding-top: 40px enforces a minimum 40px gap above the bio so it never
-     crashes into BOOK ME on shorter/narrower viewports. */
+  /* BIO — pinned to bottom of section flex container, center-aligned.
+     margin-top: auto pushes bio to the bottom guard.
+     padding-top: 40px enforces a minimum 40px gap above the text when
+     the layout is crowded. No vertical accent rule. */
   .hero-bio {
     margin: 0;
     margin-top: auto;
-    padding: 40px 0 0 1.25rem;
-    border-left: 3px solid var(--color-accent);
-    border-image: none;
-    /* The vertical accent rule should only span the text height, not the
-       40px top padding. Use a wrapping pseudo-element trick: */
-    background-clip: padding-box;
+    padding: 40px 0 0 0;
     font-family: var(--font-body), system-ui, sans-serif;
     font-style: italic;
-    font-size: clamp(0.85rem, 1.05vw, 1rem);
+    font-size: 22px;
     line-height: 1.55;
     color: rgb(229 229 229);
-    max-width: 78ch;
+    text-align: center;
+    max-width: 60ch;
     flex-shrink: 0;
-    align-self: flex-start;
-    /* Use box-shadow inset for the accent rule so it can sit below the
-       40px top gap. Padding-left + box-shadow drawn from bottom up. */
-  }
-  /* Trim the accent rule so it doesn't draw across the 40px top gap. */
-  .hero-bio {
-    border-left: 0;
-    position: relative;
-    padding-left: calc(1.25rem + 3px);
-  }
-  .hero-bio::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 40px;
-    bottom: 0;
-    width: 3px;
-    background: var(--color-accent);
+    align-self: center;
   }
 
   /* MOBILE — portrait on top, then logo+button, then bio. */
@@ -176,6 +158,7 @@
       width: 60%;
       max-width: 280px;
       margin: 0 auto;
+      margin-right: auto;
     }
     .hero-logo-wrap {
       grid-column: 1;
@@ -187,7 +170,7 @@
     }
     .hero-bio {
       max-width: 100%;
-      font-size: 0.85rem;
+      font-size: 16px;
     }
   }
 </style>
