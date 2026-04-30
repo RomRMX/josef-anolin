@@ -107,20 +107,65 @@ import Footer from "../components/Footer.astro";
      pinned through the contact handoff. */
   .stack-tail { height: 150dvh; }
 
-  /* Mobile keeps the desktop deck stacking. Cards stay sticky 100dvh; the
-     mobile-only header sits at top:0 above the deck. card-inner switches to
-     block layout so section children with `mx-auto` fill the row instead of
-     shrinking to min-content. */
+  /* Mobile keeps the desktop deck stacking — each card sticks at the top
+     of the viewport while the next card slides up over it. No internal
+     scroll: card content is sized down to fit 100dvh. */
   @media (max-width: 767px) {
     .card-grouped .card-inner {
-      /* Mobile header is ~66px (two-row), so push content below it. */
-      padding-top: 6rem;
-      padding-bottom: 2rem;
+      /* Mobile header is now ~60px (smaller logo + single row links). */
+      padding-top: 4rem;
+      padding-bottom: 1rem;
       display: block;
-      /* If a card's content is taller than the viewport at small sizes,
-         allow internal scroll so nothing gets silently clipped. */
-      overflow-y: auto;
+      overflow: hidden;
     }
+    /* SHOWS card — compact Socials + Dates + Notable so all three fit
+       inside 100dvh without scrolling. */
+    .card-shows section {
+      padding: 0.5rem 1rem !important;
+    }
+    .card-shows h2 {
+      font-size: 1.5rem !important;
+      line-height: 1 !important;
+      margin: 0 0 0.4rem 0 !important;
+    }
+    /* Socials: tighter buttons in tighter row */
+    .card-shows section ul.flex { gap: 0.4rem !important; }
+    .card-shows section ul a {
+      min-height: 1.75rem !important;
+      padding: 0.3rem 0.7rem !important;
+      font-size: 0.72rem !important;
+    }
+    /* Dates: switch to inline horizontal rows. date | city/venue | TICKETS */
+    .card-shows #dates ul li {
+      flex-direction: row !important;
+      align-items: center !important;
+      gap: 0.6rem !important;
+      padding: 0.4rem 0 !important;
+    }
+    .card-shows #dates ul li > div:first-child {
+      font-size: 0.72rem !important;
+      width: auto !important;
+    }
+    .card-shows #dates ul li > div:nth-child(2) {
+      flex: 1 !important;
+      min-width: 0 !important;
+    }
+    .card-shows #dates ul li > div:nth-child(2) > div:first-child { font-size: 0.85rem !important; }
+    .card-shows #dates ul li > div:nth-child(2) > div:nth-child(2) { font-size: 0.7rem !important; }
+    .card-shows #dates ul li > div:nth-child(2) > div:nth-child(3) { display: none !important; }
+    .card-shows #dates ul li a {
+      align-self: center !important;
+      min-height: 1.75rem !important;
+      padding: 0.3rem 0.7rem !important;
+      font-size: 0.65rem !important;
+    }
+    /* Notable: tight typography, no extra spacing */
+    .card-shows #notable .space-y-6 > * + * { margin-top: 0.4rem !important; }
+    .card-shows #notable h3 { font-size: 0.6rem !important; margin-bottom: 0.1rem !important; }
+    .card-shows #notable ul { font-size: 0.7rem !important; line-height: 1.2 !important; }
+    .card-shows #notable ul li { padding: 0 !important; }
+    .card-shows #notable .space-y-1 > * + * { margin-top: 0 !important; }
+    .card-shows #notable .grid { gap: 0.5rem !important; }
   }
 
   @media (prefers-reduced-motion: reduce) {
