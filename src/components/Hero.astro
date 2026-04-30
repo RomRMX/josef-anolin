@@ -146,6 +146,12 @@
 
   /* MOBILE — portrait on top, then logo (overlapping portrait), then bio. */
   @media (max-width: 767px) {
+    .hero-section {
+      /* Pull all hero content up 50px (nav above the section is unaffected
+         because it's outside the section). Subtract 50 from the clamped
+         desktop value: clamp(120, 20dvh, 200) - 50 = clamp(70, calc(20dvh - 50px), 150). */
+      padding-top: clamp(70px, calc(20dvh - 50px), 150px);
+    }
     .hero-comp {
       grid-template-rows: auto auto;
       row-gap: 0;
@@ -155,9 +161,9 @@
       grid-row: 1;
       justify-self: center;
       align-self: center;
-      /* +30% over the prior 60% / 280px sizing. */
-      width: 78%;
-      max-width: 364px;
+      /* +30% over the prior 78% / 364px sizing. */
+      width: 100%;
+      max-width: 473px;
       margin: 0 auto;
       margin-right: auto;
     }
