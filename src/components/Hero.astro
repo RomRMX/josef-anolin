@@ -144,19 +144,20 @@
     align-self: center;
   }
 
-  /* MOBILE — portrait on top, then logo+button, then bio. */
+  /* MOBILE — portrait on top, then logo (overlapping portrait), then bio. */
   @media (max-width: 767px) {
     .hero-comp {
       grid-template-rows: auto auto;
-      row-gap: 1rem;
+      row-gap: 0;
     }
     .hero-portrait {
       grid-column: 1;
       grid-row: 1;
       justify-self: center;
       align-self: center;
-      width: 60%;
-      max-width: 280px;
+      /* +30% over the prior 60% / 280px sizing. */
+      width: 78%;
+      max-width: 364px;
       margin: 0 auto;
       margin-right: auto;
     }
@@ -165,6 +166,10 @@
       grid-row: 2;
       justify-self: center;
       margin-left: 0;
+      /* Pull the title (and BOOK ME beneath it) up 60px so it overlaps
+         the bottom of the portrait. z-index: 2 (inherited from desktop)
+         keeps the title visually on top of the portrait. */
+      margin-top: -60px;
       width: 92%;
       max-width: 480px;
     }
