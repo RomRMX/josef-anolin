@@ -9,77 +9,85 @@
     Josef Anolin — Stand-Up Comedian
   </h1>
 
-  <div class="hero-grid">
-    <div class="hero-left">
-      <div class="hero-logo-wrap">
-        <img
-          src="/joe-logo.png"
-          alt="Josef Anolin — Stand Up Comedian"
-          class="hero-logo select-none pointer-events-none"
-        />
-        <a href="#contact" class="hero-cta">BOOK ME</a>
-      </div>
-    </div>
-
-    <div class="hero-right">
+  <div class="hero-comp">
+    <img
+      src="/joe-hero.png"
+      alt=""
+      aria-hidden="true"
+      class="hero-portrait select-none pointer-events-none"
+    />
+    <div class="hero-logo-wrap">
       <img
-        src="/joe-hero.png"
-        alt=""
-        aria-hidden="true"
-        class="hero-portrait select-none pointer-events-none"
+        src="/joe-logo.png"
+        alt="Josef Anolin — Stand Up Comedian"
+        class="hero-logo select-none pointer-events-none"
       />
+      <a href="#contact" class="hero-cta">BOOK ME</a>
     </div>
-
-    <p class="hero-bio">
-      From Oakland, California currently living in Los Angeles, Josef has opened
-      for the likes of Tom Segura, Whitney Cummings, and Michael Che. He likes
-      telling irreverent stories based on his life and observations.
-    </p>
   </div>
+
+  <p class="hero-bio">
+    From Oakland, California currently living in Los Angeles, Josef has opened
+    for the likes of Tom Segura, Whitney Cummings, and Michael Che. He likes
+    telling irreverent stories based on his life and observations.
+  </p>
 </section>
 
 <style>
   .hero-section {
     background: #000;
     height: 100%;
-    /* User's spec: 200px from window-top to subject's hat, 250px guard at the
-       bottom. Locked at typical desktop heights (1080+); shrinks proportionally
-       on shorter viewports. */
+    /* 200px from window-top to subject's hat / 250px guard at bottom.
+       Locked at 1080+ viewports; shrinks proportionally on shorter ones. */
     padding-top: clamp(120px, 20dvh, 200px);
     padding-bottom: clamp(160px, 25dvh, 250px);
     padding-left: clamp(1.5rem, 4vw, 5rem);
     padding-right: clamp(1.5rem, 4vw, 5rem);
-  }
-
-  .hero-grid {
-    height: 100%;
-    display: grid;
-    grid-template-columns: 1.05fr 0.95fr;
-    grid-template-rows: 1fr;
-    column-gap: clamp(1.5rem, 4vw, 60px);
-    align-items: start;
-    /* Bio is positioned absolutely below — grid only handles columns. */
-  }
-
-  /* LEFT column — title stack + BOOK ME tight beneath */
-  .hero-left {
-    grid-column: 1;
-    grid-row: 1;
     display: flex;
     flex-direction: column;
-    /* Anchor logo+button to TOP so the title's top sits at row top
-       (= section padding-top = 200px from window). No flex centering
-       within the column — that creates the floating-row look. */
-    justify-content: flex-start;
-    align-items: flex-start;
-    min-width: 0;
-    align-self: start;
   }
-  /* logo-wrap also containers the CTA so the CTA centers under the
-     logo's width, not the column's width. */
-  .hero-logo-wrap {
+
+  /* COMP — portrait + logo overlap in the same grid cell. Sized
+     primarily by WIDTH so vertical resizes don't shrink them
+     drastically. Both images carry a soft dvh-based max-height that
+     activates only on short viewports (≲ 1080) so bio + 40px gap
+     still fits inside the 250 bottom guard. */
+  .hero-comp {
+    position: relative;
     width: 100%;
-    max-width: 720px;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    flex-shrink: 0;
+  }
+
+  /* Portrait — anchored right, width-only sizing (no dvh-based cap)
+     so vertical resizes don't shrink it. Behavior matches the logo. */
+  .hero-portrait {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: end;
+    align-self: start;
+    width: 42%;
+    max-width: 540px;
+    height: auto;
+    display: block;
+    z-index: 1;
+  }
+
+  /* Logo + button — shifted toward center so logo OVERLAPS portrait's
+     left edge by ~7%. */
+  .hero-logo-wrap {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: start;
+    align-self: start;
+    margin-left: 5%;
+    width: 60%;
+    max-width: 660px;
+    z-index: 2;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -87,30 +95,6 @@
   .hero-logo {
     width: 100%;
     height: auto;
-    display: block;
-  }
-
-  /* RIGHT column — portrait scaled to fit, hat top at row top (= 200px from window). */
-  .hero-right {
-    grid-column: 2;
-    grid-row: 1;
-    display: flex;
-    /* Anchor to TOP so portrait hat aligns with logo top at y=200. */
-    align-items: flex-start;
-    justify-content: center;
-    min-height: 0;
-    min-width: 0;
-    align-self: start;
-    height: 100%;
-  }
-  .hero-portrait {
-    /* Cap height by viewport so portrait never overflows the row track.
-       Reserve top pad (200) + bottom pad (250) + bio area (~140). */
-    max-height: calc(100dvh - 200px - 250px - 140px);
-    max-width: 100%;
-    width: auto;
-    height: auto;
-    object-fit: contain;
     display: block;
   }
 
@@ -138,53 +122,72 @@
     transform: translateY(-2px);
   }
 
-  /* BIO — magazine pull-quote, anchored to the bottom of the safe zone
-     so its lowest pixel sits exactly 250px from the viewport bottom. */
+  /* BIO — pinned to bottom of section flex container.
+     margin-top: auto pushes bio to bottom (= section's padding-bottom guard).
+     padding-top: 40px enforces a minimum 40px gap above the bio so it never
+     crashes into BOOK ME on shorter/narrower viewports. */
   .hero-bio {
-    position: absolute;
-    left: clamp(1.5rem, 4vw, 5rem);
-    bottom: clamp(160px, 25dvh, 250px);
     margin: 0;
-    padding: 0.5rem 0 0.5rem 1.25rem;
+    margin-top: auto;
+    padding: 40px 0 0 1.25rem;
     border-left: 3px solid var(--color-accent);
+    border-image: none;
+    /* The vertical accent rule should only span the text height, not the
+       40px top padding. Use a wrapping pseudo-element trick: */
+    background-clip: padding-box;
     font-family: var(--font-body), system-ui, sans-serif;
     font-style: italic;
-    font-size: clamp(0.85rem, 1.1vw, 1rem);
+    font-size: clamp(0.85rem, 1.05vw, 1rem);
     line-height: 1.55;
     color: rgb(229 229 229);
     max-width: 78ch;
+    flex-shrink: 0;
+    align-self: flex-start;
+    /* Use box-shadow inset for the accent rule so it can sit below the
+       40px top gap. Padding-left + box-shadow drawn from bottom up. */
+  }
+  /* Trim the accent rule so it doesn't draw across the 40px top gap. */
+  .hero-bio {
+    border-left: 0;
+    position: relative;
+    padding-left: calc(1.25rem + 3px);
+  }
+  .hero-bio::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 40px;
+    bottom: 0;
+    width: 3px;
+    background: var(--color-accent);
   }
 
-  /* Mobile: ditch the grid, use a simple flex column. Order:
-     logo + button → portrait → bio. Bio stays in flow (no abs pos). */
+  /* MOBILE — portrait on top, then logo+button, then bio. */
   @media (max-width: 767px) {
-    .hero-grid {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1.25rem;
-      height: auto;
-      min-height: 100%;
-    }
-    .hero-left {
-      width: 100%;
-      align-items: center;
-    }
-    .hero-logo-wrap { max-width: 92%; margin: 0 auto; }
-    .hero-right {
-      width: 100%;
-      height: auto;
-      justify-content: center;
+    .hero-comp {
+      grid-template-rows: auto auto;
+      row-gap: 1rem;
     }
     .hero-portrait {
-      max-width: 65%;
-      max-height: none;
+      grid-column: 1;
+      grid-row: 1;
+      justify-self: center;
+      align-self: center;
+      width: 60%;
+      max-width: 280px;
+      margin: 0 auto;
+    }
+    .hero-logo-wrap {
+      grid-column: 1;
+      grid-row: 2;
+      justify-self: center;
+      margin-left: 0;
+      width: 92%;
+      max-width: 480px;
     }
     .hero-bio {
-      position: static;
       max-width: 100%;
-      margin: 0;
-      padding-left: 1rem;
+      font-size: 0.85rem;
     }
   }
 </style>
