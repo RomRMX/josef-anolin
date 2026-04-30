@@ -126,13 +126,11 @@
     transform: translateY(-2px);
   }
 
-  /* BIO — pinned to bottom of section flex container, center-aligned.
-     margin-top: auto pushes bio to the bottom guard.
-     padding-top: 40px enforces a minimum 40px gap above the text when
-     the layout is crowded. No vertical accent rule. */
+  /* BIO — fixed to the top of its flow container, sitting right under
+     the comp. No auto-margin push to the bottom. 40px gap above the
+     text (minimum) so it doesn't crash into BOOK ME. */
   .hero-bio {
     margin: 0;
-    margin-top: auto;
     padding: 40px 0 0 0;
     font-family: var(--font-body), system-ui, sans-serif;
     font-style: italic;
