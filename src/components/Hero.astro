@@ -173,9 +173,9 @@
       grid-row: 2;
       justify-self: center;
       margin-left: 0;
-      /* Pull the title (and BOOK ME beneath it) up. -60 already overlaps
-         the portrait; another -45 = -105 total per the latest tightening. */
-      margin-top: -105px;
+      /* Pull the title (and BOOK ME beneath it) up. -60 → -105 → -140
+         after the latest 35px raise. */
+      margin-top: -140px;
       width: 92%;
       max-width: 480px;
     }
@@ -186,7 +186,10 @@
     }
     .hero-bio {
       max-width: 100%;
-      font-size: 16px;
+      /* -2px from the prior 16px = 14px, lighter gray, and tighter line-height. */
+      font-size: 14px;
+      color: rgb(180 180 180);
+      line-height: 1.4;
     }
   }
 </style>
