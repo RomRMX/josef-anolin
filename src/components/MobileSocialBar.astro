@@ -1,8 +1,8 @@
 ---
 const socials = [
-  { label: "Email", icon: "email", href: "mailto:bookings@josefanolin.com" },
+  { label: "Email", icon: "email", href: "mailto:josefanolin@gmail.com" },
   { label: "Instagram", icon: "instagram", href: "https://www.instagram.com/comedianjoe510/" },
-  { label: "TikTok", icon: "tiktok", href: "https://www.tiktok.com/@comedianjoe510" },
+  { label: "TikTok", icon: "tiktok", href: "https://www.tiktok.com/@comedianjoe510?is_from_webapp=1&sender_device=pc" },
   { label: "YouTube", icon: "youtube", href: "https://www.youtube.com/@comedianjoe510" },
   { label: "Facebook", icon: "facebook", href: "https://www.facebook.com/JosefAnolinComedian" },
   { label: "Threads", icon: "threads", href: "https://www.threads.com/@comedianjoe510" },
@@ -24,7 +24,7 @@ const socials = [
             rel={s.href.startsWith("http") ? "noopener noreferrer" : undefined}
             aria-label={s.label}
             title={s.label}
-            class="flex items-center justify-center min-h-[26px] rounded-md bg-[color:var(--color-accent)] text-black hover:brightness-110 active:brightness-110 transition-[filter] py-0.5"
+            class="mobile-social-icon flex items-center justify-center min-h-[26px] rounded-md bg-[color:var(--color-accent)] text-black hover:brightness-110 py-0.5"
           >
             {s.icon === "email" && (
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -65,3 +65,15 @@ const socials = [
     }
   </ul>
 </nav>
+
+<style>
+  .mobile-social-icon {
+    transition: filter 160ms var(--ease-out-strong),
+                transform 120ms var(--ease-out-strong);
+  }
+  .mobile-social-icon:active { transform: scale(0.92); }
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-social-icon { transition: filter 160ms ease; }
+    .mobile-social-icon:active { transform: none; }
+  }
+</style>

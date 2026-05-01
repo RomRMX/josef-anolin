@@ -2,6 +2,7 @@
 import "../styles/global.css";
 import Header from "../components/Header.astro";
 import MobileSocialBar from "../components/MobileSocialBar.astro";
+import CartDrawer from "../components/CartDrawer.astro";
 
 interface Props {
   title?: string;
@@ -44,6 +45,7 @@ const {
     <Header />
     <slot />
     <MobileSocialBar />
+    <CartDrawer />
 
     {/* Floating back-to-top. Hidden until the user has scrolled past the
         first viewport; clicking returns to the hero card. Smaller on mobile
@@ -52,13 +54,26 @@ const {
       id="back-to-top"
       type="button"
       aria-label="Back to top"
-      class="fixed bottom-[65px] right-3 md:bottom-5 md:right-5 z-40 w-[34px] h-[34px] md:w-12 md:h-12 grid place-items-center rounded-full bg-black text-[color:var(--color-accent)] opacity-0 pointer-events-none translate-y-2 transition-[opacity,transform] duration-200 hover:bg-neutral-800"
+      class="back-to-top fixed bottom-[65px] right-3 md:bottom-5 md:right-5 z-40 w-[34px] h-[34px] md:w-12 md:h-12 grid place-items-center rounded-full bg-black text-[color:var(--color-accent)] opacity-0 pointer-events-none translate-y-2 hover:bg-neutral-800"
     >
       <svg class="w-3.5 h-3.5 md:w-5 md:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M12 19V5" />
         <path d="m5 12 7-7 7 7" />
       </svg>
     </button>
+
+    <style>
+      .back-to-top {
+        transition: opacity 220ms var(--ease-out-strong),
+                    transform 220ms var(--ease-out-strong),
+                    background-color 160ms var(--ease-out-strong);
+      }
+      .back-to-top:active { transform: scale(0.93) !important; }
+      @media (prefers-reduced-motion: reduce) {
+        .back-to-top { transition: opacity 200ms ease; }
+        .back-to-top:active { transform: none !important; }
+      }
+    </style>
 
     <script>
       const btn = document.getElementById("back-to-top");

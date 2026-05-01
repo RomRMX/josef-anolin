@@ -7,25 +7,36 @@ const links = [
 ];
 
 const socials = [
-  { label: "Email", href: "mailto:bookings@josefanolin.com" },
-  { label: "Instagram", href: "https://www.instagram.com/comedianjoe510/" },
-  { label: "TikTok", href: "https://www.tiktok.com/@comedianjoe510" },
-  { label: "YouTube", href: "https://www.youtube.com/@comedianjoe510" },
-  { label: "Facebook", href: "https://www.facebook.com/JosefAnolinComedian" },
-  { label: "Threads", href: "https://www.threads.com/@comedianjoe510" },
+  { label: "Email", href: "mailto:josefanolin@gmail.com", icon: "/socials/social__0005_Layer-3.png" },
+  { label: "Instagram", href: "https://www.instagram.com/comedianjoe510/", icon: "/socials/social__0003_Layer-5.png" },
+  { label: "TikTok", href: "https://www.tiktok.com/@comedianjoe510?is_from_webapp=1&sender_device=pc", icon: "/socials/social__0002_Layer-6.png" },
+  { label: "YouTube", href: "https://www.youtube.com/@comedianjoe510", icon: "/socials/social__0000_Layer-8.png" },
+  { label: "Facebook", href: "https://www.facebook.com/JosefAnolinComedian", icon: "/socials/social__0004_Layer-4.png" },
+  { label: "Threads", href: "https://www.threads.com/@comedianjoe510", icon: "/socials/social__0001_Layer-7.png" },
 ];
 ---
 
-{/* MOBILE header — single column: logo + nav links. */}
+{/* MOBILE header — logo row with cart button on the right, then nav links. */}
 <header class="site-header md:hidden fixed top-0 left-0 right-0 z-50 bg-[#0a0a0a] backdrop-blur-md backdrop-saturate-150">
-  <div class="max-w-6xl mx-auto px-5 py-3 flex flex-col items-center gap-2">
-    <a href="#" aria-label="Josef Anolin — back to top" class="block">
-      <img
-        src="/joedobo_straightlogo.png"
-        alt="Josef Anolin"
-        class="h-[18px] w-auto select-none pointer-events-none"
-      />
-    </a>
+  <div class="max-w-6xl mx-auto px-4 py-3 flex flex-col items-stretch gap-2">
+    <div class="flex items-center justify-between">
+      <span class="w-[34px]" aria-hidden="true"></span>
+      <a href="#" aria-label="Josef Anolin — back to top" class="block">
+        <img
+          src="/joedobo_straightlogo.png"
+          alt="Josef Anolin"
+          class="h-[18px] w-auto select-none pointer-events-none"
+        />
+      </a>
+      <button type="button" class="cart-trigger cart-trigger--mobile" aria-label="Open cart">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+          <path d="M3 6h18" />
+          <path d="M16 10a4 4 0 0 1-8 0" />
+        </svg>
+        <span class="cart-count" data-cart-count data-empty="true">0</span>
+      </button>
+    </div>
     <nav
       class="flex items-center justify-center gap-5 text-[12px] font-semibold tracking-[0.18em]"
       aria-label="Primary"
@@ -76,7 +87,7 @@ const socials = [
       >
         HIT ME!
       </span>
-      <ul class="flex items-center gap-1.5">
+      <ul class="flex items-center gap-2">
         {
           socials.map((s) => (
             <li>
@@ -84,14 +95,28 @@ const socials = [
                 href={s.href}
                 target={s.href.startsWith("http") ? "_blank" : undefined}
                 rel={s.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                class="inline-flex items-center px-3 py-1.5 bg-white/10 text-white rounded-sm text-[11px] font-bold tracking-widest hover:bg-[color:var(--color-accent)] hover:text-black transition-colors"
+                aria-label={s.label}
+                title={s.label}
+                class="hit-icon-link inline-flex items-center justify-center w-8 h-8 rounded-sm"
               >
-                {s.label}
+                <img
+                  src={s.icon}
+                  alt=""
+                  class="w-6 h-6 select-none pointer-events-none"
+                />
               </a>
             </li>
           ))
         }
       </ul>
+      <button type="button" class="cart-trigger" aria-label="Open cart">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+          <path d="M3 6h18" />
+          <path d="M16 10a4 4 0 0 1-8 0" />
+        </svg>
+        <span class="cart-count" data-cart-count data-empty="true">0</span>
+      </button>
     </div>
   </div>
 </header>
@@ -99,14 +124,101 @@ const socials = [
 <style>
   .site-header-desktop {
     transform: translateY(-100%);
-    transition: transform 0.25s ease;
+    transition: transform 280ms var(--ease-out-strong);
+    will-change: transform;
   }
   .site-header-desktop.is-visible {
     transform: translateY(0);
   }
+  /* Press feedback for any interactive element inside either header. */
+  .site-header a,
+  .site-header-desktop a {
+    transition: color 160ms var(--ease-out-strong),
+                background-color 160ms var(--ease-out-strong),
+                transform 120ms var(--ease-out-strong);
+  }
+  .site-header a:active,
+  .site-header-desktop a:active {
+    transform: scale(0.97);
+  }
+
+  /* HIT ME! icon links — subtle hover lift. */
+  .hit-icon-link {
+    transition: background-color 160ms var(--ease-out-strong),
+                transform 140ms var(--ease-out-strong);
+  }
+  .hit-icon-link:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    transform: translateY(-1px);
+  }
+  .hit-icon-link:active {
+    transform: scale(0.94);
+  }
+
+  /* Cart trigger button — shared between mobile + desktop headers. */
+  .cart-trigger {
+    position: relative;
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    background: rgba(255, 255, 255, 0.06);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 160ms var(--ease-out-strong),
+                border-color 160ms var(--ease-out-strong),
+                transform 120ms var(--ease-out-strong);
+    margin-left: 4px;
+  }
+  .cart-trigger:hover {
+    background-color: var(--color-accent);
+    color: #000;
+    border-color: var(--color-accent);
+  }
+  .cart-trigger:active { transform: scale(0.94); }
+  .cart-trigger--mobile {
+    width: 34px;
+    height: 34px;
+  }
+  .cart-count {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
+    border-radius: 999px;
+    background: var(--color-accent);
+    color: #000;
+    font-size: 10px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    display: grid;
+    place-items: center;
+    line-height: 1;
+    border: 2px solid #0a0a0a;
+    transition: opacity 200ms var(--ease-out-strong),
+                transform 240ms var(--ease-out-strong);
+  }
+  .cart-count[data-empty="true"] {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    .site-header-desktop {
+    .site-header-desktop,
+    .site-header a,
+    .site-header-desktop a,
+    .cart-trigger,
+    .cart-count {
       transition: none;
+    }
+    .site-header a:active,
+    .site-header-desktop a:active,
+    .cart-trigger:active {
+      transform: none;
     }
   }
 </style>
@@ -123,4 +235,11 @@ const socials = [
     window.addEventListener("scroll", update, { passive: true });
     update();
   }
+
+  // Cart trigger — open the drawer.
+  document.querySelectorAll<HTMLButtonElement>(".cart-trigger").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      window.dispatchEvent(new CustomEvent("cart:open"));
+    });
+  });
 </script>
