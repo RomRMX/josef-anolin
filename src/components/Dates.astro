@@ -31,11 +31,11 @@ const dates = [
   <ul class="border-t border-black/15">
     {
       dates.map((d) => (
-        <li class="flex flex-col md:flex-row md:items-center gap-3 md:gap-8 py-5 border-b border-black/15">
-          <div class="text-black text-base md:text-xl tracking-wider md:w-[140px] shrink-0">
+        <li class="grid grid-cols-1 md:grid-cols-[140px_1fr_auto] md:items-center gap-3 md:gap-8 py-5 border-b border-black/15">
+          <div class="text-black text-base md:text-xl tracking-wider">
             {d.date}
           </div>
-          <div class="leading-tight shrink-0">
+          <div class="leading-tight min-w-0">
             <div class="font-bold text-xl md:text-2xl text-black">{d.city}</div>
             <div class="text-base md:text-lg text-black/80">{d.venue}</div>
             <div class="text-sm md:text-base text-black/75">{d.address}</div>
@@ -44,7 +44,7 @@ const dates = [
             href={d.tickets}
             target="_blank"
             rel="noopener noreferrer"
-            class="self-start md:self-center inline-flex items-center min-h-11 text-sm font-bold tracking-widest px-5 py-3 bg-black text-[color:var(--color-accent)] rounded-sm hover:bg-neutral-800 active:bg-black transition-colors"
+            class="justify-self-start md:justify-self-end md:-translate-x-[210px] inline-flex items-center justify-center min-h-11 text-sm font-bold tracking-widest px-5 py-3 bg-black text-[color:var(--color-accent)] rounded-sm hover:bg-neutral-800 active:bg-black transition-colors"
           >
             TICKETS
           </a>

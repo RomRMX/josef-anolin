@@ -5,18 +5,21 @@ const links = [
   { href: "#shop", label: "SHOP" },
   { href: "#contact", label: "CONTACT" },
 ];
+
+const socials = [
+  { label: "Email", href: "mailto:bookings@josefanolin.com" },
+  { label: "Instagram", href: "https://www.instagram.com/comedianjoe510/" },
+  { label: "TikTok", href: "https://www.tiktok.com/@comedianjoe510" },
+  { label: "YouTube", href: "https://www.youtube.com/@comedianjoe510" },
+  { label: "Facebook", href: "https://www.facebook.com/JosefAnolinComedian" },
+  { label: "Threads", href: "https://www.threads.com/@comedianjoe510" },
+];
 ---
 
-{/* Full-width fixed header. Two rows: brand on top, nav on bottom.
-    Stays above the sticky deck via z-50; bg-black/90 with backdrop-blur
-    keeps the deck visible behind it without losing legibility. */}
-<header class="md:hidden fixed top-0 left-0 right-0 z-50 bg-[#0a0a0a] backdrop-blur-md backdrop-saturate-150">
+{/* MOBILE header — single column: logo + nav links. */}
+<header class="site-header md:hidden fixed top-0 left-0 right-0 z-50 bg-[#0a0a0a] backdrop-blur-md backdrop-saturate-150">
   <div class="max-w-6xl mx-auto px-5 py-3 flex flex-col items-center gap-2">
-    <a
-      href="#"
-      aria-label="Josef Anolin — back to top"
-      class="block"
-    >
+    <a href="#" aria-label="Josef Anolin — back to top" class="block">
       <img
         src="/joedobo_straightlogo.png"
         alt="Josef Anolin"
@@ -40,3 +43,84 @@ const links = [
     </nav>
   </div>
 </header>
+
+{/* DESKTOP header — logo left, nav center, HIT ME! socials right. Hidden on hero
+    card; revealed once the user scrolls past the first viewport. */}
+<header class="site-header-desktop hidden md:block fixed top-0 left-0 right-0 z-50 bg-[#0a0a0a]/95 backdrop-blur-md backdrop-saturate-150 border-b border-white/5">
+  <div class="max-w-7xl mx-auto px-6 py-3 flex items-center gap-6">
+    <a href="#" aria-label="Josef Anolin — back to top" class="shrink-0">
+      <img
+        src="/joedobo_straightlogo.png"
+        alt="Josef Anolin"
+        class="h-[26px] w-auto select-none pointer-events-none"
+      />
+    </a>
+    <nav
+      class="flex items-center gap-7 text-[13px] font-semibold tracking-[0.18em]"
+      aria-label="Primary"
+    >
+      {
+        links.map((l) => (
+          <a
+            href={l.href}
+            class="text-white hover:text-[color:var(--color-accent)] transition-colors"
+          >
+            {l.label}
+          </a>
+        ))
+      }
+    </nav>
+    <div class="ml-auto flex items-center gap-3">
+      <span
+        class="font-[family-name:var(--font-display)] text-[color:var(--color-accent)] text-xl tracking-wide"
+      >
+        HIT ME!
+      </span>
+      <ul class="flex items-center gap-1.5">
+        {
+          socials.map((s) => (
+            <li>
+              <a
+                href={s.href}
+                target={s.href.startsWith("http") ? "_blank" : undefined}
+                rel={s.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                class="inline-flex items-center px-3 py-1.5 bg-white/10 text-white rounded-sm text-[11px] font-bold tracking-widest hover:bg-[color:var(--color-accent)] hover:text-black transition-colors"
+              >
+                {s.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header-desktop {
+    transform: translateY(-100%);
+    transition: transform 0.25s ease;
+  }
+  .site-header-desktop.is-visible {
+    transform: translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .site-header-desktop {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  // Show the desktop header after the hero card scrolls past the top.
+  const header = document.querySelector<HTMLElement>(".site-header-desktop");
+  if (header) {
+    const update = () => {
+      // Roughly: hide while still on the hero card (first viewport-height of scroll).
+      const visible = window.scrollY > window.innerHeight * 0.6;
+      header.classList.toggle("is-visible", visible);
+    };
+    window.addEventListener("scroll", update, { passive: true });
+    update();
+  }
+</script>

@@ -1,7 +1,6 @@
 ---
 import Base from "../layouts/Base.astro";
 import Hero from "../components/Hero.astro";
-import Socials from "../components/Socials.astro";
 import Dates from "../components/Dates.astro";
 import Videos from "../components/Videos.astro";
 import Pics from "../components/Pics.astro";
@@ -19,7 +18,6 @@ import Footer from "../components/Footer.astro";
 
     <article id="shows" class="card card-grouped card-shows" data-card="shows">
       <div class="card-inner">
-        <Socials />
         <Dates />
         <Notable />
       </div>
@@ -68,6 +66,12 @@ import Footer from "../components/Footer.astro";
   .stack {
     display: block;
   }
+  /* Snap on the scrollport so each card pauses at the top when presented.
+     `mandatory` + `always` enforces a one-card-per-flick delay: the user
+     can't skim past a card without it snapping into place. */
+  html {
+    scroll-snap-type: y mandatory;
+  }
   .card {
     position: sticky;
     top: 0;
@@ -79,9 +83,11 @@ import Footer from "../components/Footer.astro";
     background: var(--color-bg);
     overflow: hidden;
     isolation: isolate;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
   }
   /* Per-card brand backgrounds. */
-  .card-shows { background: #8a8a8a; }
+  .card-shows { background: #cfd0ce; }
   .card-media { background: #f7f6f0; }
   .card-shop { background: var(--color-accent-2); }
   .card-contact { background: #c1fc50; }
@@ -129,9 +135,6 @@ import Footer from "../components/Footer.astro";
        - DATES + NOTABLE ACTS need to fit in 100dvh
        - Section h2 titles stay at the standard text-4xl size, left-aligned
        - All other elements (date rows, notable items) center-justified */
-
-    /* Hide the HIT ME! socials section on mobile — duplicated by bottom bar. */
-    .card-shows > .card-inner > section:first-child { display: none !important; }
 
     .card-shows section { padding: 0.5rem 1rem !important; }
     .card-shows h2 { text-align: left !important; margin-bottom: 0.5rem !important; }
@@ -185,7 +188,8 @@ import Footer from "../components/Footer.astro";
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .card { position: relative; height: auto; }
+    html { scroll-snap-type: none; }
+    .card { position: relative; height: auto; scroll-snap-align: none; }
     .card-grouped .card-inner { height: auto; overflow: visible; justify-content: flex-start; }
     .card-clone { display: none; }
     /* Kill every micro-interaction transition/animation, not just the deck. */
