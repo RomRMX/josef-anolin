@@ -42,8 +42,8 @@ import Footer from "../components/Footer.astro";
       </div>
     </article>
 
-    <article class="card card-hero card-clone" data-card="hero-clone" aria-hidden="true">
-      <Hero />
+    <article class="card card-hero card-clone" data-card="hero-clone" aria-hidden="true" inert tabindex="-1">
+      <Hero isClone={true} />
     </article>
 
     {/* Tail spacer extends .stack so the shop card stays pinned at top:0 all
@@ -217,9 +217,42 @@ import Footer from "../components/Footer.astro";
   if (clone && !reduceMotion) {
     let snapping = false;
     let lastY = window.scrollY;
+    // Programmatic scroll guard: when the user clicks an in-page anchor
+    // (e.g. #contact in the header), the browser smooth-scrolls toward the
+    // target. If that animation crosses clone.offsetTop, the loop would snap
+    // to 0 mid-flight. Suppress the snap until scrollend (or a timeout
+    // fallback) signals the navigation has settled.
+    let isNavigating = false;
+    let navTimeout: number | undefined;
+
+    const beginNav = () => {
+      isNavigating = true;
+      if (navTimeout) clearTimeout(navTimeout);
+      navTimeout = window.setTimeout(() => {
+        isNavigating = false;
+        lastY = window.scrollY;
+      }, 1500);
+    };
+    const endNav = () => {
+      if (!isNavigating) return;
+      isNavigating = false;
+      if (navTimeout) {
+        clearTimeout(navTimeout);
+        navTimeout = undefined;
+      }
+      // Re-baseline so the next scroll comparison uses the post-nav position.
+      lastY = window.scrollY;
+    };
+
+    document.addEventListener("click", (e) => {
+      const target = e.target as HTMLElement | null;
+      const a = target?.closest<HTMLAnchorElement>('a[href^="#"]');
+      if (a && a.getAttribute("href")) beginNav();
+    });
+    window.addEventListener("scrollend", endNav);
 
     const onScroll = () => {
-      if (snapping) return;
+      if (snapping || isNavigating) return;
       const y = window.scrollY;
       const goingDown = y > lastY;
       lastY = y;

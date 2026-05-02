@@ -1,13 +1,19 @@
 ---
+interface Props {
+  isClone?: boolean;
+}
+const { isClone = false } = Astro.props;
 ---
 
 <section
   class="hero-section relative overflow-hidden"
-  aria-label="Josef Anolin — Stand-Up Comedian"
+  aria-label={isClone ? undefined : "Josef Anolin — Stand-Up Comedian"}
 >
-  <h1 class="sr-only">
-    Josef Anolin — Stand-Up Comedian
-  </h1>
+  {!isClone && (
+    <h1 class="sr-only">
+      Josef Anolin — Stand-Up Comedian
+    </h1>
+  )}
 
   <div class="hero-comp">
     <img
