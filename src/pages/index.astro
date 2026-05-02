@@ -61,11 +61,12 @@ import Footer from "../components/Footer.astro";
   .stack {
     display: block;
   }
-  /* Snap on the scrollport so each card pauses at the top when presented.
-     `mandatory` + `always` enforces a one-card-per-flick delay: the user
-     can't skim past a card without it snapping into place. */
+  /* Soft snap: each card rests cleanly at the top when the user stops
+     scrolling near a boundary, but gestures and anchor navigation can
+     cross multiple cards freely. `proximity` (vs mandatory) avoids the
+     "sticky" feel and lets smooth-scrolls reach distant targets. */
   html {
-    scroll-snap-type: y mandatory;
+    scroll-snap-type: y proximity;
   }
   .card {
     position: sticky;
@@ -79,7 +80,6 @@ import Footer from "../components/Footer.astro";
     overflow: hidden;
     isolation: isolate;
     scroll-snap-align: start;
-    scroll-snap-stop: always;
   }
   /* Per-card brand backgrounds. */
   .card-shows { background: #cfd0ce; }
