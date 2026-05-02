@@ -42,10 +42,6 @@ import Footer from "../components/Footer.astro";
       </div>
     </article>
 
-    <article class="card card-hero card-clone" data-card="hero-clone" aria-hidden="true" inert tabindex="-1">
-      <Hero isClone={true} />
-    </article>
-
     {/* Tail spacer extends .stack so the shop card stays pinned at top:0 all
         the way until the contact card starts stacking on top. Without it,
         sticky math unsticks shop ~half a viewport early and the title slides
@@ -58,8 +54,7 @@ import Footer from "../components/Footer.astro";
 <style is:global>
   /* Stacking-cards layout. Each card is sticky to the top of the viewport.
      As the user scrolls, the next card slides up from below and stacks over
-     the previous one. The final card is a Hero clone — when reached, the
-     loop script snaps scrollY back to 0 for a seamless infinite scroll. */
+     the previous one. */
   /* Plain block layout so every card shares .stack as its containing block.
      This is what gives sticky cards a range to stick over — display:grid
      would put each card in its own row and break the stacking effect. */
@@ -191,7 +186,6 @@ import Footer from "../components/Footer.astro";
     html { scroll-snap-type: none; }
     .card { position: relative; height: auto; scroll-snap-align: none; }
     .card-grouped .card-inner { height: auto; overflow: visible; justify-content: flex-start; }
-    .card-clone { display: none; }
     /* Kill every micro-interaction transition/animation, not just the deck. */
     *, *::before, *::after {
       transition-duration: 0ms !important;
@@ -203,78 +197,6 @@ import Footer from "../components/Footer.astro";
 </style>
 
 <script>
-  // Always land on the Hero card after a refresh — the deck loops, so a
-  // restored mid-deck scroll position is disorienting.
-  if ("scrollRestoration" in history) history.scrollRestoration = "manual";
-  window.scrollTo(0, 0);
-
-  // Seamless loop: when the clone hero is fully revealed, snap back to top.
-  // Both the original and the clone are visually identical, so the snap is
-  // imperceptible. Loop only fires while scrolling down.
-  const clone = document.querySelector<HTMLElement>(".card-clone");
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  if (clone && !reduceMotion) {
-    let snapping = false;
-    let lastY = window.scrollY;
-    // Programmatic scroll guard: when the user clicks an in-page anchor
-    // (e.g. #contact in the header), the browser smooth-scrolls toward the
-    // target. If that animation crosses clone.offsetTop, the loop would snap
-    // to 0 mid-flight. Suppress the snap until scrollend (or a timeout
-    // fallback) signals the navigation has settled.
-    let isNavigating = false;
-    let navTimeout: number | undefined;
-
-    const beginNav = () => {
-      isNavigating = true;
-      if (navTimeout) clearTimeout(navTimeout);
-      navTimeout = window.setTimeout(() => {
-        isNavigating = false;
-        lastY = window.scrollY;
-      }, 1500);
-    };
-    const endNav = () => {
-      if (!isNavigating) return;
-      isNavigating = false;
-      if (navTimeout) {
-        clearTimeout(navTimeout);
-        navTimeout = undefined;
-      }
-      // Re-baseline so the next scroll comparison uses the post-nav position.
-      lastY = window.scrollY;
-    };
-
-    document.addEventListener("click", (e) => {
-      const target = e.target as HTMLElement | null;
-      const a = target?.closest<HTMLAnchorElement>('a[href^="#"]');
-      if (a && a.getAttribute("href")) beginNav();
-    });
-    window.addEventListener("scrollend", endNav);
-
-    const onScroll = () => {
-      if (snapping || isNavigating) return;
-      const y = window.scrollY;
-      const goingDown = y > lastY;
-      lastY = y;
-      // clone.offsetTop is the scroll position at which the clone fully covers
-      // the previous card (i.e. it just stuck to the top of the viewport).
-      if (goingDown && y >= clone.offsetTop) {
-        snapping = true;
-        window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
-        // Two RAFs to make sure the scroll position has settled before we
-        // re-enable, otherwise the next scroll event sees stale state.
-        requestAnimationFrame(() =>
-          requestAnimationFrame(() => {
-            lastY = 0;
-            snapping = false;
-          }),
-        );
-      }
-    };
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-  }
-
   // Stagger reveals — fade list rows in once their card scrolls into view.
   const staggerTargets = document.querySelectorAll<HTMLElement>(
     ".dates-list, .notable-list",
