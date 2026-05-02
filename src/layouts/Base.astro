@@ -88,6 +88,24 @@ const {
           btn.classList.toggle("translate-y-2", !visible);
         };
         btn.addEventListener("click", () => {
+          // The deck uses `scroll-snap-stop: always`, which blocks programmatic
+          // smooth scrolls from crossing intermediate snap points — without
+          // this guard, scrollTo({top:0}) halts at the first card boundary
+          // above. Disable snap for the duration of the animation, restore
+          // when scrollend fires (with a timeout fallback).
+          const html = document.documentElement;
+          const prevSnap = html.style.scrollSnapType;
+          html.style.scrollSnapType = "none";
+          let restored = false;
+          const restore = () => {
+            if (restored) return;
+            restored = true;
+            html.style.scrollSnapType = prevSnap;
+            window.removeEventListener("scrollend", restore);
+            clearTimeout(timeoutId);
+          };
+          const timeoutId = window.setTimeout(restore, 1500);
+          window.addEventListener("scrollend", restore);
           window.scrollTo({ top: 0, behavior: "smooth" });
         });
         window.addEventListener("scroll", update, { passive: true });
