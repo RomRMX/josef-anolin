@@ -81,7 +81,7 @@ const socials = [
         ))
       }
     </nav>
-    <div class="ml-auto flex items-center gap-5">
+    <div class="ml-auto flex items-center gap-[76px]">
       <ul class="flex items-center gap-2">
         {
           socials.map((s) => (
@@ -92,12 +92,12 @@ const socials = [
                 rel={s.href.startsWith("http") ? "noopener noreferrer" : undefined}
                 aria-label={s.label}
                 title={s.label}
-                class="hit-icon-link inline-flex items-center justify-center w-[26px] h-[26px] rounded-sm"
+                class="hit-icon-link inline-flex items-center justify-center w-[23px] h-[23px] rounded-sm"
               >
                 <img
                   src={s.icon}
                   alt=""
-                  class="w-[19px] h-[19px] select-none pointer-events-none"
+                  class="w-[17px] h-[17px] select-none pointer-events-none"
                 />
               </a>
             </li>
