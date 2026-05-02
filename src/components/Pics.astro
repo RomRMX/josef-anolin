@@ -1,7 +1,8 @@
 ---
-// TODO: drop photo files into /public/pics/ and list them here, e.g. "/pics/01.jpg".
-const pics: string[] = [];
-// Placeholder grid count — visualizes the editorial photo grid until real pics ship.
+const pics: string[] = Array.from(
+  { length: 20 },
+  (_, i) => `/pics/joe-${String(i + 1).padStart(2, "0")}.webp`,
+);
 const placeholders = Array.from({ length: 20 });
 ---
 
