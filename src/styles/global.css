@@ -54,3 +54,38 @@ hr.rule,
   outline-offset: 3px;
   border-radius: 2px;
 }
+
+/* Shared section heading — yellow display type with a green underline that
+   fades to transparent. Used across SHOWS / MEDIA / SHOP / HIT ME UP and the
+   sub-headings (APPEARANCES / VIDEOS / PICTURES). */
+.section-h2 {
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-size: clamp(1.5rem, 1.2rem + 0.6vw, 1.875rem);
+  letter-spacing: 0.06em;
+  color: var(--color-accent-2);
+  text-transform: uppercase;
+  margin: 0 0 0.85rem;
+  padding-bottom: 0.65rem;
+  position: relative;
+}
+.section-h2::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    var(--color-accent) 0%,
+    var(--color-accent) 38%,
+    transparent 100%
+  );
+}
+.section-h2--lead {
+  font-size: clamp(1.75rem, 1.3rem + 0.9vw, 2.25rem);
+  margin-bottom: 1.5rem;
+}
+.section-h2--sub {
+  margin-top: 2.5rem;
+}

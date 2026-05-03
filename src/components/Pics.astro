@@ -5,31 +5,48 @@ const pics: string[] = Array.from(
 );
 ---
 
-<section
-  id="pics"
-  class="max-w-6xl mx-auto px-6 py-6 scroll-mt-24 grid grid-cols-1 md:grid-cols-[minmax(280px,1fr)_3fr] gap-4 md:gap-12 items-start"
->
-  <h2
-    class="font-[family-name:var(--font-display)] text-4xl md:text-5xl tracking-wide md:text-right text-black"
-  >
-    PICS
-  </h2>
-
-  <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-1.5 md:gap-2">
+<div id="pics">
+  <h2 class="section-h2 section-h2--sub">PICTURES</h2>
+  <div class="pics-grid">
     {pics.map((src, i) => (
       <a
         href={src}
         target="_blank"
         rel="noopener noreferrer"
-        class="block aspect-square overflow-hidden rounded-sm bg-[color:var(--color-panel)]"
+        class="pic-tile"
       >
         <img
           src={src}
           alt={`Josef Anolin photo ${i + 1}`}
           loading="lazy"
-          class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
         />
       </a>
     ))}
   </div>
-</section>
+</div>
+
+<style>
+  .pics-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0.5rem;
+  }
+  .pic-tile {
+    display: block;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: 4px;
+    background: var(--color-panel);
+  }
+  .pic-tile img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 320ms var(--ease-out-strong);
+  }
+  .pic-tile:hover img { transform: scale(1.06); }
+
+  @media (max-width: 767px) {
+    .pics-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+</style>

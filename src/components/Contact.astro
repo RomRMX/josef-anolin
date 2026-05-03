@@ -1,61 +1,103 @@
 ---
-// The form posts to Formspree by default — replace FORMSPREE_ID with your endpoint
-// (https://formspree.io). Until then, the form falls back to a mailto link.
 const FORMSPREE_ID = "";
-const action = FORMSPREE_ID ? `https://formspree.io/f/${FORMSPREE_ID}` : "mailto:josefanolin@gmail.com";
+const action = FORMSPREE_ID
+  ? `https://formspree.io/f/${FORMSPREE_ID}`
+  : "mailto:josefanolin@gmail.com";
 ---
 
-<section class="max-w-4xl mx-auto px-6 py-6 pb-[100px] md:pb-6 scroll-mt-24">
-  <h2 class="font-[family-name:var(--font-display)] text-4xl md:text-5xl tracking-wide mb-3 text-black">
-    BOOK ME!
-  </h2>
-  <p class="text-black/70 mb-8 text-sm md:text-xl">
+<div id="contact-inner">
+  <h2 class="section-h2 section-h2--lead">HIT ME UP</h2>
+  <p class="contact-lede">
     Bookings, press, and general hellos. I read everything.
   </p>
 
-  <form action={action} method="POST" class="grid gap-5">
-    <div class="grid md:grid-cols-2 gap-5">
-      <label class="grid gap-2">
-        <span class="text-sm tracking-widest text-black/70">NAME</span>
-        <input
-          type="text"
-          name="name"
-          required
-          class="bg-[#f9feab] text-black rounded-md px-4 md:px-5 py-3 md:py-4 text-base md:text-xl focus:outline-none focus:bg-[#fbffc6]"
-        />
+  <form action={action} method="POST" class="contact-form">
+    <div class="contact-form__row">
+      <label class="contact-field">
+        <span class="contact-field__label">NAME</span>
+        <input type="text" name="name" required />
       </label>
-      <label class="grid gap-2">
-        <span class="text-sm tracking-widest text-black/70">EMAIL</span>
-        <input
-          type="email"
-          name="email"
-          required
-          class="bg-[#f9feab] text-black rounded-md px-4 md:px-5 py-3 md:py-4 text-base md:text-xl focus:outline-none focus:bg-[#fbffc6]"
-        />
+      <label class="contact-field">
+        <span class="contact-field__label">EMAIL</span>
+        <input type="email" name="email" required />
       </label>
     </div>
-    <label class="grid gap-2">
-      <span class="text-sm tracking-widest text-black/70">SUBJECT</span>
-      <input
-        type="text"
-        name="subject"
-        class="bg-[#f9feab] text-black rounded-md px-4 md:px-5 py-3 md:py-4 text-base md:text-xl focus:outline-none focus:bg-[#fbffc6]"
-      />
+    <label class="contact-field">
+      <span class="contact-field__label">SUBJECT</span>
+      <input type="text" name="subject" />
     </label>
-    <label class="grid gap-2">
-      <span class="text-sm tracking-widest text-black/70">MESSAGE</span>
-      <textarea
-        name="message"
-        rows="4"
-        required
-        class="bg-[#f9feab] text-black rounded-md px-4 md:px-5 py-3 md:py-4 text-base md:text-xl focus:outline-none focus:bg-[#fbffc6] resize-none"
-      ></textarea>
+    <label class="contact-field">
+      <span class="contact-field__label">MESSAGE</span>
+      <textarea name="message" rows="5" required></textarea>
     </label>
-    <button
-      type="submit"
-      class="cursor-pointer justify-self-start text-sm font-bold tracking-widest px-5 py-2.5 bg-black text-[color:var(--color-accent)] rounded-md hover:bg-neutral-800 active:bg-black transition-colors"
-    >
-      SEND
-    </button>
+    <button type="submit" class="contact-send">SEND</button>
   </form>
-</section>
+</div>
+
+<style>
+  .contact-lede {
+    margin: 0 0 1.5rem;
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 0.95rem;
+  }
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .contact-form__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  .contact-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .contact-field__label {
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 700;
+  }
+  .contact-field input,
+  .contact-field textarea {
+    background: #f5f5f5;
+    color: #000;
+    border: 0;
+    border-radius: 4px;
+    padding: 0.65rem 0.85rem;
+    font-size: 0.95rem;
+    font-family: var(--font-sans), system-ui, sans-serif;
+  }
+  .contact-field textarea {
+    resize: vertical;
+    min-height: 7rem;
+  }
+  .contact-field input:focus,
+  .contact-field textarea:focus {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+  .contact-send {
+    align-self: flex-start;
+    background: var(--color-highlight);
+    color: #000;
+    border: 0;
+    border-radius: 4px;
+    padding: 0.55rem 1.25rem;
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.14em;
+    cursor: pointer;
+    transition: filter 160ms var(--ease-out-strong),
+                transform 140ms var(--ease-out-strong);
+  }
+  .contact-send:hover { filter: brightness(1.08); }
+  .contact-send:active { transform: scale(0.97); }
+
+  @media (max-width: 767px) {
+    .contact-form__row { grid-template-columns: 1fr; }
+  }
+</style>

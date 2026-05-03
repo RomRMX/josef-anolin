@@ -2,198 +2,99 @@
 import Base from "../layouts/Base.astro";
 import Hero from "../components/Hero.astro";
 import Dates from "../components/Dates.astro";
+import Notable from "../components/Notable.astro";
 import Videos from "../components/Videos.astro";
 import Pics from "../components/Pics.astro";
-import Notable from "../components/Notable.astro";
 import Shop from "../components/Shop.astro";
 import Contact from "../components/Contact.astro";
 ---
 
 <Base>
-  <main class="stack">
-    <article class="card card-hero" data-card="hero">
+  <main class="layout">
+    <aside class="hero-rail">
       <Hero />
-    </article>
+    </aside>
 
-    <article id="shows" class="card card-grouped card-shows" data-card="shows">
-      <div class="card-inner">
+    <div class="content-rail">
+      <section id="shows" class="rail-section">
         <Dates />
         <Notable />
-      </div>
-    </article>
+      </section>
 
-    <article id="media" class="card card-grouped card-media" data-card="media">
-      <div class="card-inner">
+      <section id="media" class="rail-section">
+        <h2 class="section-h2 section-h2--lead">MEDIA</h2>
         <Videos />
         <Pics />
-      </div>
-    </article>
+      </section>
 
-    {/* Shop article is taller than 100dvh so it stays sticky long enough
-        for the tees to scroll fully off-screen before Contact takes over. */}
-    <article id="shop" class="card card-shop" data-card="shop">
-      <Shop />
-    </article>
+      <section id="shop" class="rail-section">
+        <Shop />
+      </section>
 
-    <article id="contact" class="card card-grouped card-contact" data-card="contact">
-      <div class="card-inner">
+      <section id="contact" class="rail-section">
         <Contact />
-      </div>
-    </article>
+      </section>
+    </div>
   </main>
 </Base>
 
 <style is:global>
-  /* Stacking-cards layout. Each card is sticky to the top of the viewport.
-     As the user scrolls, the next card slides up from below and stacks over
-     the previous one. */
-  /* Plain block layout so every card shares .stack as its containing block.
-     This is what gives sticky cards a range to stick over — display:grid
-     would put each card in its own row and break the stacking effect. */
-  .stack {
+  /* Two-column desktop: sticky hero on the left, scrolling content on the
+     right. Mobile collapses to a single column with the hero in normal flow. */
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    background: var(--color-bg);
+  }
+  .hero-rail {
     display: block;
   }
-  /* Soft snap: each card rests cleanly at the top when the user stops
-     scrolling near a boundary, but gestures and anchor navigation can
-     cross multiple cards freely. `proximity` (vs mandatory) avoids the
-     "sticky" feel and lets smooth-scrolls reach distant targets. */
-  html {
-    scroll-snap-type: y proximity;
-  }
-  .card {
-    position: sticky;
-    top: 0;
-    /* 110dvh in flow gives ~10dvh of "resistance" — a brief stretch of
-       scrolling at the end of each card before the next one starts to
-       stack. Visible card content is sized to 100dvh; the extra 10dvh
-       at the bottom is empty card background. */
-    height: 110dvh;
-    background: var(--color-bg);
-    overflow: hidden;
-    isolation: isolate;
-    scroll-snap-align: start;
-  }
-  /* Per-card brand backgrounds. */
-  .card-shows { background: #cfd0ce; }
-  .card-media { background: #f7f6f0; }
-  .card-shop { background: var(--color-accent-2); }
-  .card-contact { background: #c1fc50; }
-  /* Inner content boxes stay at 100dvh — only the article's flow height
-     grows (110dvh) so the sticky range extends. The extra 10dvh below
-     the inner box is empty card background = the "resistance" range. */
-  .card-grouped .card-inner {
-    height: 100dvh;
-    overflow: hidden;
-    /* 156 + the inner section's 24px py-6 top = 180px from card top to first element. */
-    padding-top: 156px;
+  .content-rail {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    gap: 0;
   }
-  /* The hero card lets its component lay out full-bleed. */
-  .card-hero > section {
-    height: 100dvh;
-    padding-top: 250px;
+  .rail-section {
+    padding: 4rem 1.25rem;
+    scroll-margin-top: 1rem;
   }
-  /* Shop is 150dvh tall — gives the tee carousel 50dvh of scroll-driven
-     horizontal travel before Contact stacks up. (Earlier was 250dvh + a
-     150dvh stack-tail; the extra 200dvh of empty scroll between SHOP and
-     BOOK ME was excessive.) The visible content inside is 100dvh, pinned
-     to the top of the article. */
-  .card-shop { height: 150dvh; }
-  .card-shop > section { height: 100dvh; }
-  /* Contact is the final card — no card stacks on top of it, so the standard
-     10dvh "resistance" tail is unnecessary. Trim to 100dvh so the page ends
-     cleanly at the form. */
-  .card-contact { height: 100dvh; }
+  .rail-section + .rail-section {
+    padding-top: 2rem;
+  }
 
-  /* Mobile keeps the desktop deck stacking — each card sticks at the top
-     of the viewport while the next card slides up over it. No internal
-     scroll: card content is sized down to fit 100dvh. */
-  @media (max-width: 767px) {
-    .card-grouped .card-inner {
-      /* Mobile header measures ~84px (logo row + nav row + py-3). 5.5rem
-         (88px) ensures section h2's land below the header even when the
-         section has minimal top padding (e.g. the DATES override below).
-         Bottom padding clears the fixed social bar (~52px). */
-      padding-top: 5.5rem;
-      padding-bottom: 4rem;
-      display: block;
+  @media (min-width: 768px) {
+    .layout {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      align-items: start;
+    }
+    .hero-rail {
+      position: sticky;
+      top: 0;
+      height: 100dvh;
       overflow: hidden;
     }
-    /* SHOWS card on mobile:
-       - Socials live in the fixed bottom bar (MobileSocialBar), not in this card
-       - DATES + NOTABLE ACTS need to fit in 100dvh
-       - Section h2 titles stay at the standard text-4xl size, left-aligned
-       - All other elements (date rows, notable items) center-justified */
-
-    .card-shows section { padding: 0.5rem 1rem !important; }
-    .card-shows h2 { text-align: left !important; margin-bottom: 0.5rem !important; }
-
-    /* Dates: 3-column grid (date | city/venue | TICKETS), each cell
-       center-justified within its column. Remove the top divider above
-       the first row and the bottom divider below the last row — keep
-       the dividers BETWEEN rows. */
-    .card-shows #dates ul {
-      border-top: 0 !important;
-      text-align: center !important;
+    .content-rail {
+      min-width: 0;
     }
-    .card-shows #dates ul li {
-      display: grid !important;
-      grid-template-columns: 1fr 1.4fr 1fr !important;
-      align-items: center !important;
-      justify-items: center !important;
-      gap: 0.5rem !important;
-      padding: 0.55rem 0 !important;
-      text-align: center !important;
+    .rail-section {
+      padding: 6rem 2.5rem 4rem;
+      min-height: 100dvh;
     }
-    .card-shows #dates ul li:last-child { border-bottom: 0 !important; }
-    .card-shows #dates ul li > div:first-child {
-      font-size: 0.875rem !important;
-      width: auto !important;
-      text-align: center !important;
+    .rail-section:first-child {
+      padding-top: 8rem;
     }
-    .card-shows #dates ul li > div:nth-child(2) {
-      flex: 0 1 auto !important;
-      min-width: 0 !important;
-      text-align: center !important;
-    }
-    .card-shows #dates ul li > div:nth-child(2) > div:first-child { font-size: 0.875rem !important; }
-    .card-shows #dates ul li > div:nth-child(2) > div:nth-child(2) { font-size: 0.75rem !important; }
-    .card-shows #dates ul li > div:nth-child(2) > div:nth-child(3) { display: none !important; }
-    .card-shows #dates ul li a {
-      align-self: center !important;
-      justify-self: center !important;
-      min-height: 2rem !important;
-      padding: 0.5rem 1.25rem !important;
-      font-size: 0.875rem !important;
-    }
-
-    /* Notable: center-justified items */
-    .card-shows #notable .space-y-6 > * + * { margin-top: 0.5rem !important; }
-    .card-shows #notable .space-y-6 > div { text-align: center !important; }
-    .card-shows #notable h3 { font-size: 0.7rem !important; margin-bottom: 0.2rem !important; }
-    .card-shows #notable ul { font-size: 0.875rem !important; line-height: 1.3 !important; text-align: center !important; }
-    .card-shows #notable .space-y-1 > * + * { margin-top: 0 !important; }
-    .card-shows #notable .grid { gap: 0.6rem !important; }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    html { scroll-snap-type: none; }
-    .card { position: relative; height: auto; scroll-snap-align: none; }
-    .card-grouped .card-inner { height: auto; overflow: visible; justify-content: flex-start; }
-    /* Kill every micro-interaction transition/animation, not just the deck. */
-    *, *::before, *::after {
-      transition-duration: 0ms !important;
-      animation-duration: 0ms !important;
-      animation-iteration-count: 1 !important;
-      scroll-behavior: auto !important;
+    .hero-rail {
+      position: relative;
+      height: auto;
     }
   }
 </style>
 
 <script>
-  // Stagger reveals — fade list rows in once their card scrolls into view.
+  // Stagger reveals — fade list rows in once their section scrolls into view.
   const staggerTargets = document.querySelectorAll<HTMLElement>(
     ".dates-list, .notable-list",
   );

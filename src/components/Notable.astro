@@ -26,64 +26,73 @@ const groups = [
 ];
 ---
 
-<section id="notable" class="max-w-6xl mx-auto px-6 py-6 scroll-mt-24 grid grid-cols-1 md:grid-cols-[minmax(280px,1fr)_3fr] gap-4 md:gap-12 items-start">
-  <h2 class="font-[family-name:var(--font-display)] text-4xl md:text-5xl tracking-wide md:text-right text-black">
-    NOTABLE ACTS
-  </h2>
-  <div class="notable-list space-y-6">
-    <div class="notable-group">
-      <h3 class="text-xs font-bold tracking-widest text-black/60 mb-2">
-        {groups[0].label.toUpperCase()}
-      </h3>
-      <ul class="space-y-1 text-black text-sm">
-        {groups[0].items.map((item) => <li>{item}</li>)}
-      </ul>
+<div id="notable">
+  <h2 class="section-h2 section-h2--sub">APPEARANCES</h2>
+  <div class="notable-list">
+    <div class="notable-col">
+      {groups.slice(0, 2).map((g) => (
+        <section class="notable-group">
+          <h3 class="notable-group__label">{g.label.toUpperCase()}</h3>
+          <ul class="notable-group__items">
+            {g.items.map((item) => <li>{item}</li>)}
+          </ul>
+        </section>
+      ))}
     </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-      {
-        groups.slice(1).map((g) => (
-          <div class="notable-group">
-            <h3 class="text-xs font-bold tracking-widest text-black/60 mb-2">
-              {g.label.toUpperCase()}
-            </h3>
-            <ul class="space-y-1 text-black text-sm">
-              {g.items.map((item) => (
-                <li>{item}</li>
-              ))}
-            </ul>
-          </div>
-        ))
-      }
+    <div class="notable-col">
+      <section class="notable-group">
+        <h3 class="notable-group__label">{groups[2].label.toUpperCase()}</h3>
+        <ul class="notable-group__items">
+          {groups[2].items.map((item) => <li>{item}</li>)}
+        </ul>
+      </section>
     </div>
   </div>
-</section>
+</div>
 
 <style>
+  .notable-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.75rem 2rem;
+  }
+  .notable-col {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
   .notable-group {
     opacity: 0;
     transform: translateY(8px);
     transition: opacity 360ms var(--ease-out-strong),
                 transform 360ms var(--ease-out-strong);
   }
-  .notable-list.is-visible .notable-group {
-    opacity: 1;
-    transform: translateY(0);
+  .notable-list.is-visible .notable-group { opacity: 1; transform: translateY(0); }
+  .notable-list.is-visible .notable-col:nth-child(1) .notable-group:nth-child(1) { transition-delay: 80ms; }
+  .notable-list.is-visible .notable-col:nth-child(1) .notable-group:nth-child(2) { transition-delay: 140ms; }
+  .notable-list.is-visible .notable-col:nth-child(2) .notable-group:nth-child(1) { transition-delay: 200ms; }
+
+  .notable-group__label {
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    font-size: 0.85rem;
+    color: var(--color-ink);
+    margin: 0 0 0.4rem;
   }
-  .notable-list.is-visible .notable-group:nth-child(1) { transition-delay: 80ms; }
-  .notable-list.is-visible .notable-group:nth-child(2) { transition-delay: 140ms; }
-  /* The 2-up grid is sibling 2; its inner groups stagger via :nth-child too. */
-  .notable-list.is-visible > div:nth-child(2) > .notable-group:nth-child(1) {
-    transition-delay: 200ms;
+  .notable-group__items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 0.9rem;
+    line-height: 1.5;
   }
-  .notable-list.is-visible > div:nth-child(2) > .notable-group:nth-child(2) {
-    transition-delay: 260ms;
+
+  @media (max-width: 767px) {
+    .notable-list { grid-template-columns: 1fr; gap: 1.25rem; }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .notable-group {
-      opacity: 1;
-      transform: none;
-      transition: none;
-    }
+    .notable-group { opacity: 1; transform: none; transition: none; }
   }
 </style>
