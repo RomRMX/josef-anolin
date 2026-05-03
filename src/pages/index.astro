@@ -7,7 +7,6 @@ import Pics from "../components/Pics.astro";
 import Notable from "../components/Notable.astro";
 import Shop from "../components/Shop.astro";
 import Contact from "../components/Contact.astro";
-import Footer from "../components/Footer.astro";
 ---
 
 <Base>
@@ -41,14 +40,7 @@ import Footer from "../components/Footer.astro";
         <Contact />
       </div>
     </article>
-
-    {/* Tail spacer extends .stack so the shop card stays pinned at top:0 all
-        the way until the contact card starts stacking on top. Without it,
-        sticky math unsticks shop ~half a viewport early and the title slides
-        up before the next card covers it. */}
-    <div class="stack-tail" aria-hidden="true"></div>
   </main>
-  <Footer />
 </Base>
 
 <style is:global>
@@ -103,24 +95,28 @@ import Footer from "../components/Footer.astro";
     height: 100dvh;
     padding-top: 250px;
   }
-  /* Shop is 250dvh tall so it stays sticky long enough for the tee column
-     to scroll off-screen before Contact stacks up. The visible content
-     inside is sized to 100dvh and pinned to the top of the article. */
-  .card-shop { height: 250dvh; }
+  /* Shop is 150dvh tall — gives the tee carousel 50dvh of scroll-driven
+     horizontal travel before Contact stacks up. (Earlier was 250dvh + a
+     150dvh stack-tail; the extra 200dvh of empty scroll between SHOP and
+     BOOK ME was excessive.) The visible content inside is 100dvh, pinned
+     to the top of the article. */
+  .card-shop { height: 150dvh; }
   .card-shop > section { height: 100dvh; }
-  /* See <div class="stack-tail"> above. 150dvh = the extra height shop has
-     beyond a normal card; that's exactly the slack needed to keep shop
-     pinned through the contact handoff. */
-  .stack-tail { height: 150dvh; }
+  /* Contact is the final card — no card stacks on top of it, so the standard
+     10dvh "resistance" tail is unnecessary. Trim to 100dvh so the page ends
+     cleanly at the form. */
+  .card-contact { height: 100dvh; }
 
   /* Mobile keeps the desktop deck stacking — each card sticks at the top
      of the viewport while the next card slides up over it. No internal
      scroll: card content is sized down to fit 100dvh. */
   @media (max-width: 767px) {
     .card-grouped .card-inner {
-      /* Mobile header is now ~60px (smaller logo + single row links).
+      /* Mobile header measures ~84px (logo row + nav row + py-3). 5.5rem
+         (88px) ensures section h2's land below the header even when the
+         section has minimal top padding (e.g. the DATES override below).
          Bottom padding clears the fixed social bar (~52px). */
-      padding-top: 4rem;
+      padding-top: 5.5rem;
       padding-bottom: 4rem;
       display: block;
       overflow: hidden;
