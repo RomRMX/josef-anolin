@@ -1,7 +1,16 @@
 ---
-// TODO: replace these with real Instagram reel permalinks (e.g. https://www.instagram.com/reel/<id>/)
-const reels: string[] = [];
-const placeholders = [0, 1, 2];
+type Video = { id: string; title?: string };
+
+// YouTube videos + Shorts. Short URLs (`/shorts/<id>`) and full URLs both
+// work — only the 11-char video ID matters for the embed and thumbnail.
+const videos: Video[] = [
+  { id: "Is2_LT5YVww" },
+  { id: "1shEtqNu1Ms", title: "Counting Farsees with Josef Anolin" },
+  { id: "_PWBWs5rL94" },
+  { id: "PfS_FJM735U" },
+  { id: "W4qgq3mXbgI" },
+  { id: "q1iKMftySOA" },
+];
 ---
 
 <section
@@ -14,28 +23,83 @@ const placeholders = [0, 1, 2];
     VIDEOS
   </h2>
 
-  {
-    reels.length === 0 ? (
-      <div class="grid grid-cols-3 gap-3 md:gap-4">
-        {placeholders.map(() => (
-          <div class="aspect-[4/3] rounded-md bg-black/10" />
-        ))}
-      </div>
-    ) : (
-      <>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {reels.map((url) => (
-            <blockquote
-              class="instagram-media bg-neutral-900 rounded-lg overflow-hidden"
-              data-instgrm-captioned
-              data-instgrm-permalink={url}
-              data-instgrm-version="14"
-              style="margin: 0; min-width: 0; width: 100%;"
+  {/* Horizontal scrolling row — all 6 videos visible by swipe (mobile) or
+      drag/scroll (desktop). One row keeps the section compact so PICS
+      below still has space to breathe inside the same 100dvh card. */}
+  <div class="videos-track -mx-6 px-6 overflow-x-auto overflow-y-hidden">
+    <div class="flex gap-3 md:gap-4 w-max pb-2">
+      {
+        videos.map((v) => (
+          <button
+            type="button"
+            class="yt-facade group relative block shrink-0 w-[200px] md:w-[260px] aspect-video overflow-hidden rounded-md bg-black"
+            data-yt-id={v.id}
+            aria-label={v.title ? `Play: ${v.title}` : "Play video"}
+          >
+            <img
+              src={`https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`}
+              alt={v.title ?? ""}
+              loading="lazy"
+              class="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
             />
-          ))}
-        </div>
-        <script async src="https://www.instagram.com/embed.js" />
-      </>
-    )
-  }
+            <span class="pointer-events-none absolute inset-0 grid place-items-center">
+              <span
+                class="grid place-items-center w-12 h-12 rounded-full bg-black/70 group-hover:bg-red-600 transition-colors"
+                aria-hidden="true"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  class="text-white translate-x-[1px]"
+                >
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </span>
+            </span>
+            {v.title && (
+              <span class="pointer-events-none absolute bottom-0 inset-x-0 px-2 py-1.5 text-[11px] leading-tight text-white bg-gradient-to-t from-black/80 to-transparent">
+                {v.title}
+              </span>
+            )}
+          </button>
+        ))
+      }
+    </div>
+  </div>
 </section>
+
+<style>
+  /* Hide horizontal scrollbar but keep scrolling functional. */
+  .videos-track {
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .videos-track::-webkit-scrollbar { display: none; }
+</style>
+
+<script>
+  // Swap the thumbnail facade for a real YouTube iframe on click.
+  document.querySelectorAll<HTMLButtonElement>(".yt-facade").forEach((btn) => {
+    btn.addEventListener(
+      "click",
+      () => {
+        const id = btn.dataset.ytId;
+        if (!id) return;
+        const iframe = document.createElement("iframe");
+        iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
+        iframe.title = btn.getAttribute("aria-label") ?? "YouTube video";
+        iframe.allow =
+          "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+        iframe.allowFullscreen = true;
+        iframe.className = "absolute inset-0 w-full h-full border-0";
+        // Replace facade contents with the iframe; disable further clicks.
+        btn.replaceChildren(iframe);
+        btn.disabled = true;
+        btn.classList.remove("group");
+      },
+      { once: true },
+    );
+  });
+</script>
