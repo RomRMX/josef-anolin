@@ -28,39 +28,44 @@ One page (`src/pages/index.astro`) composes section components from `src/compone
 
 Cards (in DOM order):
 1. Hero
-2. Shows = Socials + Dates + Notable
-3. Media = Videos + Pics
-4. Contact
-5. Hero clone (`aria-hidden`, identical to card 1)
+2. Shows = Dates + Notable (`#shows`)
+3. Media = Videos + Pics (`#media`)
+4. Shop (`#shop`) — taller than 100dvh so the tee column scrolls fully off before Contact stacks
+5. Contact (`#contact`)
 
-The clone exists for the **seamless infinite loop**: a small inline script in `index.astro` listens for scroll and snaps `scrollY` back to 0 the moment the clone reaches the top. Because the clone and card 1 are visually identical, the snap is invisible.
+Followed by a `.stack-tail` spacer that extends `.stack` so the Shop card stays pinned through the Contact handoff (sticky math unsticks Shop ~half a viewport early without it).
+
+Snap behavior: `html { scroll-snap-type: y proximity }` with `.card { scroll-snap-align: start }` (no `scroll-snap-stop`). Soft snap rests cards cleanly at boundaries when the user stops near one, but gestures and anchor jumps cross multiple cards freely. Mandatory snap + `scroll-snap-stop: always` was tried and rejected — it blocked programmatic upward scrolls (back-to-top, header anchors going backward) at the first intermediate snap point.
 
 Critical CSS gotcha: `.stack` must be `display: block`, **not** `display: grid`. With grid, each card's containing block becomes its own grid track, which kills the sticky stacking range — cards swap instead of stacking. Stick with block layout. Tested 2026-04-27.
 
-`prefers-reduced-motion: reduce` falls back to a non-sticky linear scroll and hides the clone.
+`prefers-reduced-motion: reduce` falls back to a non-sticky linear scroll.
 
 To edit content, edit the section file directly:
 
 - `Hero.astro` — bio paragraph
-- `Socials.astro` — `socials[]` array of `{label, href}`
+- `Header.astro` — `links[]` (nav anchors) and `socials[]` (icon row); section ids must match the `links[]` hrefs
+- `MobileSocialBar.astro` — fixed-bottom social row on mobile; mirrors `socials[]` from Header
 - `Dates.astro` — `dates[]` array of `{date, city, venue, address, tickets}`
 - `Videos.astro` — `reels[]` array of Instagram permalinks; renders the official IG embed.js when populated, otherwise shows a placeholder card
-- `Pics.astro` — `pics[]` array of paths relative to `/public/pics/`; placeholder shown when empty
+- `Pics.astro` — `pics[]` array of paths relative to `/public/pics/` (currently `/pics/joe-01.webp` … `joe-20.webp`)
 - `Notable.astro` — `groups[]` (Headlining / Featured / Festivals)
+- `Shop.astro` / `CartDrawer.astro` — tee shop + slide-in cart
 - `Contact.astro` — form action defaults to a `mailto:` fallback; set `FORMSPREE_ID` in the frontmatter to POST to Formspree
-
-`Header.astro` is sticky and uses anchor links to scroll between sections; section ids must match the `links[]` array there.
 
 ## Assets
 
 - `public/joe-logo.png` — title-treatment logo (yellow + white grunge type), used in the hero.
 - `public/joe-hero.png` — portrait on yellow brushstroke, used in the hero and as the OG image.
+- `public/pics/joe-01.webp` … `joe-20.webp` — gallery photos rendered by `Pics.astro`.
+- `public/socials/social__*.png` — social icon glyphs used by both desktop header and mobile bar.
+- `source-images/` — original PNG/JPG sources for the gallery, kept in the repo for re-export but **outside `public/`** so they don't ship with the build.
 
 The accent color (`--color-accent: #f5e90b`) is tuned to match the logo's yellow. Changing it ripples through buttons, hover states, and the section-rule gradient.
 
 ## Known placeholders
 
-The original Carrd site had placeholder event data (joke addresses like "1984 Somewhere Ave.", all "TICKETS" links pointing at `https://www.ticketmaster.com`). That data is preserved verbatim in `Dates.astro` — replace before going live. Same for the Formspree endpoint in `Contact.astro` and the empty `reels[]` / `pics[]` arrays.
+The original Carrd site had placeholder event data (joke addresses like "1984 Somewhere Ave.", all "TICKETS" links pointing at `https://www.ticketmaster.com`). That data is preserved verbatim in `Dates.astro` — replace before going live. Same for the Formspree endpoint in `Contact.astro` and the empty `reels[]` array in `Videos.astro`.
 
 ## Deploy
 

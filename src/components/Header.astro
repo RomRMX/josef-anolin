@@ -55,7 +55,7 @@ const socials = [
   </div>
 </header>
 
-{/* DESKTOP header — logo left, nav center, HIT ME! socials right. Hidden on hero
+{/* DESKTOP header — logo left, nav center, socials + cart right. Hidden on hero
     card; revealed once the user scrolls past the first viewport. */}
 <header class="site-header-desktop hidden md:block fixed top-0 left-0 right-0 z-50 bg-[#0a0a0a]/95 backdrop-blur-md backdrop-saturate-150 border-b border-white/5">
   <div class="max-w-7xl mx-auto px-6 py-3 flex items-center gap-6">
@@ -92,7 +92,7 @@ const socials = [
                 rel={s.href.startsWith("http") ? "noopener noreferrer" : undefined}
                 aria-label={s.label}
                 title={s.label}
-                class="hit-icon-link inline-flex items-center justify-center w-[23px] h-[23px] rounded-sm"
+                class="social-icon-link inline-flex items-center justify-center w-[23px] h-[23px] rounded-sm"
               >
                 <img
                   src={s.icon}
@@ -137,16 +137,16 @@ const socials = [
     transform: scale(0.97);
   }
 
-  /* HIT ME! icon links — subtle hover lift. */
-  .hit-icon-link {
+  /* Desktop social icon links — subtle hover lift. */
+  .social-icon-link {
     transition: background-color 160ms var(--ease-out-strong),
                 transform 140ms var(--ease-out-strong);
   }
-  .hit-icon-link:hover {
+  .social-icon-link:hover {
     background-color: rgba(255, 255, 255, 0.08);
     transform: translateY(-1px);
   }
-  .hit-icon-link:active {
+  .social-icon-link:active {
     transform: scale(0.94);
   }
 

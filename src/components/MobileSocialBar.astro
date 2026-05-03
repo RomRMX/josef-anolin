@@ -15,7 +15,9 @@ const socials = [
   class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#0a0a0a] border-t border-white/10"
   aria-label="Social links"
 >
-  <ul class="flex items-center justify-center gap-7 px-4 py-2.5">
+  {/* Spacing math: 32px padding + 6 × 32px chips + 5 × 16px gap = 304px,
+      which fits comfortably inside 320px (iPhone SE 1st gen) and wider. */}
+  <ul class="flex items-center justify-center gap-4 px-4 py-2.5">
     {
       socials.map((s) => (
         <li>

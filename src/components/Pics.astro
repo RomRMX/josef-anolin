@@ -3,7 +3,6 @@ const pics: string[] = Array.from(
   { length: 20 },
   (_, i) => `/pics/joe-${String(i + 1).padStart(2, "0")}.webp`,
 );
-const placeholders = Array.from({ length: 20 });
 ---
 
 <section
@@ -16,31 +15,21 @@ const placeholders = Array.from({ length: 20 });
     PICS
   </h2>
 
-  {
-    pics.length === 0 ? (
-      <div class="grid grid-cols-4 sm:grid-cols-5 gap-1.5 md:gap-2">
-        {placeholders.map(() => (
-          <div class="aspect-square rounded-sm bg-black/10" />
-        ))}
-      </div>
-    ) : (
-      <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-1.5 md:gap-2">
-        {pics.map((src, i) => (
-          <a
-            href={src}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="block aspect-square overflow-hidden rounded-sm bg-[color:var(--color-panel)]"
-          >
-            <img
-              src={src}
-              alt={`Josef Anolin photo ${i + 1}`}
-              loading="lazy"
-              class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-            />
-          </a>
-        ))}
-      </div>
-    )
-  }
+  <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-1.5 md:gap-2">
+    {pics.map((src, i) => (
+      <a
+        href={src}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="block aspect-square overflow-hidden rounded-sm bg-[color:var(--color-panel)]"
+      >
+        <img
+          src={src}
+          alt={`Josef Anolin photo ${i + 1}`}
+          loading="lazy"
+          class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+        />
+      </a>
+    ))}
+  </div>
 </section>
