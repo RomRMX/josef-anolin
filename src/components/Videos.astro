@@ -23,19 +23,18 @@ const videos: Video[] = [
     VIDEOS
   </h2>
 
-  {/* Horizontal scrolling row — all 6 videos visible by swipe (mobile) or
-      drag/scroll (desktop). One row keeps the section compact so PICS
-      below still has space to breathe inside the same 100dvh card. */}
-  <div class="videos-track -mx-6 px-6 overflow-x-auto overflow-y-hidden">
-    <div class="flex gap-3 md:gap-4 w-max pb-2">
-      {
-        videos.map((v) => (
-          <button
-            type="button"
-            class="yt-facade group relative block shrink-0 w-[200px] md:w-[260px] aspect-video overflow-hidden rounded-md bg-black"
-            data-yt-id={v.id}
-            aria-label={v.title ? `Play: ${v.title}` : "Play video"}
-          >
+  {/* Grid layout — all 6 videos visible at once. 2 cols on mobile (3 rows),
+      3 cols on tablet+ (2 rows). Videos take priority over PICS in the
+      shared card. */}
+  <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 md:gap-3">
+    {
+      videos.map((v) => (
+        <button
+          type="button"
+          class="yt-facade group relative block aspect-video overflow-hidden rounded-md bg-black"
+          data-yt-id={v.id}
+          aria-label={v.title ? `Play: ${v.title}` : "Play video"}
+        >
             <img
               src={`https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`}
               alt={v.title ?? ""}
@@ -63,21 +62,11 @@ const videos: Video[] = [
                 {v.title}
               </span>
             )}
-          </button>
-        ))
-      }
-    </div>
+        </button>
+      ))
+    }
   </div>
 </section>
-
-<style>
-  /* Hide horizontal scrollbar but keep scrolling functional. */
-  .videos-track {
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-  }
-  .videos-track::-webkit-scrollbar { display: none; }
-</style>
 
 <script>
   // Swap the thumbnail facade for a real YouTube iframe on click.
