@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-Static personal site for stand-up comedian Josef Anolin, rebuilt from a Carrd template (https://www.josefanolin.com). Single-page layout: Hero → Socials → Dates → Videos → Pics → Notable Acts → Contact.
+Static personal site for stand-up comedian Josef Anolin, rebuilt from a Carrd template (https://www.josefanolin.com). Single-page stacking-card layout: Hero → Shows (Dates + Notable) → Media (Videos + Pics) → Shop → Contact.
 
 ## Stack
 
