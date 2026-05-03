@@ -6,6 +6,20 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
       "port": 4321
+    },
+    {
+      "name": "astro-redesign",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/rmxhq/Documents/Claude/_PROJ3CTS/RMX.PROJ3CTS/JOE.DOBO/.claude/worktrees/redesign-two-col",
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "4329"
+      ],
+      "port": 4329
     }
   ]
 }
