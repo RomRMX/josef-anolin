@@ -37,11 +37,9 @@ const dates = [
     {dates.map((d) => (
       <li class="date-row">
         <div class="date-row__date">{d.date}</div>
+        <div class="date-row__venue">{d.venue.toUpperCase()}</div>
         <div class="date-row__city">{d.city.toUpperCase()}</div>
-        <div class="date-row__venue">
-          <span class="date-row__venue-name">{d.venue.toUpperCase()}</span>
-          <span class="date-row__venue-addr">{d.address}</span>
-        </div>
+        <div class="date-row__addr">{d.address}</div>
         <a
           href={d.tickets}
           target="_blank"
@@ -65,9 +63,13 @@ const dates = [
   }
   .date-row {
     display: grid;
-    grid-template-columns: 80px 110px 1fr auto;
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas:
+      "date  venue cta"
+      "city  addr  cta";
     align-items: center;
-    column-gap: 1.25rem;
+    column-gap: 1.5rem;
+    row-gap: 0.15rem;
     padding: 0.85rem 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.12);
     color: var(--color-ink);
@@ -77,6 +79,11 @@ const dates = [
     transition: opacity 360ms var(--ease-out-strong),
                 transform 360ms var(--ease-out-strong);
   }
+  .date-row__date  { grid-area: date; }
+  .date-row__venue { grid-area: venue; }
+  .date-row__city  { grid-area: city; color: rgba(255, 255, 255, 0.7); font-weight: 400; }
+  .date-row__addr  { grid-area: addr; color: rgba(255, 255, 255, 0.7); font-weight: 400; }
+  .date-row__cta   { grid-area: cta; align-self: center; }
   .dates-list.is-visible .date-row {
     opacity: 1;
     transform: translateY(0);
@@ -87,21 +94,9 @@ const dates = [
   .dates-list.is-visible .date-row:nth-child(4) { transition-delay: 240ms; }
 
   .date-row__date,
-  .date-row__city,
-  .date-row__venue-name {
+  .date-row__venue {
     font-weight: 700;
     letter-spacing: 0.06em;
-  }
-  .date-row__venue {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 0.6rem;
-    min-width: 0;
-  }
-  .date-row__venue-addr {
-    color: rgba(255, 255, 255, 0.7);
-    font-weight: 400;
   }
   .date-row__cta {
     display: inline-flex;
@@ -112,8 +107,8 @@ const dates = [
     font-family: var(--font-display), system-ui, sans-serif;
     font-size: 0.8rem;
     letter-spacing: 0.1em;
-    padding: 0.45rem 0.85rem;
-    border-radius: 999px;
+    padding: 0.45rem 0.95rem;
+    border-radius: 4px;
     text-decoration: none;
     transition: filter 160ms var(--ease-out-strong),
                 transform 140ms var(--ease-out-strong);
@@ -128,16 +123,15 @@ const dates = [
     .date-row {
       grid-template-columns: 1fr auto;
       grid-template-areas:
-        "date cta"
-        "city cta"
-        "venue venue";
+        "date  cta"
+        "venue cta"
+        "city  cta"
+        "addr  cta";
       column-gap: 0.75rem;
-      row-gap: 0.2rem;
+      row-gap: 0.15rem;
     }
-    .date-row__date { grid-area: date; }
-    .date-row__city { grid-area: city; font-size: 1rem; }
-    .date-row__venue { grid-area: venue; font-size: 0.8rem; }
-    .date-row__cta { grid-area: cta; align-self: center; }
+    .date-row__city,
+    .date-row__addr { font-size: 0.8rem; }
   }
 
   @media (prefers-reduced-motion: reduce) {
