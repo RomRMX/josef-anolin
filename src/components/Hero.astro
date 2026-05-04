@@ -112,7 +112,7 @@ const navLinks = [
 
   .hero-bio {
     margin: clamp(1.25rem, 3dvh, 2rem) auto 0;
-    max-width: 52ch;
+    max-width: 42ch;
     font-size: clamp(0.9rem, 0.85rem + 0.2vw, 1.05rem);
     line-height: 1.55;
     color: rgb(210 210 210);
@@ -146,10 +146,11 @@ const navLinks = [
     color: var(--color-accent);
   }
 
-  /* Mobile — looser padding, smaller stage. The hero nav pill is hidden
-     because the fixed mobile header (Header.astro) already exposes the
-     same links and is always visible. */
-  @media (max-width: 767px) {
+  /* Mobile + narrow desktop (below the 1024px two-column breakpoint) —
+     looser padding, smaller stage, and the hero nav is hidden because
+     the fixed mobile header (Header.astro) already exposes the same
+     links and is always visible at narrow widths. */
+  @media (max-width: 1023px) {
     .hero-section {
       padding-top: 5rem;
       padding-bottom: 3rem;
