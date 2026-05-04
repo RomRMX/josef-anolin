@@ -5,6 +5,15 @@ const navLinks = [
   { href: "#shop", label: "SHOP" },
   { href: "#contact", label: "HIT ME UP" },
 ];
+
+const socials = [
+  { label: "YouTube",   href: "https://www.youtube.com/@comedianjoe510",                                              icon: "/socials/social__0000_Layer-8.png" },
+  { label: "Instagram", href: "https://www.instagram.com/comedianjoe510/",                                            icon: "/socials/social__0003_Layer-5.png" },
+  { label: "TikTok",    href: "https://www.tiktok.com/@comedianjoe510?is_from_webapp=1&sender_device=pc",             icon: "/socials/social__0002_Layer-6.png" },
+  { label: "Facebook",  href: "https://www.facebook.com/JosefAnolinComedian",                                         icon: "/socials/social__0004_Layer-4.png" },
+  { label: "Threads",   href: "https://www.threads.com/@comedianjoe510",                                              icon: "/socials/social__0001_Layer-7.png" },
+  { label: "Email",     href: "mailto:josefanolin@gmail.com",                                                         icon: "/socials/social__0005_Layer-3.png" },
+];
 ---
 
 <section
@@ -41,6 +50,23 @@ const navLinks = [
     telling irreverent stories based on his life and observations. He has an
     Android phone because he likes pissing you off with his green text bubbles.
   </p>
+
+  <ul class="hero-socials" aria-label="Social links">
+    {socials.map((s) => (
+      <li>
+        <a
+          href={s.href}
+          target={s.href.startsWith("http") ? "_blank" : undefined}
+          rel={s.href.startsWith("http") ? "noopener noreferrer" : undefined}
+          aria-label={s.label}
+          title={s.label}
+          class="hero-socials__link"
+        >
+          <img src={s.icon} alt="" class="hero-socials__icon" />
+        </a>
+      </li>
+    ))}
+  </ul>
 </section>
 
 <style>
@@ -117,6 +143,47 @@ const navLinks = [
     line-height: 1.55;
     color: rgb(210 210 210);
     flex-shrink: 0;
+  }
+
+  /* Desktop social row sits under the bio, mirroring the mobile bottom
+     bar so the hero column has a single complete contact strip. Hidden
+     below the two-column breakpoint (the fixed MobileSocialBar takes
+     over there). */
+  .hero-socials {
+    display: none;
+  }
+  @media (min-width: 1024px) {
+    .hero-socials {
+      list-style: none;
+      margin: clamp(1rem, 2.5dvh, 1.75rem) 0 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.25rem;
+      flex-shrink: 0;
+    }
+    .hero-socials__link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 4px;
+      transition: background-color 160ms var(--ease-out-strong),
+                  transform 140ms var(--ease-out-strong);
+    }
+    .hero-socials__link:hover {
+      background-color: rgba(255, 255, 255, 0.08);
+      transform: translateY(-1px);
+    }
+    .hero-socials__link:active { transform: scale(0.94); }
+    .hero-socials__icon {
+      width: 22px;
+      height: 22px;
+      user-select: none;
+      pointer-events: none;
+    }
   }
 
   /* Stacked nav anchored top-right of the hero stage so it sits inside

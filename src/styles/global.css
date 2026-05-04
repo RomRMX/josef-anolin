@@ -81,6 +81,14 @@ hr.rule,
   font-size: clamp(1.75rem, 1.3rem + 0.9vw, 2.25rem);
   margin-bottom: 1.5rem;
 }
+/* On desktop, the lead heading rule bleeds past the rail-section's
+   right padding so the green line reaches the actual right edge of the
+   viewport. */
+@media (min-width: 1024px) {
+  .section-h2--lead::after {
+    right: -2.5rem;
+  }
+}
 .section-h2--sub {
   margin-top: 2.5rem;
 }
