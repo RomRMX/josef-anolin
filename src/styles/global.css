@@ -55,14 +55,14 @@ hr.rule,
   border-radius: 2px;
 }
 
-/* Shared section heading — green display type with a solid green underline.
-   Used across SHOWS / MEDIA / SHOP / HIT ME UP and the sub-headings
-   (APPEARANCES / VIDEOS / PICTURES). */
+/* Shared section heading — pale-cream display type with a solid green
+   underline. Used across SHOWS / MEDIA / SHOP / HIT ME UP and the
+   sub-headings (APPEARANCES / VIDEOS / PICTURES). */
 .section-h2 {
   font-family: var(--font-display), system-ui, sans-serif;
   font-size: clamp(1.5rem, 1.2rem + 0.6vw, 1.875rem);
   letter-spacing: 0.06em;
-  color: var(--color-accent);
+  color: #e8edc6;
   text-transform: uppercase;
   margin: 0 0 0.85rem;
   padding-bottom: 0.65rem;
