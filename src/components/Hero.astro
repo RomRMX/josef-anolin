@@ -13,14 +13,6 @@ const navLinks = [
 >
   <h1 class="sr-only">Josef Anolin — Stand-Up Comedian</h1>
 
-  <nav class="hero-nav" aria-label="Primary">
-    {navLinks.map((l) => (
-      <a href={l.href} data-target={l.href} class="hero-nav-link">
-        {l.label}
-      </a>
-    ))}
-  </nav>
-
   <div class="hero-stage">
     <a href="#contact" class="hero-tag" aria-label="Book Josef">BOOK ME!</a>
     <img
@@ -34,6 +26,13 @@ const navLinks = [
       alt="Josef Anolin — Stand Up Comedian"
       class="hero-logo select-none pointer-events-none"
     />
+    <nav class="hero-nav" aria-label="Primary">
+      {navLinks.map((l) => (
+        <a href={l.href} data-target={l.href} class="hero-nav-link">
+          {l.label}
+        </a>
+      ))}
+    </nav>
   </div>
 
   <p class="hero-bio">
@@ -55,7 +54,7 @@ const navLinks = [
     justify-content: flex-start;
     padding: clamp(2rem, 5dvh, 4rem) clamp(1.25rem, 3vw, 3rem) 2rem;
     text-align: center;
-    transform: translateX(100px);
+    transform: translateX(50px);
   }
 
   /* Stage = portrait + logo overlap (inherits the original treatment but
@@ -88,7 +87,7 @@ const navLinks = [
   }
   .hero-tag {
     position: absolute;
-    top: 8%;
+    top: calc(8% + 20px);
     left: 4%;
     z-index: 3;
     background: var(--color-accent);
@@ -120,13 +119,13 @@ const navLinks = [
     flex-shrink: 0;
   }
 
-  /* Stacked nav anchored top-right of the hero stage area. Sits absolutely
-     so it overlaps the brushstroke without consuming flow space. Active
-     link is bright green; the rest stay white. */
+  /* Stacked nav anchored top-right of the hero stage so it sits inside
+     col1 and overlaps the title artwork. Active link is bright green;
+     the rest stay white. */
   .hero-nav {
     position: absolute;
-    top: clamp(1.5rem, 3dvh, 2.5rem);
-    right: clamp(1.5rem, 3vw, 3rem);
+    top: 4%;
+    right: -2%;
     z-index: 4;
     display: flex;
     flex-direction: column;
