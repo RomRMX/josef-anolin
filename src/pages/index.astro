@@ -89,6 +89,17 @@ import Contact from "../components/Contact.astro";
     .rail-section--contact {
       padding-bottom: calc(5rem + 200px);
     }
+    /* Cap col2 content at 600px wide — the section-h2's stay full-rail
+       width so their hairlines can still bleed to the viewport edge. */
+    .dates-list,
+    #notable .notable-list,
+    .videos-grid,
+    .pics-grid,
+    .tee-list,
+    .contact-lede,
+    .contact-form {
+      max-width: 600px;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
