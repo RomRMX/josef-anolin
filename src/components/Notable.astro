@@ -53,8 +53,10 @@ const groups = [
 <style>
   .notable-list {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.75rem 2rem;
+    /* Each column sizes to its widest item so the FESTIVALS shift can
+       sit cleanly in the gap without colliding with FEATURED text. */
+    grid-template-columns: max-content max-content;
+    gap: 1.75rem 4.5rem;
   }
   @media (min-width: 768px) {
     /* FESTIVALS column shifted left toward the FEATURED list. */
@@ -82,7 +84,7 @@ const groups = [
     font-weight: 800;
     letter-spacing: 0.08em;
     font-size: 0.85rem;
-    color: var(--color-ink);
+    color: var(--color-accent);
     margin: 0 0 0.4rem;
   }
   .notable-group__items {
