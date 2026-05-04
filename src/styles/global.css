@@ -75,12 +75,7 @@ hr.rule,
   right: 0;
   bottom: 0;
   height: 2px;
-  background: linear-gradient(
-    90deg,
-    var(--color-accent) 0%,
-    var(--color-accent) 38%,
-    transparent 100%
-  );
+  background: var(--color-accent);
 }
 .section-h2--lead {
   font-size: clamp(1.75rem, 1.3rem + 0.9vw, 2.25rem);

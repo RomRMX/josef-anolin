@@ -115,11 +115,12 @@ const dates = [
     text-decoration: none;
     transition: filter 160ms var(--ease-out-strong),
                 transform 140ms var(--ease-out-strong);
+    transform: translateX(-160px);
   }
   @media (hover: hover) and (pointer: fine) {
     .date-row__cta:hover { filter: brightness(1.08); }
   }
-  .date-row__cta:active { transform: scale(0.96); }
+  .date-row__cta:active { transform: translateX(-160px) scale(0.96); }
 
   @media (max-width: 767px) {
     .date-row {
@@ -134,11 +135,12 @@ const dates = [
     .date-row__date { grid-area: date; }
     .date-row__city { grid-area: city; font-size: 1rem; }
     .date-row__venue { grid-area: venue; font-size: 0.8rem; }
-    .date-row__cta { grid-area: cta; align-self: center; }
+    .date-row__cta { grid-area: cta; align-self: center; transform: none; }
+    .date-row__cta:active { transform: scale(0.96); }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .date-row { opacity: 1; transform: none; transition: none; }
-    .date-row__cta:active { transform: none; }
+    .date-row__cta:active { transform: translateX(-160px); }
   }
 </style>

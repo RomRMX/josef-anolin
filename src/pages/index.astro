@@ -54,6 +54,11 @@ import Contact from "../components/Contact.astro";
     flex-direction: column;
     gap: 0;
   }
+  @media (min-width: 768px) {
+    .content-rail {
+      transform: translateX(-100px);
+    }
+  }
   .rail-section {
     padding: 4rem 1.25rem;
     scroll-margin-top: 1rem;

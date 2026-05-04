@@ -56,6 +56,12 @@ const groups = [
     grid-template-columns: 1fr 1fr;
     gap: 1.75rem 2rem;
   }
+  @media (min-width: 768px) {
+    /* FESTIVALS column shifted left toward the FEATURED list. */
+    .notable-list .notable-col:nth-child(2) {
+      transform: translateX(-125px);
+    }
+  }
   .notable-col {
     display: flex;
     flex-direction: column;
