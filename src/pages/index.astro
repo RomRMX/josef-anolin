@@ -22,7 +22,7 @@ import Contact from "../components/Contact.astro";
       </section>
 
       <section id="media" class="rail-section">
-        <h2 class="section-h2 section-h2--lead">MEDIA</h2>
+        <h2 class="section-h2 section-h2--lead section-h2--no-rule">MEDIA</h2>
         <Videos />
         <Pics />
       </section>
@@ -76,16 +76,16 @@ import Contact from "../components/Contact.astro";
       position: sticky;
       top: 0;
       height: 100dvh;
+      overflow: hidden;
     }
     .content-rail {
       min-width: 0;
     }
+    /* Even vertical spread: every section gets the same top + bottom
+       padding and the same min-height. */
     .rail-section {
-      padding: 6rem 2.5rem 4rem;
+      padding: 5rem 2.5rem;
       min-height: 100dvh;
-    }
-    .rail-section:first-child {
-      padding-top: 8rem;
     }
   }
 

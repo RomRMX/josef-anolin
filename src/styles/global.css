@@ -84,3 +84,9 @@ hr.rule,
 .section-h2--sub {
   margin-top: 2.5rem;
 }
+.section-h2--no-rule {
+  padding-bottom: 0;
+}
+.section-h2--no-rule::after {
+  display: none;
+}

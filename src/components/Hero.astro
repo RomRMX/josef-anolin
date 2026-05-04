@@ -112,7 +112,7 @@ const navLinks = [
 
   .hero-bio {
     margin: clamp(1.25rem, 3dvh, 2rem) auto 0;
-    max-width: 38ch;
+    max-width: 52ch;
     font-size: clamp(0.9rem, 0.85rem + 0.2vw, 1.05rem);
     line-height: 1.55;
     color: rgb(210 210 210);
@@ -125,7 +125,8 @@ const navLinks = [
   .hero-nav {
     position: absolute;
     top: 4%;
-    right: -2%;
+    /* Anchored 30px further inside the stage than before. */
+    right: calc(-2% + 30px);
     z-index: 4;
     display: flex;
     flex-direction: column;
