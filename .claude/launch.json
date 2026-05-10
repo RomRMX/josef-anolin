@@ -20,6 +20,34 @@
         "4329"
       ],
       "port": 4329
+    },
+    {
+      "name": "astro-pre-redesign",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/rmxhq/Documents/Claude/_PROJ3CTS/RMX.PROJ3CTS/JOE.DOBO/.claude/worktrees/pre-redesign",
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "4330"
+      ],
+      "port": 4330
+    },
+    {
+      "name": "astro-cranky-dirac",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/rmxhq/Documents/Claude/_PROJ3CTS/RMX.PROJ3CTS/JOE.DOBO/.claude/worktrees/cranky-dirac",
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "4331"
+      ],
+      "port": 4331
     }
   ]
 }
