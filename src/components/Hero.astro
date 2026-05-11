@@ -1,5 +1,12 @@
 ---
+import { statSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 import SocialIcon from "./SocialIcon.astro";
+
+const subjectImagePath = fileURLToPath(
+  new URL("../../public/subject_image.png", import.meta.url),
+);
+const subjectImageSrc = `/subject_image.png?v=${statSync(subjectImagePath).mtimeMs | 0}`;
 
 const navLinks = [
   { href: "#shows", label: "SHOWS" },
@@ -27,7 +34,7 @@ const socials = [
   <div class="hero-stage">
     <a href="#contact" class="hero-tag" aria-label="Book Josef">BOOK ME!</a>
     <img
-      src="/subject_image.png"
+      src={subjectImageSrc}
       alt="Josef Anolin"
       class="hero-portrait select-none pointer-events-none"
     />
@@ -104,17 +111,6 @@ const socials = [
     height: 100%;
     object-fit: contain;
     z-index: 1;
-  }
-  .hero-logo {
-    position: absolute;
-    left: 50%;
-    bottom: var(--hero-title-bottom);
-    transform:
-      translate(calc(-50% + var(--hero-title-offset-x)), var(--hero-title-offset-y))
-      rotate(var(--hero-title-rotate));
-    width: var(--hero-title-width);
-    height: auto;
-    z-index: 2;
   }
   .hero-tag {
     position: absolute;
