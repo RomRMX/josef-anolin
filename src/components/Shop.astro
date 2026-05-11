@@ -63,9 +63,15 @@ const fmt = (cents: number) =>
   <ul class="tee-list">
     {tees.map((t) => (
       <li class="tee-row">
-        <div class="tee-row__media">
+        <button
+          type="button"
+          class="tee-row__media"
+          data-zoom-src={t.src}
+          data-zoom-name={t.name}
+          aria-label={`Zoom ${t.name}`}
+        >
           <img src={t.src} alt={t.name} draggable="false" />
-        </div>
+        </button>
         <div class="tee-row__body">
           <h3 class="tee-row__name">{t.name}</h3>
           <p class="tee-row__desc">{t.description}</p>
@@ -87,6 +93,37 @@ const fmt = (cents: number) =>
       </li>
     ))}
   </ul>
+</div>
+
+<div
+  class="product-zoom"
+  data-product-zoom
+  role="dialog"
+  aria-modal="true"
+  aria-label="Product image"
+  hidden
+>
+  <button
+    type="button"
+    class="product-zoom__backdrop"
+    data-zoom-close
+    aria-label="Close zoom"
+  ></button>
+  <div class="product-zoom__panel">
+    <img class="product-zoom__img" alt="" />
+    <p class="product-zoom__caption" data-zoom-caption></p>
+    <button
+      type="button"
+      class="product-zoom__close"
+      data-zoom-close
+      aria-label="Close zoom"
+    >
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M18 6 6 18" />
+        <path d="m6 6 12 12" />
+      </svg>
+    </button>
+  </div>
 </div>
 
 <style>
@@ -113,12 +150,105 @@ const fmt = (cents: number) =>
     border: 1px solid rgba(255, 255, 255, 0.06);
     border-radius: 8px;
     padding: 0.75rem;
+    cursor: zoom-in;
+    overflow: hidden;
+    transition: transform 160ms var(--ease-out-strong),
+                box-shadow 160ms var(--ease-out-strong);
+  }
+  .tee-row__media:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(52, 129, 255, 0.35);
+  }
+  .tee-row__media:active { transform: translateY(-1px) scale(0.98); }
+  .tee-row__media:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
   }
   .tee-row__media img {
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
     user-select: none;
+    transition: transform 280ms var(--ease-out-strong);
+  }
+  .tee-row__media:hover img { transform: scale(1.05); }
+
+  .product-zoom[hidden] { display: none; }
+  .product-zoom {
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    display: grid;
+    place-items: center;
+    padding: 4vmin;
+    animation: product-zoom-in 180ms var(--ease-out-strong);
+  }
+  .product-zoom__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.86);
+    backdrop-filter: blur(6px);
+    border: 0;
+    padding: 0;
+    cursor: zoom-out;
+  }
+  .product-zoom__panel {
+    position: relative;
+    z-index: 1;
+    max-width: min(92vw, 900px);
+    max-height: 88vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.85rem;
+  }
+  .product-zoom__img {
+    max-width: 100%;
+    max-height: 78vh;
+    object-fit: contain;
+    background: #3481FF;
+    border-radius: 12px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+    user-select: none;
+  }
+  .product-zoom__caption {
+    margin: 0;
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.14em;
+    color: rgba(255, 255, 255, 0.92);
+    text-align: center;
+  }
+  .product-zoom__close {
+    position: absolute;
+    top: -14px;
+    right: -14px;
+    width: 38px;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background-color 140ms var(--ease-out-strong),
+                color 140ms var(--ease-out-strong);
+  }
+  .product-zoom__close:hover {
+    background: var(--color-accent);
+    color: #000;
+    border-color: var(--color-accent);
+  }
+  @keyframes product-zoom-in {
+    from { opacity: 0; transform: scale(0.98); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .product-zoom,
+    .tee-row__media,
+    .tee-row__media img { animation: none; transition: none; }
   }
   .tee-row__name {
     font-family: var(--font-display), system-ui, sans-serif;
@@ -197,4 +327,42 @@ const fmt = (cents: number) =>
       setTimeout(() => btn.classList.remove("is-added"), 600);
     });
   });
+
+  const zoom = document.querySelector<HTMLDivElement>("[data-product-zoom]");
+  if (zoom) {
+    const zoomImg = zoom.querySelector<HTMLImageElement>(".product-zoom__img")!;
+    const zoomCap = zoom.querySelector<HTMLElement>("[data-zoom-caption]")!;
+    let lastTrigger: HTMLElement | null = null;
+
+    const open = (src: string, name: string, trigger: HTMLElement) => {
+      lastTrigger = trigger;
+      zoomImg.src = src;
+      zoomImg.alt = name;
+      zoomCap.textContent = name;
+      zoom.hidden = false;
+      document.body.style.overflow = "hidden";
+    };
+    const close = () => {
+      zoom.hidden = true;
+      zoomImg.removeAttribute("src");
+      document.body.style.overflow = "";
+      lastTrigger?.focus();
+    };
+
+    document
+      .querySelectorAll<HTMLButtonElement>(".tee-row__media[data-zoom-src]")
+      .forEach((btn) => {
+        btn.addEventListener("click", () => {
+          open(btn.dataset.zoomSrc!, btn.dataset.zoomName || "", btn);
+        });
+      });
+
+    zoom
+      .querySelectorAll<HTMLElement>("[data-zoom-close]")
+      .forEach((el) => el.addEventListener("click", close));
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !zoom.hidden) close();
+    });
+  }
 </script>
