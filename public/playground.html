@@ -1,0 +1,640 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Josef Anolin — Playground</title>
+<style>
+  :root {
+    color-scheme: dark;
+    --panel-bg: #111;
+    --panel-border: #2a2a2a;
+    --panel-ink: #e8e8e8;
+    --panel-mute: #999;
+    --panel-accent: #C1FC50;
+    --panel-w: 340px;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; background: #000; color: var(--panel-ink); font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  body { display: grid; grid-template-columns: var(--panel-w) 1fr; }
+
+  .panel {
+    border-right: 1px solid var(--panel-border);
+    background: var(--panel-bg);
+    overflow-y: auto;
+    padding: 0 14px 80px;
+  }
+  .panel header { position: sticky; top: 0; background: var(--panel-bg); padding: 14px 0 10px; z-index: 3; border-bottom: 1px solid var(--panel-border); }
+  .panel header h1 { font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; margin: 0 0 4px; color: var(--panel-accent); }
+  .panel header p { margin: 0; font-size: 11px; color: var(--panel-mute); }
+
+  .bp-tabs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px; margin-top: 10px; padding: 3px; background: #0a0a0a; border-radius: 6px; border: 1px solid #222; }
+  .bp-tabs.with-edges { grid-template-columns: repeat(4, 1fr); }
+  .bp-tabs button.edge { background: #0f1410; }
+  .bp-tabs button.edge.active { background: var(--panel-accent); }
+  .bp-tabs button { font: inherit; font-size: 11px; padding: 6px 4px; letter-spacing: 0.06em; text-transform: uppercase; border: 0; background: transparent; color: var(--panel-mute); border-radius: 4px; cursor: pointer; }
+  .bp-tabs button.active { background: var(--panel-accent); color: #000; font-weight: 600; }
+  .bp-tabs button .px { display: block; font-size: 9px; opacity: 0.7; letter-spacing: 0.04em; }
+  .bp-tabs button.active .px { opacity: 0.85; }
+
+  details { border: 1px solid var(--panel-border); border-radius: 6px; margin-top: 10px; background: #161616; }
+  details[open] { background: #181818; }
+  summary { cursor: pointer; padding: 8px 10px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--panel-mute); user-select: none; }
+  summary:hover { color: var(--panel-ink); }
+  details > div.group { padding: 4px 10px 10px; display: grid; gap: 8px; }
+  details.global > summary::after { content: " · global"; color: #555; font-size: 9px; letter-spacing: 0.05em; }
+
+  .row { display: grid; grid-template-columns: 1fr 70px; align-items: center; gap: 6px 6px; }
+  .row label { font-size: 11px; color: var(--panel-mute); }
+  .row .v { font-size: 11px; color: var(--panel-ink); text-align: right; font-variant-numeric: tabular-nums; }
+  .row .v.dim { color: #555; font-style: italic; font-size: 10px; }
+  .row.color { grid-template-columns: 1fr auto auto; }
+  .row.color input[type="color"] { width: 28px; height: 22px; padding: 0; border: 1px solid #333; border-radius: 3px; background: transparent; }
+  .row.color input[type="text"] { width: 80px; background: #0a0a0a; color: var(--panel-ink); border: 1px solid #333; border-radius: 3px; padding: 3px 5px; font: inherit; font-size: 11px; }
+  input[type="range"] { width: 100%; accent-color: var(--panel-accent); }
+  input[type="text"].cssval { background: #0a0a0a; color: var(--panel-ink); border: 1px solid #333; border-radius: 3px; padding: 4px 6px; font: 11px ui-monospace, SFMono-Regular, monospace; }
+  .row.select select { background: #0a0a0a; color: var(--panel-ink); border: 1px solid #333; border-radius: 3px; padding: 3px 5px; font: inherit; font-size: 11px; }
+
+  .actions { position: sticky; bottom: 0; margin: 18px -14px -80px; padding: 12px 14px; background: linear-gradient(180deg, transparent, var(--panel-bg) 30%); display: flex; gap: 8px; flex-wrap: wrap; }
+  .btn { flex: 1; padding: 8px 10px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; border: 1px solid var(--panel-border); background: #1c1c1c; color: var(--panel-ink); border-radius: 4px; cursor: pointer; }
+  .btn:hover { border-color: var(--panel-accent); color: var(--panel-accent); }
+  .btn.primary { background: var(--panel-accent); color: #000; border-color: var(--panel-accent); }
+  .btn.primary:hover { filter: brightness(1.1); }
+
+  .preview { position: relative; background: #050505; }
+  .preview iframe { width: 100%; height: 100%; border: 0; display: block; background: #000; }
+  .toolbar { position: absolute; top: 10px; right: 10px; display: flex; gap: 8px; align-items: center; background: rgba(0,0,0,0.7); padding: 6px 8px; border-radius: 8px; backdrop-filter: blur(6px); z-index: 5; }
+  .toolbar button { font: inherit; font-size: 11px; padding: 4px 8px; border: 0; background: transparent; color: #ddd; border-radius: 3px; cursor: pointer; }
+  .toolbar button:hover { background: rgba(255,255,255,0.08); }
+  .toolbar .scrubber { display: flex; align-items: center; gap: 6px; padding-right: 6px; border-right: 1px solid rgba(255,255,255,0.12); }
+  .toolbar .scrubber input[type="range"] { width: 180px; accent-color: var(--panel-accent); }
+  .toolbar .scrubber input[type="number"] { width: 56px; background: #0a0a0a; color: var(--panel-ink); border: 1px solid #333; border-radius: 3px; padding: 3px 4px; font: 11px ui-monospace, SFMono-Regular, monospace; -moz-appearance: textfield; }
+  .toolbar .scrubber input[type="number"]::-webkit-outer-spin-button,
+  .toolbar .scrubber input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .toolbar .quick { display: flex; gap: 2px; }
+  .toolbar .quick button { font-size: 10px; padding: 3px 5px; color: #aaa; }
+  .toolbar .quick button:hover { color: var(--panel-accent); }
+  .toolbar .quick button.boundary { color: var(--panel-accent); font-weight: 600; }
+
+  dialog { background: #111; color: var(--panel-ink); border: 1px solid #333; border-radius: 8px; padding: 16px; max-width: 720px; width: 90vw; }
+  dialog::backdrop { background: rgba(0,0,0,0.6); }
+  dialog textarea { width: 100%; min-height: 320px; background: #0a0a0a; color: var(--panel-ink); border: 1px solid #333; border-radius: 4px; padding: 8px; font: 12px ui-monospace, SFMono-Regular, monospace; }
+</style>
+</head>
+<body>
+  <aside class="panel">
+    <header>
+      <h1>Playground</h1>
+      <p>Tweak tokens live. Per-breakpoint values cascade via <code>@media</code>. Hero sliders apply to the active breakpoint.</p>
+      <nav class="bp-tabs with-edges" id="bpTabs">
+        <button data-bp="mobile">Mobile<span class="px">&lt;900</span></button>
+        <button data-bp="mobileEdge" class="edge">M-edge<span class="px">700–899</span></button>
+        <button data-bp="desktopNarrow" class="edge">D-narrow<span class="px">900–1099</span></button>
+        <button data-bp="desktop" class="active">Desktop<span class="px">≥900</span></button>
+      </nav>
+    </header>
+
+    <details open class="global">
+      <summary>Colors</summary>
+      <div class="group" id="colors"></div>
+    </details>
+
+    <details>
+      <summary>Section (col1 wrapper)</summary>
+      <div class="group" id="section"></div>
+    </details>
+
+    <details>
+      <summary>Stage</summary>
+      <div class="group" id="stage"></div>
+    </details>
+
+    <details open>
+      <summary>Subject image</summary>
+      <div class="group" id="subject"></div>
+    </details>
+
+    <details open>
+      <summary>Title image</summary>
+      <div class="group" id="title"></div>
+    </details>
+
+    <details>
+      <summary>Tag (BOOK ME)</summary>
+      <div class="group" id="tag"></div>
+    </details>
+
+    <details>
+      <summary>Nav (in-stage)</summary>
+      <div class="group" id="nav"></div>
+    </details>
+
+    <details>
+      <summary>Bio</summary>
+      <div class="group" id="bio"></div>
+    </details>
+
+    <details>
+      <summary>Socials (in-hero)</summary>
+      <div class="group" id="socials"></div>
+    </details>
+
+    <details>
+      <summary>Copyright</summary>
+      <div class="group" id="copyright"></div>
+    </details>
+
+    <details class="global">
+      <summary>Background</summary>
+      <div class="group" id="bg"></div>
+    </details>
+
+    <details class="global">
+      <summary>Typography</summary>
+      <div class="group" id="type"></div>
+    </details>
+
+    <div class="actions">
+      <button class="btn" id="reset">Reset BP</button>
+      <button class="btn" id="resetAll">Reset All</button>
+      <button class="btn primary" id="copy">Copy CSS</button>
+    </div>
+  </aside>
+
+  <main class="preview">
+    <div class="toolbar">
+      <div class="scrubber">
+        <input type="range" id="vpRange" min="320" max="1920" step="1" value="1280" />
+        <input type="number" id="vpNum" min="200" max="3840" step="1" value="1280" />
+        <span style="font-size:10px;color:#888">px</span>
+      </div>
+      <div class="quick" id="vpQuick">
+        <button data-w="375">375</button>
+        <button data-w="700">700</button>
+        <button data-w="767">767</button>
+        <button data-w="899" class="boundary">899</button>
+        <button data-w="900" class="boundary">900</button>
+        <button data-w="1099" class="boundary">1099</button>
+        <button data-w="1280">1280</button>
+        <button data-w="full">Full</button>
+      </div>
+      <button data-reload title="Reload iframe">↻</button>
+    </div>
+    <iframe id="frame" src="/" title="Site preview"></iframe>
+  </main>
+
+  <dialog id="copyDlg">
+    <h3 style="margin:0 0 8px; font-size:13px; letter-spacing:0.08em; text-transform:uppercase; color: var(--panel-accent);">Paste into <code>src/styles/global.css</code></h3>
+    <p style="margin:0 0 8px; font-size:11px; color: var(--panel-mute);">Globals replace your <code>@theme</code> defaults; per-breakpoint blocks go after <code>@theme</code> in the cascade.</p>
+    <textarea id="copyText" readonly></textarea>
+    <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:10px;">
+      <button class="btn" id="closeDlg">Close</button>
+      <button class="btn primary" id="copyClipboard">Copy to Clipboard</button>
+    </div>
+  </dialog>
+
+<script>
+/* -------------------------------------------------------------------------
+ * Token registry — describes every control rendered in the playground.
+ *  - kind: 'color' | 'range' | 'text' | 'select'
+ *  - scope: 'global' (one value) or 'bp' (per-breakpoint)
+ *  - def: default value (for 'bp' tokens this is { mobile, tablet, desktop })
+ * ------------------------------------------------------------------------- */
+
+const BP = {
+  mobile:        { iframe: 375,  query: '(max-width: 899px)' },
+  mobileEdge:    { iframe: 820,  query: '(min-width: 700px) and (max-width: 899px)' },
+  desktopNarrow: { iframe: 980,  query: '(min-width: 900px) and (max-width: 1099px)' },
+  desktop:       { iframe: null, query: '(min-width: 900px)' }, // null = full width
+};
+
+/* Edge zones default to their parent BP value (mobile inherits from mobile,
+   narrow inherits from desktop) — they only diverge when you tweak them. */
+const defD = (m, d) => ({ mobile: m, mobileEdge: m, desktopNarrow: d, desktop: d });
+
+const COLOR_TOKENS = [
+  { name: '--color-bg',        label: 'Background',  def: '#000000' },
+  { name: '--color-panel',     label: 'Panel',       def: '#3F3F3F' },
+  { name: '--color-ink',       label: 'Ink (text)',  def: '#f5f5f5' },
+  { name: '--color-mute',      label: 'Muted text',  def: '#a3a3a3' },
+  { name: '--color-accent',    label: 'Accent',      def: '#C1FC50' },
+  { name: '--color-accent-2',  label: 'Accent 2',    def: '#EFFE53' },
+  { name: '--color-highlight', label: 'Highlight',   def: '#F9FEAB' },
+];
+
+const SECTION_TOKENS = [
+  { name: '--hero-section-pt',         label: 'Padding top (px)',     def: defD(80, 64), min: 0,    max: 240, step: 1, unit: 'px' },
+  { name: '--hero-section-pb',         label: 'Padding bottom (px)',  def: defD(48, 32), min: 0,    max: 240, step: 1, unit: 'px' },
+  { name: '--hero-section-px',         label: 'Padding x (px)',       def: defD(20, 32), min: 0,    max: 120, step: 1, unit: 'px' },
+  { name: '--hero-section-x-shift',    label: 'X shift',              def: defD(0,  50), min: -200, max: 200, step: 1, unit: 'px' },
+];
+
+const STAGE_TOKENS = [
+  { name: '--hero-stage-max-width',    label: 'Stage max-width',      def: defD(360, 680), min: 240, max: 1000, step: 5, unit: 'px' },
+];
+
+const SUBJECT_TOKENS = [
+  { name: '--hero-subject-scale',      label: 'Scale',                def: defD(1, 0.84),  min: 0.3,  max: 1.5, step: 0.01, unit: '' },
+  { name: '--hero-subject-offset-y',   label: 'Offset Y',             def: defD(0, 119),   min: -200, max: 400, step: 1,    unit: 'px' },
+];
+
+const TITLE_TOKENS = [
+  { name: '--hero-title-width',        label: 'Width (% of stage)',   def: defD(96, 66),   min: 20,   max: 140, step: 1,   unit: '%'   },
+  { name: '--hero-title-bottom',       label: 'Bottom anchor (%)',    def: defD(-2, 2.5),  min: -50,  max: 60,  step: 0.5, unit: '%'   },
+  { name: '--hero-title-offset-x',     label: 'Offset X',             def: defD(0, -169),  min: -300, max: 300, step: 1,   unit: 'px'  },
+  { name: '--hero-title-offset-y',     label: 'Offset Y',             def: defD(15, -21),  min: -300, max: 300, step: 1,   unit: 'px'  },
+  { name: '--hero-title-rotate',       label: 'Rotation',             def: defD(0, -4),    min: -45,  max: 45,  step: 0.5, unit: 'deg' },
+];
+
+const TAG_TOKENS = [
+  /* tag-top/left use % of stage; expressed numerically in the playground */
+  { name: '--hero-tag-top',            label: 'Top (% of stage)',     def: defD(10, 10),   min: 0,   max: 60,  step: 0.5, unit: '%',   wrap: 'calc(__VAL__ + 20px)' },
+  { name: '--hero-tag-left',           label: 'Left (% of stage)',    def: defD(4, 4),     min: 0,   max: 60,  step: 0.5, unit: '%' },
+  { name: '--hero-tag-font-size',      label: 'Font size (rem)',      def: defD(0.85, 0.85), min: 0.5, max: 1.5, step: 0.01, unit: 'rem' },
+  { name: '--hero-tag-rotate',         label: 'Rotation',             def: defD(-6, -6),   min: -45, max: 45,  step: 0.5, unit: 'deg' },
+];
+
+const NAV_TOKENS = [
+  { name: '--hero-nav-display',        label: 'Visible',              kind: 'select', def: defD('none', 'flex'), options: [['flex', 'show'], ['none', 'hide']] },
+  { name: '--hero-nav-top',            label: 'Top (% of stage)',     def: defD(4, 4),     min: -10, max: 50,  step: 0.5, unit: '%',  wrap: 'calc(__VAL__ + 30px)' },
+  { name: '--hero-nav-right',          label: 'Right (% of stage)',   def: defD(-2, -2),   min: -20, max: 40,  step: 0.5, unit: '%',  wrap: 'calc(__VAL__ + 50px)' },
+  { name: '--hero-nav-gap',            label: 'Gap (rem)',            def: defD(0.25, 0.25), min: 0, max: 1.5, step: 0.05, unit: 'rem' },
+  { name: '--hero-nav-font-size',      label: 'Font size (rem)',      def: defD(1.05, 1.05), min: 0.6, max: 2,  step: 0.01, unit: 'rem' },
+];
+
+const BIO_TOKENS = [
+  { name: '--hero-bio-max-width',      label: 'Max width (px)',       def: defD(320, 600), min: 200,  max: 900, step: 5,   unit: 'px' },
+  { name: '--hero-bio-extra-top',      label: 'Extra top (px)',       def: defD(1, 1),     min: 0,    max: 400, step: 1,   unit: 'px' },
+  { name: '--hero-bio-font-size',      label: 'Font size (rem)',      def: defD(0.875, 1), min: 0.6,  max: 1.4, step: 0.01, unit: 'rem' },
+  { name: '--hero-bio-line-height',    label: 'Line height',          def: defD(1.45, 1.55), min: 1, max: 2,    step: 0.01, unit: '' },
+];
+
+const SOCIALS_TOKENS = [
+  { name: '--hero-socials-display',    label: 'Visible',              kind: 'select', def: defD('none', 'flex'), options: [['flex', 'show'], ['none', 'hide']] },
+  { name: '--hero-socials-gap',        label: 'Gap (rem)',            def: defD(1.25, 1.25), min: 0, max: 3,    step: 0.05, unit: 'rem' },
+  { name: '--hero-socials-icon',       label: 'Icon size (px)',       def: defD(22, 22),     min: 12, max: 48,  step: 1,    unit: 'px' },
+  { name: '--hero-socials-margin-top', label: 'Margin top (rem)',     def: defD(1.5, 1.5),   min: 0, max: 5,    step: 0.05, unit: 'rem' },
+  { name: '--socials-color',           label: 'Icon color',           kind: 'color', def: defD('#C1FC50', '#C1FC50') },
+  { name: '--socials-hover-color',     label: 'Hover color',          kind: 'color', def: defD('#f5f5f5', '#f5f5f5') },
+];
+
+const COPYRIGHT_TOKENS = [
+  { name: '--hero-copyright-fs',          label: 'Font size (rem)',   def: defD(0.7, 0.7),   min: 0.5, max: 1.2, step: 0.01, unit: 'rem' },
+  { name: '--hero-copyright-margin-top',  label: 'Margin top (rem)',  def: defD(1.5, 1.5),   min: 0, max: 5,     step: 0.05, unit: 'rem' },
+];
+
+const BG_TOKENS = [
+  { name: '--bg-overlay-opacity',     label: 'Page dim (overlay)',   def: 0,    min: 0, max: 0.9, step: 0.01, unit: '' },
+  { name: '--content-rail-opacity',   label: 'Right-column veil',    def: 0,    min: 0, max: 1,   step: 0.01, unit: '' },
+];
+
+const TYPE_TOKENS = [
+  { name: '--font-sans',    label: 'Body font stack',    def: '"Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif', kind: 'text' },
+  { name: '--font-display', label: 'Display font stack', def: '"Anton", "Impact", ui-sans-serif, system-ui, sans-serif',                          kind: 'text' },
+];
+
+/* Group manifests for builder. */
+const HERO_GROUPS = [
+  ['section',   SECTION_TOKENS],
+  ['stage',     STAGE_TOKENS],
+  ['subject',   SUBJECT_TOKENS],
+  ['title',     TITLE_TOKENS],
+  ['tag',       TAG_TOKENS],
+  ['nav',       NAV_TOKENS],
+  ['bio',       BIO_TOKENS],
+  ['socials',   SOCIALS_TOKENS],
+  ['copyright', COPYRIGHT_TOKENS],
+];
+
+/* -------------------------------------------------------------------------
+ * State & helpers
+ * ------------------------------------------------------------------------- */
+
+let activeBP = 'desktop';
+const state = {
+  global: {},                                                     // colors, fonts, bg
+  mobile:  {}, mobileEdge: {}, desktopNarrow: {}, desktop: {},    // per-BP hero
+};
+
+const frame = document.getElementById('frame');
+const frameDoc = () => frame.contentDocument;
+
+/** Wrap a slider's raw value with a token's optional `wrap` template. */
+function formatVal(t, raw) {
+  const withUnit = (typeof raw === 'number' || /^[-\d.]/.test(raw)) ? `${raw}${t.unit || ''}` : raw;
+  if (!t.wrap) return withUnit;
+  return t.wrap.replace('__VAL__', withUnit);
+}
+
+/** Build the CSS string applied to the iframe. */
+function buildCSS() {
+  let out = '';
+  /* Globals (no @media). */
+  const g = Object.entries(state.global);
+  if (g.length) {
+    out += ':root {\n' + g.map(([k, v]) => `  ${k}: ${v};`).join('\n') + '\n}\n';
+  }
+  /* Per-breakpoint. Order matters — broader zones first so narrower zones
+     win the cascade at their boundary. */
+  for (const bp of ['mobile', 'desktop', 'mobileEdge', 'desktopNarrow']) {
+    const entries = Object.entries(state[bp]);
+    if (!entries.length) continue;
+    out += `@media ${BP[bp].query} {\n  :root {\n` +
+      entries.map(([k, v]) => `    ${k}: ${v};`).join('\n') +
+      '\n  }\n}\n';
+  }
+  return out;
+}
+
+function applyToFrame() {
+  const doc = frameDoc();
+  if (!doc) return;
+  let tag = doc.getElementById('__pg_overrides');
+  if (!tag) {
+    tag = doc.createElement('style');
+    tag.id = '__pg_overrides';
+    doc.head.appendChild(tag);
+  }
+  tag.textContent = buildCSS();
+
+  /* Ensure body::after overlay rule exists for --bg-overlay-opacity. */
+  let ov = doc.getElementById('__pg_overlay');
+  if (!ov) {
+    ov = doc.createElement('style');
+    ov.id = '__pg_overlay';
+    ov.textContent = `body::after { content: ''; position: fixed; inset: 0; background: rgba(0,0,0, var(--bg-overlay-opacity, 0)); pointer-events: none; z-index: -1; }`;
+    doc.head.appendChild(ov);
+  }
+}
+
+/* -------------------------------------------------------------------------
+ * Row builders — return DOM nodes and wire input events.
+ * Each row remembers its token + its update fn so switchBP() can refresh
+ * displayed values when the active breakpoint changes.
+ * ------------------------------------------------------------------------- */
+
+const bpRows = []; // [{ token, refresh(activeBP) }]
+
+function getDef(t, bp) {
+  return (typeof t.def === 'object' && t.def !== null && bp) ? t.def[bp] : t.def;
+}
+function readState(t, bp) {
+  const scope = bp ? state[bp] : state.global;
+  return scope[t.name];
+}
+function writeState(t, bp, val) {
+  const scope = bp ? state[bp] : state.global;
+  if (val == null || val === '') delete scope[t.name];
+  else scope[t.name] = val;
+}
+
+function makeColorRow(parent, t, perBP = false) {
+  const row = document.createElement('div');
+  row.className = 'row color';
+  row.innerHTML = `
+    <label>${t.label}</label>
+    <input type="color" />
+    <input type="text" />
+  `;
+  const [color, text] = row.querySelectorAll('input');
+
+  const refresh = (bp) => {
+    const def = getDef(t, bp);
+    const cur = readState(t, perBP ? bp : null);
+    const v = cur != null ? cur : def;
+    color.value = v;
+    text.value = v;
+  };
+
+  const set = (val) => {
+    writeState(t, perBP ? activeBP : null, val);
+    color.value = val; text.value = val;
+    applyToFrame();
+  };
+  color.addEventListener('input', () => set(color.value));
+  text.addEventListener('change', () => set(text.value));
+  parent.appendChild(row);
+  if (perBP) bpRows.push({ token: t, refresh });
+  refresh(perBP ? activeBP : null);
+}
+
+function makeRangeRow(parent, t, perBP = false) {
+  const row = document.createElement('div');
+  row.className = 'row';
+  row.innerHTML = `
+    <label>${t.label}</label>
+    <span class="v"></span>
+    <input type="range" min="${t.min}" max="${t.max}" step="${t.step}" style="grid-column: 1 / -1" />
+  `;
+  const range = row.querySelector('input');
+  const v = row.querySelector('.v');
+
+  const refresh = (bp) => {
+    const def = getDef(t, bp);
+    const cur = readState(t, perBP ? bp : null);
+    const valueRaw = cur != null ? stripUnit(cur, t) : def;
+    range.value = valueRaw;
+    v.textContent = (cur != null) ? cur : `${def}${t.unit || ''}`;
+    v.classList.toggle('dim', cur == null);
+  };
+
+  range.addEventListener('input', () => {
+    const formatted = formatVal(t, range.value);
+    writeState(t, perBP ? activeBP : null, formatted);
+    v.textContent = formatted;
+    v.classList.remove('dim');
+    applyToFrame();
+  });
+
+  parent.appendChild(row);
+  if (perBP) bpRows.push({ token: t, refresh });
+  refresh(perBP ? activeBP : null);
+}
+
+function makeSelectRow(parent, t, perBP = false) {
+  const row = document.createElement('div');
+  row.className = 'row select';
+  row.innerHTML = `
+    <label>${t.label}</label>
+    <select>${t.options.map(([val, lbl]) => `<option value="${val}">${lbl}</option>`).join('')}</select>
+  `;
+  const sel = row.querySelector('select');
+  const refresh = (bp) => {
+    const def = getDef(t, bp);
+    const cur = readState(t, perBP ? bp : null);
+    sel.value = cur != null ? cur : def;
+  };
+  sel.addEventListener('change', () => {
+    writeState(t, perBP ? activeBP : null, sel.value);
+    applyToFrame();
+  });
+  parent.appendChild(row);
+  if (perBP) bpRows.push({ token: t, refresh });
+  refresh(perBP ? activeBP : null);
+}
+
+function makeTextRow(parent, t) {
+  const row = document.createElement('div');
+  row.className = 'row';
+  row.innerHTML = `
+    <label style="grid-column: 1 / -1">${t.label}</label>
+    <input type="text" class="cssval" style="grid-column: 1 / -1" />
+  `;
+  const input = row.querySelector('input');
+  input.value = t.def;
+  input.addEventListener('change', () => {
+    writeState(t, null, input.value);
+    applyToFrame();
+  });
+  parent.appendChild(row);
+}
+
+/** Strip the token's unit/wrap so a slider can show its raw numeric value. */
+function stripUnit(formatted, t) {
+  if (typeof formatted !== 'string') return formatted;
+  let s = formatted;
+  if (t.wrap) {
+    const m = s.match(/calc\(([-\d.]+)/);
+    if (m) s = m[1] + (t.unit || '');
+  }
+  if (t.unit && s.endsWith(t.unit)) s = s.slice(0, -t.unit.length);
+  const n = parseFloat(s);
+  return Number.isFinite(n) ? n : 0;
+}
+
+/* -------------------------------------------------------------------------
+ * Build UI
+ * ------------------------------------------------------------------------- */
+
+function build() {
+  COLOR_TOKENS.forEach((t) => makeColorRow(document.getElementById('colors'), t));
+  for (const [groupId, tokens] of HERO_GROUPS) {
+    const parent = document.getElementById(groupId);
+    tokens.forEach((t) => {
+      if (t.kind === 'select')      makeSelectRow(parent, t, true);
+      else if (t.kind === 'color')  makeColorRow(parent, t, true);
+      else                          makeRangeRow(parent, t, true);
+    });
+  }
+  BG_TOKENS.forEach((t) => makeRangeRow(document.getElementById('bg'), t, false));
+  TYPE_TOKENS.forEach((t) => makeTextRow(document.getElementById('type'), t));
+}
+build();
+
+/* -------------------------------------------------------------------------
+ * Breakpoint tabs — switch active BP, resize iframe, refresh slider values.
+ * ------------------------------------------------------------------------- */
+
+function setIframeWidth(w) {
+  if (w == null || w === 'full') {
+    frame.style.width = '100%';
+    frame.style.margin = '0';
+    syncScrubber(frame.getBoundingClientRect().width);
+  } else {
+    frame.style.width = w + 'px';
+    frame.style.margin = '0 auto';
+    syncScrubber(w);
+  }
+}
+
+function switchBP(bp) {
+  activeBP = bp;
+  document.querySelectorAll('.bp-tabs button').forEach((b) => {
+    b.classList.toggle('active', b.dataset.bp === bp);
+  });
+  setIframeWidth(BP[bp].iframe);
+  bpRows.forEach((r) => r.refresh(activeBP));
+}
+document.querySelectorAll('.bp-tabs button').forEach((b) => {
+  b.addEventListener('click', () => switchBP(b.dataset.bp));
+});
+
+/* Viewport scrubber — drag the slider or type a number to test any pixel
+   width. Quick-jump buttons land on breakpoint boundaries. */
+const vpRange = document.getElementById('vpRange');
+const vpNum   = document.getElementById('vpNum');
+
+function syncScrubber(w) {
+  const rounded = Math.round(w);
+  vpRange.value = rounded;
+  vpNum.value   = rounded;
+}
+
+vpRange.addEventListener('input', () => setIframeWidth(parseInt(vpRange.value, 10)));
+vpNum.addEventListener('input',   () => setIframeWidth(parseInt(vpNum.value, 10)));
+document.querySelectorAll('#vpQuick button').forEach((b) => {
+  b.addEventListener('click', () => {
+    const w = b.dataset.w;
+    setIframeWidth(w === 'full' ? null : parseInt(w, 10));
+  });
+});
+
+/* -------------------------------------------------------------------------
+ * Iframe lifecycle + actions
+ * ------------------------------------------------------------------------- */
+
+frame.addEventListener('load', applyToFrame);
+
+document.querySelector('.toolbar button[data-reload]').addEventListener('click', () => frame.contentWindow.location.reload());
+
+document.getElementById('reset').addEventListener('click', () => {
+  state[activeBP] = {};
+  bpRows.forEach((r) => r.refresh(activeBP));
+  applyToFrame();
+});
+
+document.getElementById('resetAll').addEventListener('click', () => {
+  state.global = {};
+  state.mobile = {}; state.mobileEdge = {}; state.desktopNarrow = {}; state.desktop = {};
+  document.querySelectorAll('.panel input, .panel select').forEach((el) => {
+    /* Re-default colors + text rows. */
+    if (el.type === 'color' || (el.type === 'text' && !el.classList.contains('cssval'))) {
+      const t = COLOR_TOKENS.find((x) => el.previousElementSibling?.previousElementSibling?.textContent === x.label || el.parentElement?.querySelector('label')?.textContent === x.label);
+      // Best-effort reset: defer to refresh below for bp rows.
+    }
+    if (el.classList.contains('cssval')) {
+      const t = TYPE_TOKENS.find((x) => el.parentElement?.querySelector('label')?.textContent === x.label);
+      if (t) el.value = t.def;
+    }
+  });
+  /* Reset color rows. */
+  COLOR_TOKENS.forEach((t) => {
+    const row = [...document.querySelectorAll('#colors .row')].find((r) => r.querySelector('label').textContent === t.label);
+    if (row) {
+      row.querySelector('input[type="color"]').value = t.def;
+      row.querySelector('input[type="text"]').value  = t.def;
+    }
+  });
+  /* Reset bg sliders. */
+  document.querySelectorAll('#bg .row').forEach((row) => {
+    const lbl = row.querySelector('label')?.textContent;
+    const t = BG_TOKENS.find((x) => x.label === lbl);
+    if (t) {
+      row.querySelector('input[type="range"]').value = t.def;
+      row.querySelector('.v').textContent = `${t.def}${t.unit || ''}`;
+      row.querySelector('.v').classList.add('dim');
+    }
+  });
+  bpRows.forEach((r) => r.refresh(activeBP));
+  applyToFrame();
+});
+
+/* Copy CSS dialog. */
+const dlg = document.getElementById('copyDlg');
+const copyText = document.getElementById('copyText');
+document.getElementById('copy').addEventListener('click', () => {
+  copyText.value = buildCSS() || '/* No changes — tweak something first. */';
+  dlg.showModal();
+});
+document.getElementById('closeDlg').addEventListener('click', () => dlg.close());
+document.getElementById('copyClipboard').addEventListener('click', async () => {
+  await navigator.clipboard.writeText(copyText.value);
+  document.getElementById('copyClipboard').textContent = 'Copied!';
+  setTimeout(() => { document.getElementById('copyClipboard').textContent = 'Copy to Clipboard'; }, 1200);
+});
+
+/* Initial sync. */
+switchBP('desktop');
+</script>
+</body>
+</html>

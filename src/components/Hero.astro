@@ -1,4 +1,6 @@
 ---
+import SocialIcon from "./SocialIcon.astro";
+
 const navLinks = [
   { href: "#shows", label: "SHOWS" },
   { href: "#media", label: "MEDIA" },
@@ -7,12 +9,12 @@ const navLinks = [
 ];
 
 const socials = [
-  { label: "YouTube",   href: "https://www.youtube.com/@comedianjoe510",                                              icon: "/socials/social__0000_Layer-8.png" },
-  { label: "Instagram", href: "https://www.instagram.com/comedianjoe510/",                                            icon: "/socials/social__0003_Layer-5.png" },
-  { label: "TikTok",    href: "https://www.tiktok.com/@comedianjoe510?is_from_webapp=1&sender_device=pc",             icon: "/socials/social__0002_Layer-6.png" },
-  { label: "Facebook",  href: "https://www.facebook.com/JosefAnolinComedian",                                         icon: "/socials/social__0004_Layer-4.png" },
-  { label: "Threads",   href: "https://www.threads.com/@comedianjoe510",                                              icon: "/socials/social__0001_Layer-7.png" },
-  { label: "Email",     href: "mailto:josefanolin@gmail.com",                                                         icon: "/socials/social__0005_Layer-3.png" },
+  { label: "YouTube",   href: "https://www.youtube.com/@comedianjoe510",                                  icon: "youtube"   as const },
+  { label: "Instagram", href: "https://www.instagram.com/comedianjoe510/",                                icon: "instagram" as const },
+  { label: "TikTok",    href: "https://www.tiktok.com/@comedianjoe510?is_from_webapp=1&sender_device=pc", icon: "tiktok"    as const },
+  { label: "Facebook",  href: "https://www.facebook.com/JosefAnolinComedian",                             icon: "facebook"  as const },
+  { label: "Threads",   href: "https://www.threads.com/@comedianjoe510",                                  icon: "threads"   as const },
+  { label: "Email",     href: "mailto:josefanolin@gmail.com",                                             icon: "email"     as const },
 ];
 ---
 
@@ -25,13 +27,13 @@ const socials = [
   <div class="hero-stage">
     <a href="#contact" class="hero-tag" aria-label="Book Josef">BOOK ME!</a>
     <img
-      src="/joe-hero.png"
+      src="/subject_image.png"
       alt=""
       aria-hidden="true"
       class="hero-portrait select-none pointer-events-none"
     />
     <img
-      src="/joe-logo.png"
+      src="/title_image.png"
       alt="Josef Anolin — Stand Up Comedian"
       class="hero-logo select-none pointer-events-none"
     />
@@ -62,45 +64,48 @@ const socials = [
           title={s.label}
           class="hero-socials__link"
         >
-          <img src={s.icon} alt="" class="hero-socials__icon" />
+          <SocialIcon name={s.icon} class="hero-socials__icon" />
         </a>
       </li>
     ))}
   </ul>
 
-  <p class="hero-copyright">
-    ©2026 www.JosefAnolin.com All Rights Reserved.
-  </p>
 </section>
 
 <style>
+  /* All sizing/spacing/layout values come from CSS custom properties defined
+     in src/styles/global.css. Per-breakpoint defaults cascade through :root
+     media queries there; the playground (/playground.html) emits per-bp
+     :root overrides on top of those defaults. */
+
   .hero-section {
     position: relative;
     height: 100%;
-    background: var(--color-bg);
+    background: transparent;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    padding: clamp(2rem, 5dvh, 4rem) clamp(1.25rem, 3vw, 3rem) 2rem;
+    padding: var(--hero-section-pt) var(--hero-section-px) var(--hero-section-pb);
+    min-height: var(--hero-section-min-height);
     text-align: center;
-    transform: translateX(50px);
+    transform: translateX(var(--hero-section-x-shift));
   }
 
-  /* Stage = portrait + logo overlap (inherits the original treatment but
-     scaled to fit the narrower column). The BOOK ME tag sits absolutely
-     over the brushstroke so it can rotate into the corner. */
   .hero-stage {
     position: relative;
     width: 100%;
-    max-width: 520px;
+    max-width: var(--hero-stage-max-width);
     aspect-ratio: 1 / 1;
     margin: 0 auto;
     flex-shrink: 0;
   }
   .hero-portrait {
     position: absolute;
-    inset: 0;
+    top: var(--hero-subject-offset-y);
+    left: 50%;
+    transform: translateX(-50%) scale(var(--hero-subject-scale));
+    transform-origin: top center;
     width: 100%;
     height: 100%;
     object-fit: contain;
@@ -109,133 +114,99 @@ const socials = [
   .hero-logo {
     position: absolute;
     left: 50%;
-    bottom: -2%;
-    transform: translate(-50%, 15px);
-    width: 96%;
+    bottom: var(--hero-title-bottom);
+    transform:
+      translate(calc(-50% + var(--hero-title-offset-x)), var(--hero-title-offset-y))
+      rotate(var(--hero-title-rotate));
+    width: var(--hero-title-width);
     height: auto;
     z-index: 2;
   }
   .hero-tag {
     position: absolute;
-    top: calc(8% + 20px);
-    left: 4%;
+    top: var(--hero-tag-top);
+    left: var(--hero-tag-left);
     z-index: 3;
     background: var(--color-accent);
     color: #000;
     font-family: var(--font-display), system-ui, sans-serif;
-    font-size: clamp(0.75rem, 0.9vw, 0.95rem);
+    font-size: var(--hero-tag-font-size);
     letter-spacing: 0.14em;
     padding: 0.4rem 0.95rem;
     border-radius: 999px;
     text-decoration: none;
-    transform: rotate(-6deg);
+    transform: rotate(var(--hero-tag-rotate));
     transition: filter 180ms var(--ease-out-strong),
                 transform 180ms var(--ease-out-strong);
   }
   @media (hover: hover) and (pointer: fine) {
     .hero-tag:hover {
       filter: brightness(1.08);
-      transform: rotate(-6deg) translateY(-2px);
+      transform: rotate(var(--hero-tag-rotate)) translateY(-2px);
     }
   }
-  .hero-tag:active { transform: rotate(-6deg) scale(0.96); }
+  .hero-tag:active { transform: rotate(var(--hero-tag-rotate)) scale(0.96); }
 
   .hero-bio {
-    margin: clamp(1.25rem, 3dvh, 2rem) auto 0;
-    max-width: 42ch;
-    font-size: clamp(0.9rem, 0.85rem + 0.2vw, 1.05rem);
-    line-height: 1.55;
+    margin: calc(clamp(1.25rem, 3dvh, 2rem) + var(--hero-bio-extra-top)) auto 0;
+    max-width: var(--hero-bio-max-width);
+    font-size: var(--hero-bio-font-size);
+    line-height: var(--hero-bio-line-height);
     color: rgb(210 210 210);
     flex-shrink: 0;
   }
 
-  /* Desktop social row sits under the bio, mirroring the mobile bottom
-     bar so the hero column has a single complete contact strip. Hidden
-     below the two-column breakpoint (the fixed MobileSocialBar takes
-     over there). */
   .hero-socials {
-    display: none;
+    display: var(--hero-socials-display);
+    list-style: none;
+    margin: var(--hero-socials-margin-top) 0 0;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+    gap: var(--hero-socials-gap);
+    flex-shrink: 0;
   }
-  @media (min-width: 1024px) {
-    .hero-socials {
-      list-style: none;
-      margin: clamp(1rem, 2.5dvh, 1.75rem) 0 0;
-      padding: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 1.25rem;
-      flex-shrink: 0;
-    }
-    .hero-socials__link {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 32px;
-      height: 32px;
-      border-radius: 4px;
-      transition: background-color 160ms var(--ease-out-strong),
-                  transform 140ms var(--ease-out-strong);
-    }
-    .hero-socials__link:hover {
-      background-color: rgba(255, 255, 255, 0.08);
-      transform: translateY(-1px);
-    }
-    .hero-socials__link:active { transform: scale(0.94); }
-    .hero-socials__icon {
-      width: 22px;
-      height: 22px;
-      user-select: none;
-      pointer-events: none;
-    }
-    .hero-copyright {
-      margin: auto 0 0;
-      padding-top: 1.5rem;
-      font-size: 0.7rem;
-      letter-spacing: 0.04em;
-      color: rgba(255, 255, 255, 0.45);
-      text-align: center;
-    }
-    .hero-copyright a {
-      color: inherit;
-      text-decoration: none;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    }
-    .hero-copyright a:hover {
-      color: var(--color-accent);
-      border-color: var(--color-accent);
-    }
+  .hero-socials__link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(var(--hero-socials-icon) + 10px);
+    height: calc(var(--hero-socials-icon) + 10px);
+    border-radius: 4px;
+    color: var(--socials-color);
+    transition: background-color 160ms var(--ease-out-strong),
+                color 160ms var(--ease-out-strong),
+                transform 140ms var(--ease-out-strong);
   }
-  /* Mobile/narrow desktop: copyright still appears at the end of the
-     hero block but doesn't need the auto-margin push. */
-  @media (max-width: 1023px) {
-    .hero-copyright {
-      margin: 1.5rem 0 0;
-      font-size: 0.7rem;
-      color: rgba(255, 255, 255, 0.45);
-      text-align: center;
-    }
-    .hero-copyright a { color: inherit; }
+  .hero-socials__link:hover {
+    color: var(--socials-hover-color);
+  }
+  .hero-socials__link:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    transform: translateY(-1px);
+  }
+  .hero-socials__link:active { transform: scale(0.94); }
+  .hero-socials__icon {
+    width: var(--hero-socials-icon);
+    height: var(--hero-socials-icon);
+    user-select: none;
+    pointer-events: none;
   }
 
-  /* Stacked nav anchored top-right of the hero stage so it sits inside
-     col1 and overlaps the title artwork. Active link is bright green;
-     the rest stay white. */
   .hero-nav {
     position: absolute;
-    top: calc(4% + 30px);
-    /* Anchored 50px further inside the stage than the original -2%. */
-    right: calc(-2% + 50px);
+    display: var(--hero-nav-display);
+    top: var(--hero-nav-top);
+    right: var(--hero-nav-right);
     z-index: 4;
-    display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 0.25rem;
+    gap: var(--hero-nav-gap);
   }
   .hero-nav-link {
     position: relative;
     font-family: var(--font-display), system-ui, sans-serif;
-    font-size: clamp(0.95rem, 0.85rem + 0.25vw, 1.15rem);
+    font-size: var(--hero-nav-font-size);
     letter-spacing: 0.08em;
     color: #fff;
     text-decoration: none;
@@ -245,8 +216,6 @@ const socials = [
   .hero-nav-link.is-active {
     color: var(--color-accent);
   }
-  /* Active page marker: a dash sits to the right of the current link
-     so its position doesn't shift when activation moves between items. */
   .hero-nav-link.is-active::after {
     content: " —";
     position: absolute;
@@ -254,24 +223,6 @@ const socials = [
     top: 0;
     margin-left: 0.35em;
     color: var(--color-accent);
-  }
-
-  /* Mobile + narrow desktop (below the 1024px two-column breakpoint) —
-     looser padding, smaller stage, and the hero nav is hidden because
-     the fixed mobile header (Header.astro) already exposes the same
-     links and is always visible at narrow widths. */
-  @media (max-width: 1023px) {
-    .hero-section {
-      padding-top: 5rem;
-      padding-bottom: 3rem;
-      min-height: 100dvh;
-      transform: none;
-    }
-    .hero-stage {
-      max-width: 360px;
-    }
-    .hero-bio { font-size: 0.875rem; line-height: 1.45; max-width: 32ch; }
-    .hero-nav { display: none; }
   }
 </style>
 
