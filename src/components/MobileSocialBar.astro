@@ -1,11 +1,13 @@
 ---
+import SocialIcon from "./SocialIcon.astro";
+
 const socials = [
-  { label: "YouTube", href: "https://www.youtube.com/@comedianjoe510", icon: "/socials/social__0000_Layer-8.png" },
-  { label: "Instagram", href: "https://www.instagram.com/comedianjoe510/", icon: "/socials/social__0003_Layer-5.png" },
-  { label: "TikTok", href: "https://www.tiktok.com/@comedianjoe510?is_from_webapp=1&sender_device=pc", icon: "/socials/social__0002_Layer-6.png" },
-  { label: "Facebook", href: "https://www.facebook.com/JosefAnolinComedian", icon: "/socials/social__0004_Layer-4.png" },
-  { label: "Threads", href: "https://www.threads.com/@comedianjoe510", icon: "/socials/social__0001_Layer-7.png" },
-  { label: "Email", href: "mailto:josefanolin@gmail.com", icon: "/socials/social__0005_Layer-3.png" },
+  { label: "YouTube",   href: "https://www.youtube.com/@comedianjoe510",                                  icon: "youtube"   as const },
+  { label: "Instagram", href: "https://www.instagram.com/comedianjoe510/",                                icon: "instagram" as const },
+  { label: "TikTok",    href: "https://www.tiktok.com/@comedianjoe510?is_from_webapp=1&sender_device=pc", icon: "tiktok"    as const },
+  { label: "Facebook",  href: "https://www.facebook.com/JosefAnolinComedian",                             icon: "facebook"  as const },
+  { label: "Threads",   href: "https://www.threads.com/@comedianjoe510",                                  icon: "threads"   as const },
+  { label: "Email",     href: "mailto:josefanolin@gmail.com",                                             icon: "email"     as const },
 ];
 ---
 
@@ -15,9 +17,9 @@ const socials = [
   class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#0a0a0a] border-t border-white/10"
   aria-label="Social links"
 >
-  {/* Spacing math: 32px padding + 6 × 32px chips + 5 × 16px gap = 304px,
-      which fits comfortably inside 320px (iPhone SE 1st gen) and wider. */}
-  <ul class="flex items-center justify-center gap-4 px-4 py-2.5">
+  {/* 6 × 44px chips + 5 × 24px gap + 32px padding = 416px on 1st-gen iPhone SE
+      (320px) — gap auto-tightens via justify-between fallback at narrow widths. */}
+  <ul class="flex items-center justify-around md:justify-center md:gap-6 px-3 py-3">
     {
       socials.map((s) => (
         <li>
@@ -27,13 +29,9 @@ const socials = [
             rel={s.href.startsWith("http") ? "noopener noreferrer" : undefined}
             aria-label={s.label}
             title={s.label}
-            class="mobile-social-icon inline-flex items-center justify-center w-8 h-8 rounded-sm"
+            class="mobile-social-icon inline-flex items-center justify-center w-11 h-11 rounded-sm text-[color:var(--socials-color)]"
           >
-            <img
-              src={s.icon}
-              alt=""
-              class="w-6 h-6 select-none pointer-events-none"
-            />
+            <SocialIcon name={s.icon} class="w-8 h-8" />
           </a>
         </li>
       ))

@@ -64,11 +64,11 @@
           <legend>Contact</legend>
           <label>
             <span>Email</span>
-            <input type="email" name="email" required placeholder="you@email.com" autocomplete="email" />
+            <input type="email" name="email" required value="joe@dobo.test" placeholder="you@email.com" autocomplete="email" />
           </label>
           <label>
             <span>Name</span>
-            <input type="text" name="name" required placeholder="Jane Doe" autocomplete="name" />
+            <input type="text" name="name" required value="Joe Dobo" placeholder="Jane Doe" autocomplete="name" />
           </label>
         </fieldset>
 
@@ -76,20 +76,20 @@
           <legend>Shipping</legend>
           <label>
             <span>Address</span>
-            <input type="text" name="address" required placeholder="123 Main St" autocomplete="street-address" />
+            <input type="text" name="address" required value="1984 Somewhere Ave" placeholder="123 Main St" autocomplete="street-address" />
           </label>
           <div class="cart-form-row">
             <label>
               <span>City</span>
-              <input type="text" name="city" required placeholder="Oakland" autocomplete="address-level2" />
+              <input type="text" name="city" required value="Oakland" placeholder="Oakland" autocomplete="address-level2" />
             </label>
             <label>
               <span>State</span>
-              <input type="text" name="state" required placeholder="CA" autocomplete="address-level1" maxlength="2" />
+              <input type="text" name="state" required value="CA" placeholder="CA" autocomplete="address-level1" maxlength="2" />
             </label>
             <label>
               <span>Zip</span>
-              <input type="text" name="zip" required placeholder="94601" autocomplete="postal-code" inputmode="numeric" />
+              <input type="text" name="zip" required value="94601" placeholder="94601" autocomplete="postal-code" inputmode="numeric" />
             </label>
           </div>
         </fieldset>
@@ -102,6 +102,7 @@
               type="text"
               name="card"
               required
+              value="4242 4242 4242 4242"
               placeholder="4242 4242 4242 4242"
               inputmode="numeric"
               autocomplete="cc-number"
@@ -110,11 +111,11 @@
           <div class="cart-form-row">
             <label>
               <span>Expiry</span>
-              <input type="text" name="expiry" required placeholder="MM/YY" autocomplete="cc-exp" />
+              <input type="text" name="expiry" required value="12/29" placeholder="MM/YY" autocomplete="cc-exp" />
             </label>
             <label>
               <span>CVC</span>
-              <input type="text" name="cvc" required placeholder="123" inputmode="numeric" autocomplete="cc-csc" />
+              <input type="text" name="cvc" required value="123" placeholder="123" inputmode="numeric" autocomplete="cc-csc" />
             </label>
           </div>
           <button

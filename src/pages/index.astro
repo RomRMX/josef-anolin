@@ -32,6 +32,9 @@ import Contact from "../components/Contact.astro";
 
       <section id="contact" class="rail-section rail-section--contact">
         <Contact />
+        <p class="contact-copyright">
+          ©2026 <a href="https://www.JosefAnolin.com">www.JosefAnolin.com</a> All Rights Reserved.
+        </p>
       </section>
     </div>
   </main>
@@ -43,7 +46,7 @@ import Contact from "../components/Contact.astro";
   .layout {
     display: grid;
     grid-template-columns: 1fr;
-    background: var(--color-bg);
+    background: transparent;
   }
   .hero-rail {
     display: block;
@@ -52,6 +55,7 @@ import Contact from "../components/Contact.astro";
     display: flex;
     flex-direction: column;
     gap: 0;
+    background: rgba(0, 0, 0, var(--content-rail-opacity, 0));
   }
   .rail-section {
     padding: 4rem 1.25rem;
@@ -60,10 +64,14 @@ import Contact from "../components/Contact.astro";
   .rail-section + .rail-section {
     padding-top: 2rem;
   }
+  /* 100px footer breathing room on every breakpoint (overrides the default
+     rail-section bottom padding for the contact card). */
+  .rail-section--contact {
+    padding-bottom: 100px;
+  }
 
-  /* Two-column layout only kicks in at >= 1024px so the bio and the
-     -50px-shifted content rail can never collide at narrow widths. */
-  @media (min-width: 1024px) {
+  /* Two-column layout kicks in at >= 900px (was 1024). */
+  @media (min-width: 900px) {
     .layout {
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       align-items: start;
@@ -77,18 +85,19 @@ import Contact from "../components/Contact.astro";
     .content-rail {
       min-width: 0;
     }
-    /* Even vertical spread + asymmetric padding: less padding on the left
-       so content visually sits closer to the column gutter (the previous
-       intent of the -50px transform) without ever crossing into col1. */
+    /* Asymmetric padding: 50px breathing room on the left between the
+       sticky hero column and content, and 2.5rem on the right edge. */
     .rail-section {
-      padding: 5rem 2.5rem 5rem 0;
+      padding: 5rem 2.5rem 5rem 50px;
       min-height: 100dvh;
     }
-    /* Contact section keeps the standard top padding; HIT ME UP gets
-       pushed 160px down via margin on its inner wrapper, and the
-       section keeps an extra 200px breathing room at the bottom. */
+    /* Contact section: HIT ME UP pushed 160px down via margin on its
+       inner wrapper. Make the section a flex column so the copyright
+       can stick to the bottom of the viewport via margin-top: auto. */
     .rail-section--contact {
-      padding-bottom: calc(5rem + 200px);
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 100px;
     }
     .rail-section--contact #contact-inner {
       margin-top: 160px;
@@ -103,6 +112,32 @@ import Contact from "../components/Contact.astro";
     .contact-lede,
     .contact-form {
       max-width: 600px;
+    }
+  }
+
+  /* Page copyright lives in the contact section so it sits at the bottom
+     of the screen when HIT ME UP is in view. Reuses the --hero-copyright-*
+     vars so the playground's Copyright sliders still apply. */
+  .contact-copyright {
+    margin: var(--hero-copyright-margin-top, 1.5rem) 0 0;
+    font-size: var(--hero-copyright-fs, 0.7rem);
+    letter-spacing: 0.04em;
+    color: rgba(255, 255, 255, 0.45);
+    text-align: center;
+  }
+  .contact-copyright a {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  .contact-copyright a:hover {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+  @media (min-width: 900px) {
+    .rail-section--contact .contact-copyright {
+      margin-top: auto;
+      padding-top: 2rem;
     }
   }
 
