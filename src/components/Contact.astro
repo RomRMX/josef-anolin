@@ -1,14 +1,14 @@
 ---
-const FORMSPREE_ID = "";
-const action = FORMSPREE_ID
-  ? `https://formspree.io/f/${FORMSPREE_ID}`
-  : "mailto:josefanolin@gmail.com";
+import siteContent from "../data/siteContent";
+
+const { heading, lede, email, formspreeId } = siteContent.contact;
+const action = formspreeId ? `https://formspree.io/f/${formspreeId}` : `mailto:${email}`;
 ---
 
 <div id="contact-inner">
-  <h2 class="section-h2 section-h2--lead">HIT ME UP</h2>
+  <h2 class="section-h2 section-h2--lead">{heading}</h2>
   <p class="contact-lede">
-    Bookings, press, and general hellos. I read everything.
+    {lede}
   </p>
 
   <form action={action} method="POST" class="contact-form">

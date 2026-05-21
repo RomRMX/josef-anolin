@@ -1,20 +1,14 @@
 ---
 import SocialIcon from "./SocialIcon.astro";
+import siteContent from "../data/siteContent";
 
-const socials = [
-  { label: "YouTube",   href: "https://www.youtube.com/@comedianjoe510",                                  icon: "youtube"   as const },
-  { label: "Instagram", href: "https://www.instagram.com/comedianjoe510/",                                icon: "instagram" as const },
-  { label: "TikTok",    href: "https://www.tiktok.com/@comedianjoe510?is_from_webapp=1&sender_device=pc", icon: "tiktok"    as const },
-  { label: "Facebook",  href: "https://www.facebook.com/JosefAnolinComedian",                             icon: "facebook"  as const },
-  { label: "Threads",   href: "https://www.threads.com/@comedianjoe510",                                  icon: "threads"   as const },
-  { label: "Email",     href: "mailto:josefanolin@gmail.com",                                             icon: "email"     as const },
-];
+const socials = siteContent.socials;
 ---
 
 {/* Mobile-only social bar pinned to viewport bottom. PNG glyph icons on the
     dark bar — matches the desktop header style. */}
 <nav
-  class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#0a0a0a] border-t border-white/10"
+  class="mobile-social-bar md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#0a0a0a] border-t border-white/10"
   aria-label="Social links"
 >
   {/* 6 × 44px chips + 5 × 24px gap + 32px padding = 416px on 1st-gen iPhone SE

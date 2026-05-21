@@ -1,0 +1,607 @@
+---
+import Base from "../layouts/Base.astro";
+import siteContent from "../data/siteContent";
+
+const initialContent = JSON.stringify(siteContent);
+---
+
+<Base title="Admin | Josef Anolin" noindex>
+  <main class="admin-shell" data-admin-root>
+    <header class="admin-topbar">
+      <div>
+        <p class="admin-kicker">SITE ADMIN</p>
+        <h1>Content editor</h1>
+      </div>
+      <div class="admin-actions">
+        <a class="admin-link" href="/">View site</a>
+        <button class="admin-button admin-button--ghost" type="button" data-reset>
+          Reset
+        </button>
+        <button class="admin-button" type="button" data-save>
+          Save draft
+        </button>
+        <button class="admin-button admin-button--accent" type="button" data-export>
+          Export JSON
+        </button>
+      </div>
+    </header>
+
+    <p class="admin-status" data-status aria-live="polite"></p>
+
+    <section class="admin-panel" aria-labelledby="admin-key-content">
+      <h2 id="admin-key-content">Key content</h2>
+      <div class="admin-grid">
+        <label>
+          <span>Name</span>
+          <input data-field="hero.name" />
+        </label>
+        <label>
+          <span>Tagline</span>
+          <input data-field="hero.tagline" />
+        </label>
+        <label>
+          <span>Book button</span>
+          <input data-field="hero.bookLabel" />
+        </label>
+        <label>
+          <span>Contact heading</span>
+          <input data-field="contact.heading" />
+        </label>
+        <label class="admin-wide">
+          <span>Bio</span>
+          <textarea data-field="hero.bio" rows="4"></textarea>
+        </label>
+        <label class="admin-wide">
+          <span>Contact blurb</span>
+          <textarea data-field="contact.lede" rows="2"></textarea>
+        </label>
+        <label>
+          <span>Contact email</span>
+          <input data-field="contact.email" type="email" />
+        </label>
+        <label>
+          <span>Formspree ID</span>
+          <input data-field="contact.formspreeId" />
+        </label>
+      </div>
+    </section>
+
+    <section class="admin-panel" aria-labelledby="admin-shows">
+      <div class="admin-panel-head">
+        <h2 id="admin-shows">Show dates</h2>
+        <button class="admin-button admin-button--small" type="button" data-add="shows">
+          Add show
+        </button>
+      </div>
+      <div class="admin-stack" data-list="shows"></div>
+    </section>
+
+    <section class="admin-panel" aria-labelledby="admin-products">
+      <div class="admin-panel-head">
+        <h2 id="admin-products">Products</h2>
+        <button class="admin-button admin-button--small" type="button" data-add="products">
+          Add product
+        </button>
+      </div>
+      <div class="admin-stack" data-list="products"></div>
+    </section>
+
+    <section class="admin-panel" aria-labelledby="admin-socials">
+      <div class="admin-panel-head">
+        <h2 id="admin-socials">Social links</h2>
+        <button class="admin-button admin-button--small" type="button" data-add="socials">
+          Add link
+        </button>
+      </div>
+      <div class="admin-stack" data-list="socials"></div>
+    </section>
+
+    <section class="admin-panel" aria-labelledby="admin-media">
+      <div class="admin-panel-head">
+        <h2 id="admin-media">Videos</h2>
+        <button class="admin-button admin-button--small" type="button" data-add="videos">
+          Add video
+        </button>
+      </div>
+      <div class="admin-stack" data-list="videos"></div>
+    </section>
+
+    <section class="admin-panel" aria-labelledby="admin-appearances">
+      <div class="admin-panel-head">
+        <h2 id="admin-appearances">Appearances</h2>
+        <button class="admin-button admin-button--small" type="button" data-add="appearances">
+          Add group
+        </button>
+      </div>
+      <div class="admin-stack" data-list="appearances"></div>
+    </section>
+
+    <section class="admin-panel" aria-labelledby="admin-pics">
+      <div class="admin-panel-head">
+        <h2 id="admin-pics">Pictures</h2>
+        <button class="admin-button admin-button--small" type="button" data-add="pics">
+          Add picture
+        </button>
+      </div>
+      <div class="admin-stack" data-list="pics"></div>
+    </section>
+
+    <section class="admin-panel" aria-labelledby="admin-policies">
+      <div class="admin-panel-head">
+        <h2 id="admin-policies">Store policies</h2>
+        <button class="admin-button admin-button--small" type="button" data-add="policies">
+          Add policy
+        </button>
+      </div>
+      <div class="admin-stack" data-list="policies"></div>
+    </section>
+
+    <section class="admin-panel" aria-labelledby="admin-import">
+      <h2 id="admin-import">Import content</h2>
+      <label>
+        <span>Paste exported JSON</span>
+        <textarea data-import rows="8" spellcheck="false"></textarea>
+      </label>
+      <button class="admin-button" type="button" data-import-button>
+        Import JSON
+      </button>
+    </section>
+  </main>
+</Base>
+
+<script define:vars={{ initialContent }}>
+  const STORAGE_KEY = "joe-dobo-admin-content";
+  const root = document.querySelector("[data-admin-root]");
+  const status = document.querySelector("[data-status]");
+  const defaultContent = JSON.parse(initialContent);
+  let content = loadContent();
+
+  const templates = {
+    shows: {
+      title: "New show",
+      fields: [
+        ["date", "Date", "text"],
+        ["venue", "Venue", "text"],
+        ["city", "City", "text"],
+        ["address", "Address", "text"],
+        ["tickets", "Ticket link", "url"],
+      ],
+      empty: { date: "", city: "", venue: "", address: "", tickets: "" },
+      label: (item) => item.venue || item.city || "Show",
+    },
+    products: {
+      title: "New product",
+      fields: [
+        ["id", "Product ID", "text"],
+        ["name", "Name", "text"],
+        ["description", "Description", "textarea"],
+        ["price", "Price in cents", "number"],
+        ["src", "Image path", "text"],
+      ],
+      empty: { id: "", src: "", name: "", description: "", price: 0 },
+      label: (item) => item.name || "Product",
+    },
+    socials: {
+      title: "New link",
+      fields: [
+        ["label", "Label", "text"],
+        ["href", "URL or mailto", "text"],
+        ["icon", "Icon", "select"],
+      ],
+      empty: { label: "", href: "", icon: "instagram" },
+      label: (item) => item.label || "Social link",
+      options: ["youtube", "instagram", "tiktok", "facebook", "threads", "email"],
+    },
+    videos: {
+      title: "New video",
+      fields: [
+        ["id", "YouTube ID", "text"],
+        ["title", "Title", "text"],
+      ],
+      empty: { id: "", title: "" },
+      label: (item) => item.title || item.id || "Video",
+    },
+    appearances: {
+      title: "New group",
+      fields: [
+        ["label", "Group label", "text"],
+        ["items", "Items, one per line", "lines"],
+      ],
+      empty: { label: "", items: [] },
+      label: (item) => item.label || "Appearance group",
+    },
+    pics: {
+      title: "New picture",
+      fields: [["value", "Image path", "text"]],
+      empty: "",
+      label: (item) => item || "Picture",
+    },
+    policies: {
+      title: "New policy",
+      fields: [
+        ["title", "Title", "text"],
+        ["body", "Policy text", "textarea"],
+      ],
+      empty: { title: "", body: "" },
+      label: (item) => item.title || "Policy",
+    },
+  };
+
+  function loadContent() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (!saved) return structuredClone(defaultContent);
+    try {
+      return mergeContent(defaultContent, JSON.parse(saved));
+    } catch {
+      return structuredClone(defaultContent);
+    }
+  }
+
+  function mergeContent(base, draft) {
+    return {
+      ...structuredClone(base),
+      ...draft,
+      hero: { ...base.hero, ...(draft.hero || {}) },
+      contact: { ...base.contact, ...(draft.contact || {}) },
+    };
+  }
+
+  function getByPath(path) {
+    return path.split(".").reduce((value, key) => value?.[key], content);
+  }
+
+  function setByPath(path, value) {
+    const keys = path.split(".");
+    const last = keys.pop();
+    const target = keys.reduce((value, key) => value[key], content);
+    target[last] = value;
+  }
+
+  function render() {
+    root.querySelectorAll("[data-field]").forEach((field) => {
+      field.value = getByPath(field.dataset.field) ?? "";
+    });
+
+    Object.keys(templates).forEach((key) => renderList(key));
+  }
+
+  function renderList(key) {
+    const target = root.querySelector(`[data-list="${key}"]`);
+    const template = templates[key];
+    target.replaceChildren();
+
+    content[key].forEach((rawItem, index) => {
+      const item = key === "pics" ? { value: rawItem } : rawItem;
+      const card = document.createElement("article");
+      card.className = "admin-item";
+      card.innerHTML = `
+        <div class="admin-item-head">
+          <strong>${escapeHtml(template.label(item))}</strong>
+          <button class="admin-remove" type="button">Remove</button>
+        </div>
+        <div class="admin-grid"></div>
+      `;
+
+      const grid = card.querySelector(".admin-grid");
+      template.fields.forEach(([name, label, type]) => {
+        const wrapper = document.createElement("label");
+        wrapper.innerHTML = `<span>${label}</span>`;
+        const input = createField(type, item[name] ?? "", template.options);
+        input.addEventListener("input", () => {
+          const value =
+            type === "number"
+              ? Number(input.value)
+              : type === "lines"
+                ? input.value.split("\n").map((line) => line.trim()).filter(Boolean)
+                : input.value;
+          if (key === "pics") {
+            content[key][index] = value;
+          } else {
+            item[name] = value;
+          }
+          saveQuietly();
+        });
+        wrapper.append(input);
+        if (type === "textarea" || type === "lines") wrapper.classList.add("admin-wide");
+        grid.append(wrapper);
+      });
+
+      card.querySelector(".admin-remove").addEventListener("click", () => {
+        content[key].splice(index, 1);
+        saveQuietly();
+        renderList(key);
+        announce("Removed item.");
+      });
+
+      target.append(card);
+    });
+  }
+
+  function createField(type, value, options = []) {
+    if (type === "textarea") {
+      const textarea = document.createElement("textarea");
+      textarea.rows = 3;
+      textarea.value = value;
+      return textarea;
+    }
+    if (type === "lines") {
+      const textarea = document.createElement("textarea");
+      textarea.rows = 4;
+      textarea.value = Array.isArray(value) ? value.join("\n") : value;
+      return textarea;
+    }
+    if (type === "select") {
+      const select = document.createElement("select");
+      options.forEach((option) => {
+        const item = document.createElement("option");
+        item.value = option;
+        item.textContent = option;
+        select.append(item);
+      });
+      select.value = value;
+      return select;
+    }
+    const input = document.createElement("input");
+    input.type = type;
+    input.value = value;
+    return input;
+  }
+
+  function saveQuietly() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(content));
+  }
+
+  function saveDraft() {
+    saveQuietly();
+    announce("Draft saved in this browser.");
+  }
+
+  function exportJson() {
+    const blob = new Blob([JSON.stringify(content, null, 2)], {
+      type: "application/json",
+    });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "siteContent.json";
+    link.click();
+    URL.revokeObjectURL(url);
+    announce("Exported JSON.");
+  }
+
+  function importJson() {
+    const input = root.querySelector("[data-import]");
+    try {
+      const next = mergeContent(defaultContent, JSON.parse(input.value));
+      content = next;
+      saveQuietly();
+      render();
+      announce("Imported content.");
+    } catch {
+      announce("Import failed. Check the JSON and try again.");
+    }
+  }
+
+  function resetContent() {
+    content = structuredClone(defaultContent);
+    localStorage.removeItem(STORAGE_KEY);
+    render();
+    announce("Reset to published content.");
+  }
+
+  function escapeHtml(value) {
+    return String(value)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;");
+  }
+
+  function announce(message) {
+    status.textContent = message;
+  }
+
+  root.querySelectorAll("[data-field]").forEach((field) => {
+    field.addEventListener("input", () => {
+      setByPath(field.dataset.field, field.value);
+      saveQuietly();
+    });
+  });
+
+  root.querySelectorAll("[data-add]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const key = button.dataset.add;
+      content[key].push(structuredClone(templates[key].empty));
+      saveQuietly();
+      renderList(key);
+      announce(`Added ${templates[key].title.toLowerCase()}.`);
+    });
+  });
+
+  root.querySelector("[data-save]").addEventListener("click", saveDraft);
+  root.querySelector("[data-export]").addEventListener("click", exportJson);
+  root.querySelector("[data-reset]").addEventListener("click", resetContent);
+  root.querySelector("[data-import-button]").addEventListener("click", importJson);
+
+  render();
+</script>
+
+<style is:global>
+  body:has(.admin-shell) {
+    background: #0b0d10;
+  }
+  body:has(.admin-shell) .site-header,
+  body:has(.admin-shell) .mobile-social-bar,
+  body:has(.admin-shell) .cart-drawer,
+  body:has(.admin-shell) #back-to-top {
+    display: none;
+  }
+</style>
+
+<style>
+  .admin-shell {
+    width: min(1180px, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: 2rem 0 5rem;
+    color: #f5f5f5;
+  }
+  .admin-topbar,
+  .admin-panel-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .admin-topbar {
+    margin-bottom: 1rem;
+  }
+  .admin-kicker {
+    margin: 0 0 0.25rem;
+    color: var(--color-accent);
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+  }
+  h1,
+  h2 {
+    font-family: var(--font-display), system-ui, sans-serif;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 4rem);
+  }
+  h2 {
+    margin: 0 0 1rem;
+    font-size: 1.4rem;
+    color: #e8edc6;
+  }
+  .admin-panel-head h2 {
+    margin: 0;
+  }
+  .admin-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.65rem;
+  }
+  .admin-button,
+  .admin-link,
+  .admin-remove {
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 6px;
+    background: #15191f;
+    color: #fff;
+    padding: 0.7rem 0.95rem;
+    font-weight: 800;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .admin-button--accent {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: #000;
+  }
+  .admin-button--ghost {
+    background: transparent;
+  }
+  .admin-button--small {
+    padding: 0.55rem 0.75rem;
+  }
+  .admin-remove {
+    padding: 0.45rem 0.65rem;
+    background: #2a1113;
+    color: #ffb8bd;
+  }
+  .admin-status {
+    min-height: 1.5rem;
+    margin: 0 0 1rem;
+    color: rgba(255, 255, 255, 0.72);
+  }
+  .admin-panel {
+    margin-top: 1rem;
+    padding: 1.25rem;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.045);
+  }
+  .admin-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+  .admin-wide {
+    grid-column: 1 / -1;
+  }
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  label span {
+    color: rgba(255, 255, 255, 0.68);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  input,
+  textarea,
+  select {
+    width: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 6px;
+    background: #080a0d;
+    color: #fff;
+    padding: 0.72rem 0.8rem;
+    font: inherit;
+  }
+  textarea {
+    resize: vertical;
+  }
+  input:focus,
+  textarea:focus,
+  select:focus {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+  .admin-stack {
+    display: grid;
+    gap: 0.85rem;
+    margin-top: 1rem;
+  }
+  .admin-item {
+    padding: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.28);
+  }
+  .admin-item-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.85rem;
+  }
+  .admin-item-head strong {
+    overflow-wrap: anywhere;
+  }
+
+  @media (max-width: 760px) {
+    .admin-topbar,
+    .admin-panel-head {
+      align-items: stretch;
+      flex-direction: column;
+    }
+    .admin-actions {
+      justify-content: flex-start;
+    }
+    .admin-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

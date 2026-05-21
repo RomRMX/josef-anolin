@@ -1,8 +1,7 @@
 ---
-const pics: string[] = Array.from(
-  { length: 20 },
-  (_, i) => `/pics/joe-${String(i + 1).padStart(2, "0")}.webp`,
-);
+import siteContent from "../data/siteContent";
+
+const pics = siteContent.pics;
 ---
 
 <div id="pics">

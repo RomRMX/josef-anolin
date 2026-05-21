@@ -1,30 +1,8 @@
 ---
-const tees = [
-  {
-    id: "joe-tee-classic",
-    src: "/shop/tee-black-front.png",
-    name: "Joe Dobo Classic Tee",
-    description:
-      "Soft cotton, blast yellow logo on jet black. Roomy fit so your beer doesn't have to compete for space.",
-    price: 3000,
-  },
-  {
-    id: "joe-tee-stand-up",
-    src: "/shop/tee-black-front-2.png",
-    name: "Stand Up Comedian Tee",
-    description:
-      "Anton block letters across the chest. The shirt that says you're funnier than the venue paid for.",
-    price: 3000,
-  },
-  {
-    id: "joe-hoodie",
-    src: "/shop/hoodie-black.png",
-    name: "Joe Dobo Hoodie",
-    description:
-      "Heavyweight fleece, oversized fit. The unofficial uniform of every greenroom from Oakland to LA.",
-    price: 6500,
-  },
-];
+import siteContent from "../data/siteContent";
+
+const tees = siteContent.products;
+const policies = siteContent.policies;
 
 const fmt = (cents: number) =>
   (cents / 100).toLocaleString("en-US", {
@@ -79,47 +57,12 @@ const fmt = (cents: number) =>
   <section class="shop-policies" aria-labelledby="shop-policies-title">
     <h3 id="shop-policies-title">STORE POLICIES</h3>
     <div class="shop-policy-list">
-      <details>
-        <summary>Privacy Policy</summary>
-        <p>
-          We collect the information needed to process orders, respond to customer messages,
-          and improve the store experience. Customer data is used only for order fulfillment,
-          payment processing, fraud prevention, and required business records. We do not sell
-          personal information.
-        </p>
-      </details>
-      <details>
-        <summary>Shipping Policy</summary>
-        <p>
-          Orders are packed after payment confirmation and ship to the address provided at
-          checkout. Shipping rates and estimated delivery windows are shown before purchase.
-          Delivery timing may vary by carrier, destination, weather, and holiday volume.
-        </p>
-      </details>
-      <details>
-        <summary>Terms of Service</summary>
-        <p>
-          By placing an order, you agree to provide accurate contact, billing, and shipping
-          details. Product availability, pricing, and descriptions may change without notice.
-          We may refuse or cancel orders that appear fraudulent, abusive, or incorrectly priced.
-        </p>
-      </details>
-      <details>
-        <summary>Refund Policy</summary>
-        <p>
-          Unworn and unused items may be eligible for return or exchange within 30 days of
-          delivery. Items must be returned in their original condition. Final sale items,
-          damaged-by-use items, and customized products are not eligible for refund.
-        </p>
-      </details>
-      <details>
-        <summary>Cookies Policy</summary>
-        <p>
-          This site may use cookies and similar technologies to remember cart activity,
-          measure site performance, support secure checkout, and understand store traffic.
-          You can manage cookie preferences through your browser settings.
-        </p>
-      </details>
+      {policies.map((policy) => (
+        <details>
+          <summary>{policy.title}</summary>
+          <p>{policy.body}</p>
+        </details>
+      ))}
     </div>
   </section>
 </div>

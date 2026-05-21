@@ -1,21 +1,15 @@
 ---
 import SocialIcon from "./SocialIcon.astro";
+import siteContent from "../data/siteContent";
 
 const links = [
   { href: "#shows", label: "SHOWS" },
   { href: "#media", label: "MEDIA" },
   { href: "#shop", label: "SHOP" },
-  { href: "#contact", label: "HIT ME UP" },
+  { href: "#contact", label: siteContent.contact.heading },
 ];
 
-const socials = [
-  { label: "YouTube",   href: "https://www.youtube.com/@comedianjoe510",                                  icon: "youtube"   as const },
-  { label: "Instagram", href: "https://www.instagram.com/comedianjoe510/",                                icon: "instagram" as const },
-  { label: "TikTok",    href: "https://www.tiktok.com/@comedianjoe510?is_from_webapp=1&sender_device=pc", icon: "tiktok"    as const },
-  { label: "Facebook",  href: "https://www.facebook.com/JosefAnolinComedian",                             icon: "facebook"  as const },
-  { label: "Threads",   href: "https://www.threads.com/@comedianjoe510",                                  icon: "threads"   as const },
-  { label: "Email",     href: "mailto:josefanolin@gmail.com",                                             icon: "email"     as const },
-];
+const socials = siteContent.socials;
 ---
 
 {/* MOBILE header — logo row with cart button on the right, then nav links. */}

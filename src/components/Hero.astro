@@ -2,6 +2,7 @@
 import { statSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import SocialIcon from "./SocialIcon.astro";
+import siteContent from "../data/siteContent";
 
 const subjectImagePath = fileURLToPath(
   new URL("../../public/subject_image.png", import.meta.url),
@@ -12,27 +13,20 @@ const navLinks = [
   { href: "#shows", label: "SHOWS" },
   { href: "#media", label: "MEDIA" },
   { href: "#shop", label: "SHOP" },
-  { href: "#contact", label: "HIT ME UP" },
+  { href: "#contact", label: siteContent.contact.heading },
 ];
 
-const socials = [
-  { label: "YouTube",   href: "https://www.youtube.com/@comedianjoe510",                                  icon: "youtube"   as const },
-  { label: "Instagram", href: "https://www.instagram.com/comedianjoe510/",                                icon: "instagram" as const },
-  { label: "TikTok",    href: "https://www.tiktok.com/@comedianjoe510?is_from_webapp=1&sender_device=pc", icon: "tiktok"    as const },
-  { label: "Facebook",  href: "https://www.facebook.com/JosefAnolinComedian",                             icon: "facebook"  as const },
-  { label: "Threads",   href: "https://www.threads.com/@comedianjoe510",                                  icon: "threads"   as const },
-  { label: "Email",     href: "mailto:josefanolin@gmail.com",                                             icon: "email"     as const },
-];
+const { hero, socials } = siteContent;
 ---
 
 <section
   class="hero-section"
-  aria-label="Josef Anolin — Stand-Up Comedian"
+  aria-label={`${hero.name} — ${hero.tagline}`}
 >
-  <h1 class="sr-only">Josef Anolin — Stand-Up Comedian</h1>
+  <h1 class="sr-only">{hero.name} — {hero.tagline}</h1>
 
   <div class="hero-stage">
-    <a href="#contact" class="hero-tag" aria-label="Book Josef">BOOK ME!</a>
+    <a href="#contact" class="hero-tag" aria-label={`Book ${hero.name}`}>{hero.bookLabel}</a>
     <img
       src={subjectImageSrc}
       alt="Josef Anolin"
@@ -48,10 +42,7 @@ const socials = [
   </div>
 
   <p class="hero-bio">
-    From Oakland, California currently living in Los Angeles, Josef has opened
-    for the likes of Tom Segura, Whitney Cummings, and Michael Che. He likes
-    telling irreverent stories based on his life and observations. He has an
-    Android phone because he likes pissing you off with his green text bubbles.
+    {hero.bio}
   </p>
 
   <ul class="hero-socials" aria-label="Social links">

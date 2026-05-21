@@ -3,15 +3,18 @@ import "../styles/global.css";
 import Header from "../components/Header.astro";
 import MobileSocialBar from "../components/MobileSocialBar.astro";
 import CartDrawer from "../components/CartDrawer.astro";
+import siteContent from "../data/siteContent";
 
 interface Props {
   title?: string;
   description?: string;
+  noindex?: boolean;
 }
 
 const {
-  title = "Josef Anolin — Stand-Up Comedian",
+  title = `${siteContent.hero.name} — ${siteContent.hero.tagline}`,
   description = "Stand-up comedian from Oakland, California. Currently based in Los Angeles.",
+  noindex = false,
 } = Astro.props;
 ---
 
@@ -21,6 +24,7 @@ const {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
     <meta name="theme-color" content="#0a0a0a" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />

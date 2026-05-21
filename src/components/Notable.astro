@@ -1,29 +1,7 @@
 ---
-const groups = [
-  {
-    label: "Headlining",
-    items: ["Laughs Unlimited (Sacramento, CA)"],
-  },
-  {
-    label: "Featured",
-    items: [
-      "Punch Line (San Francisco)",
-      "Punch Line (Sacramento)",
-      "Cobb's Comedy Club (San Francisco)",
-      "The San Jose Improv",
-      "Rooster T. Feathers",
-    ],
-  },
-  {
-    label: "Festivals",
-    items: [
-      "Clusterfest Bay Area Showcase 2018",
-      "Sketchfest (2015, 2017, 2018, 2023)",
-      "Outside Lands 2016",
-      "North Carolina Comedy Festival 2018",
-    ],
-  },
-];
+import siteContent from "../data/siteContent";
+
+const groups = siteContent.appearances;
 ---
 
 <div id="notable">
@@ -40,12 +18,14 @@ const groups = [
       ))}
     </div>
     <div class="notable-col">
-      <section class="notable-group">
-        <h3 class="notable-group__label">{groups[2].label.toUpperCase()}</h3>
-        <ul class="notable-group__items">
-          {groups[2].items.map((item) => <li>{item}</li>)}
-        </ul>
-      </section>
+      {groups[2] && (
+        <section class="notable-group">
+          <h3 class="notable-group__label">{groups[2].label.toUpperCase()}</h3>
+          <ul class="notable-group__items">
+            {groups[2].items.map((item) => <li>{item}</li>)}
+          </ul>
+        </section>
+      )}
     </div>
   </div>
 </div>
