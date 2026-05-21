@@ -9,14 +9,6 @@ const tees = [
     price: 3000,
   },
   {
-    id: "joe-tee-tour",
-    src: "/shop/items/blanktees_navy-a.png",
-    name: "Tour Tee — Bay Area",
-    description:
-      "Limited print celebrating Oakland to LA and back. Worn by every comic too cheap to buy two.",
-    price: 3500,
-  },
-  {
     id: "joe-tee-stand-up",
     src: "/shop/tee-black-front-2.png",
     name: "Stand Up Comedian Tee",
@@ -31,22 +23,6 @@ const tees = [
     description:
       "Heavyweight fleece, oversized fit. The unofficial uniform of every greenroom from Oakland to LA.",
     price: 6500,
-  },
-  {
-    id: "joe-tote",
-    src: "/shop/items/tote_black.png",
-    name: "Joe Dobo Tote",
-    description:
-      "Carry your snacks, your set list, your delusions. Roomy enough for all three.",
-    price: 2200,
-  },
-  {
-    id: "joe-trucker",
-    src: "/shop/items/hat_trucker_camo.png",
-    name: "Trucker Hat",
-    description:
-      "Camo crown, mesh back, snapback close. Goes with everything in your closet that's also black.",
-    price: 2800,
   },
 ];
 
@@ -93,6 +69,58 @@ const fmt = (cents: number) =>
       </li>
     ))}
   </ul>
+
+  <div class="shop-trust" aria-label="Checkout provider">
+    <span>Secure checkout</span>
+    <strong>Powered by Stripe</strong>
+  </div>
+
+  <section class="shop-policies" aria-labelledby="shop-policies-title">
+    <h3 id="shop-policies-title">STORE POLICIES</h3>
+    <div class="shop-policy-list">
+      <details>
+        <summary>Privacy Policy</summary>
+        <p>
+          We collect the information needed to process orders, respond to customer messages,
+          and improve the store experience. Customer data is used only for order fulfillment,
+          payment processing, fraud prevention, and required business records. We do not sell
+          personal information.
+        </p>
+      </details>
+      <details>
+        <summary>Shipping Policy</summary>
+        <p>
+          Orders are packed after payment confirmation and ship to the address provided at
+          checkout. Shipping rates and estimated delivery windows are shown before purchase.
+          Delivery timing may vary by carrier, destination, weather, and holiday volume.
+        </p>
+      </details>
+      <details>
+        <summary>Terms of Service</summary>
+        <p>
+          By placing an order, you agree to provide accurate contact, billing, and shipping
+          details. Product availability, pricing, and descriptions may change without notice.
+          We may refuse or cancel orders that appear fraudulent, abusive, or incorrectly priced.
+        </p>
+      </details>
+      <details>
+        <summary>Refund Policy</summary>
+        <p>
+          Unworn and unused items may be eligible for return or exchange within 30 days of
+          delivery. Items must be returned in their original condition. Final sale items,
+          damaged-by-use items, and customized products are not eligible for refund.
+        </p>
+      </details>
+      <details>
+        <summary>Cookies Policy</summary>
+        <p>
+          This site may use cookies and similar technologies to remember cart activity,
+          measure site performance, support secure checkout, and understand store traffic.
+          You can manage cookie preferences through your browser settings.
+        </p>
+      </details>
+    </div>
+  </section>
 </div>
 
 <div
@@ -172,6 +200,67 @@ const fmt = (cents: number) =>
     transition: transform 280ms var(--ease-out-strong);
   }
   .tee-row__media:hover img { transform: scale(1.05); }
+
+  .shop-trust {
+    margin-top: 2.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.85rem 1rem;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .shop-trust strong {
+    color: var(--color-ink);
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-size: 0.92rem;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+
+  .shop-policies {
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .shop-policies h3 {
+    margin: 0 0 0.9rem;
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.12em;
+    color: var(--color-accent);
+  }
+  .shop-policy-list {
+    display: grid;
+    gap: 0.55rem;
+  }
+  .shop-policy-list details {
+    background: rgba(0, 0, 0, 0.42);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .shop-policy-list summary {
+    cursor: pointer;
+    padding: 0.8rem 0.95rem;
+    font-family: var(--font-display), system-ui, sans-serif;
+    color: var(--color-ink);
+    letter-spacing: 0.08em;
+    list-style-position: inside;
+  }
+  .shop-policy-list p {
+    margin: 0;
+    padding: 0 0.95rem 0.95rem;
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 0.86rem;
+    line-height: 1.5;
+  }
 
   .product-zoom[hidden] { display: none; }
   .product-zoom {
@@ -310,6 +399,11 @@ const fmt = (cents: number) =>
     }
     .tee-row__name { font-size: 1.2rem; }
     .tee-row__desc { font-size: 0.85rem; }
+    .shop-trust {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
   }
 </style>
 
