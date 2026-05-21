@@ -35,7 +35,13 @@ const fmt = (cents: number) =>
 ---
 
 <div id="shop-inner">
-  <h2 class="section-h2 section-h2--lead">SHOP</h2>
+  <div class="shop-heading-row">
+    <h2 class="section-h2 section-h2--lead">SHOP</h2>
+    <div class="shop-trust" aria-label="Checkout provider">
+      <span>Secure checkout</span>
+      <strong>Powered by Stripe</strong>
+    </div>
+  </div>
   <ul class="tee-list">
     {tees.map((t) => (
       <li class="tee-row">
@@ -69,11 +75,6 @@ const fmt = (cents: number) =>
       </li>
     ))}
   </ul>
-
-  <div class="shop-trust" aria-label="Checkout provider">
-    <span>Secure checkout</span>
-    <strong>Powered by Stripe</strong>
-  </div>
 
   <section class="shop-policies" aria-labelledby="shop-policies-title">
     <h3 id="shop-policies-title">STORE POLICIES</h3>
@@ -201,33 +202,43 @@ const fmt = (cents: number) =>
   }
   .tee-row__media:hover img { transform: scale(1.05); }
 
-  .shop-trust {
-    margin-top: 2.75rem;
+  .shop-heading-row {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     gap: 1rem;
-    padding: 0.85rem 1rem;
-    background: rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 8px;
+    margin-bottom: 2.25rem;
+  }
+  .shop-heading-row .section-h2 {
+    margin-bottom: 0;
+    flex: 1 1 auto;
+  }
+  .shop-trust {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.7rem;
+    padding-top: 0.3rem;
     color: rgba(255, 255, 255, 0.7);
-    font-size: 0.78rem;
+    font-size: 0.68rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
   .shop-trust strong {
     color: var(--color-ink);
     font-family: var(--font-display), system-ui, sans-serif;
-    font-size: 0.92rem;
+    font-size: 0.74rem;
     letter-spacing: 0.08em;
     white-space: nowrap;
   }
 
   .shop-policies {
-    margin-top: 1.5rem;
-    padding-top: 1.25rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    margin-top: 3rem;
+    padding: 1.25rem;
+    background: rgba(0, 0, 0, 0.42);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 8px;
   }
   .shop-policies h3 {
     margin: 0 0 0.9rem;
@@ -238,12 +249,11 @@ const fmt = (cents: number) =>
   }
   .shop-policy-list {
     display: grid;
-    gap: 0.55rem;
   }
   .shop-policy-list details {
-    background: rgba(0, 0, 0, 0.42);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
+    background: transparent;
+    border: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
     overflow: hidden;
   }
   .shop-policy-list summary {
@@ -393,6 +403,11 @@ const fmt = (cents: number) =>
   }
 
   @media (max-width: 767px) {
+    .shop-heading-row {
+      flex-direction: column;
+      gap: 0.7rem;
+      margin-bottom: 2rem;
+    }
     .tee-row {
       grid-template-columns: 110px 1fr;
       gap: 1rem;
@@ -401,8 +416,8 @@ const fmt = (cents: number) =>
     .tee-row__desc { font-size: 0.85rem; }
     .shop-trust {
       align-items: flex-start;
-      flex-direction: column;
-      gap: 0.35rem;
+      justify-content: flex-start;
+      padding-top: 0;
     }
   }
 </style>
