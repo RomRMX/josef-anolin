@@ -7,145 +7,203 @@ const initialContent = JSON.stringify(siteContent);
 
 <Base title="Admin | Josef Anolin" noindex>
   <main class="admin-shell" data-admin-root>
-    <header class="admin-topbar">
-      <div>
-        <p class="admin-kicker">SITE ADMIN</p>
-        <h1>Content editor</h1>
-      </div>
-      <div class="admin-actions">
-        <a class="admin-link" href="/">View site</a>
-        <button class="admin-button admin-button--ghost" type="button" data-reset>
-          Reset
-        </button>
-        <button class="admin-button" type="button" data-save>
-          Save draft
-        </button>
-        <button class="admin-button admin-button--accent" type="button" data-export>
-          Export JSON
-        </button>
-      </div>
-    </header>
+    <aside class="admin-sidebar" aria-label="Admin navigation">
+      <a class="admin-brand" href="/">
+        <span>JD</span>
+        <strong>Site Admin</strong>
+      </a>
+      <nav class="admin-nav">
+        <a href="#admin-key-content">Overview</a>
+        <a href="#admin-shows">Shows</a>
+        <a href="#admin-products">Products</a>
+        <a href="#admin-socials">Socials</a>
+        <a href="#admin-media">Videos</a>
+        <a href="#admin-appearances">Appearances</a>
+        <a href="#admin-pics">Pictures</a>
+        <a href="#admin-policies">Policies</a>
+        <a href="#admin-import">Import</a>
+      </nav>
+    </aside>
 
-    <p class="admin-status" data-status aria-live="polite"></p>
+    <div class="admin-workspace">
+      <header class="admin-topbar">
+        <div>
+          <p class="admin-kicker">Backstage</p>
+          <h1>Content editor</h1>
+        </div>
+        <div class="admin-actions">
+          <a class="admin-link" href="/">View site</a>
+          <button class="admin-button admin-button--ghost" type="button" data-reset>
+            Reset
+          </button>
+          <button class="admin-button" type="button" data-save>
+            Save draft
+          </button>
+          <button class="admin-button admin-button--accent" type="button" data-export>
+            Export JSON
+          </button>
+        </div>
+      </header>
 
-    <section class="admin-panel" aria-labelledby="admin-key-content">
-      <h2 id="admin-key-content">Key content</h2>
-      <div class="admin-grid">
+      <p class="admin-status" data-status aria-live="polite">Drafts save in this browser.</p>
+
+      <section class="admin-overview" aria-label="Content summary">
+        <div><span data-count="shows">0</span><strong>Shows</strong></div>
+        <div><span data-count="products">0</span><strong>Products</strong></div>
+        <div><span data-count="videos">0</span><strong>Videos</strong></div>
+        <div><span data-count="pics">0</span><strong>Photos</strong></div>
+      </section>
+
+      <section class="admin-section" aria-labelledby="admin-key-content">
+        <div class="admin-section-head">
+          <div>
+            <p class="admin-section-kicker">Primary</p>
+            <h2 id="admin-key-content">Overview</h2>
+          </div>
+        </div>
+        <div class="admin-grid admin-grid--primary">
+          <label>
+            <span>Name</span>
+            <input data-field="hero.name" />
+          </label>
+          <label>
+            <span>Tagline</span>
+            <input data-field="hero.tagline" />
+          </label>
+          <label>
+            <span>Book button</span>
+            <input data-field="hero.bookLabel" />
+          </label>
+          <label>
+            <span>Contact heading</span>
+            <input data-field="contact.heading" />
+          </label>
+          <label class="admin-wide">
+            <span>Bio</span>
+            <textarea data-field="hero.bio" rows="4"></textarea>
+          </label>
+          <label class="admin-wide">
+            <span>Contact blurb</span>
+            <textarea data-field="contact.lede" rows="2"></textarea>
+          </label>
+          <label>
+            <span>Contact email</span>
+            <input data-field="contact.email" type="email" />
+          </label>
+          <label>
+            <span>Formspree ID</span>
+            <input data-field="contact.formspreeId" />
+          </label>
+        </div>
+      </section>
+
+      <section class="admin-section" aria-labelledby="admin-shows">
+        <div class="admin-section-head">
+          <div>
+            <p class="admin-section-kicker">Calendar</p>
+            <h2 id="admin-shows">Show dates</h2>
+          </div>
+          <button class="admin-button admin-button--small" type="button" data-add="shows">
+            Add show
+          </button>
+        </div>
+        <div class="admin-stack" data-list="shows"></div>
+      </section>
+
+      <section class="admin-section" aria-labelledby="admin-products">
+        <div class="admin-section-head">
+          <div>
+            <p class="admin-section-kicker">Store</p>
+            <h2 id="admin-products">Products</h2>
+          </div>
+          <button class="admin-button admin-button--small" type="button" data-add="products">
+            Add product
+          </button>
+        </div>
+        <div class="admin-stack" data-list="products"></div>
+      </section>
+
+      <section class="admin-section" aria-labelledby="admin-socials">
+        <div class="admin-section-head">
+          <div>
+            <p class="admin-section-kicker">Links</p>
+            <h2 id="admin-socials">Social links</h2>
+          </div>
+          <button class="admin-button admin-button--small" type="button" data-add="socials">
+            Add link
+          </button>
+        </div>
+        <div class="admin-stack" data-list="socials"></div>
+      </section>
+
+      <section class="admin-section" aria-labelledby="admin-media">
+        <div class="admin-section-head">
+          <div>
+            <p class="admin-section-kicker">Media</p>
+            <h2 id="admin-media">Videos</h2>
+          </div>
+          <button class="admin-button admin-button--small" type="button" data-add="videos">
+            Add video
+          </button>
+        </div>
+        <div class="admin-stack" data-list="videos"></div>
+      </section>
+
+      <section class="admin-section" aria-labelledby="admin-appearances">
+        <div class="admin-section-head">
+          <div>
+            <p class="admin-section-kicker">Press kit</p>
+            <h2 id="admin-appearances">Appearances</h2>
+          </div>
+          <button class="admin-button admin-button--small" type="button" data-add="appearances">
+            Add group
+          </button>
+        </div>
+        <div class="admin-stack" data-list="appearances"></div>
+      </section>
+
+      <section class="admin-section" aria-labelledby="admin-pics">
+        <div class="admin-section-head">
+          <div>
+            <p class="admin-section-kicker">Gallery</p>
+            <h2 id="admin-pics">Pictures</h2>
+          </div>
+          <button class="admin-button admin-button--small" type="button" data-add="pics">
+            Add picture
+          </button>
+        </div>
+        <div class="admin-stack" data-list="pics"></div>
+      </section>
+
+      <section class="admin-section" aria-labelledby="admin-policies">
+        <div class="admin-section-head">
+          <div>
+            <p class="admin-section-kicker">Store</p>
+            <h2 id="admin-policies">Store policies</h2>
+          </div>
+          <button class="admin-button admin-button--small" type="button" data-add="policies">
+            Add policy
+          </button>
+        </div>
+        <div class="admin-stack" data-list="policies"></div>
+      </section>
+
+      <section class="admin-section" aria-labelledby="admin-import">
+        <div class="admin-section-head">
+          <div>
+            <p class="admin-section-kicker">Data</p>
+            <h2 id="admin-import">Import content</h2>
+          </div>
+        </div>
         <label>
-          <span>Name</span>
-          <input data-field="hero.name" />
+          <span>Paste exported JSON</span>
+          <textarea data-import rows="8" spellcheck="false"></textarea>
         </label>
-        <label>
-          <span>Tagline</span>
-          <input data-field="hero.tagline" />
-        </label>
-        <label>
-          <span>Book button</span>
-          <input data-field="hero.bookLabel" />
-        </label>
-        <label>
-          <span>Contact heading</span>
-          <input data-field="contact.heading" />
-        </label>
-        <label class="admin-wide">
-          <span>Bio</span>
-          <textarea data-field="hero.bio" rows="4"></textarea>
-        </label>
-        <label class="admin-wide">
-          <span>Contact blurb</span>
-          <textarea data-field="contact.lede" rows="2"></textarea>
-        </label>
-        <label>
-          <span>Contact email</span>
-          <input data-field="contact.email" type="email" />
-        </label>
-        <label>
-          <span>Formspree ID</span>
-          <input data-field="contact.formspreeId" />
-        </label>
-      </div>
-    </section>
-
-    <section class="admin-panel" aria-labelledby="admin-shows">
-      <div class="admin-panel-head">
-        <h2 id="admin-shows">Show dates</h2>
-        <button class="admin-button admin-button--small" type="button" data-add="shows">
-          Add show
+        <button class="admin-button" type="button" data-import-button>
+          Import JSON
         </button>
-      </div>
-      <div class="admin-stack" data-list="shows"></div>
-    </section>
-
-    <section class="admin-panel" aria-labelledby="admin-products">
-      <div class="admin-panel-head">
-        <h2 id="admin-products">Products</h2>
-        <button class="admin-button admin-button--small" type="button" data-add="products">
-          Add product
-        </button>
-      </div>
-      <div class="admin-stack" data-list="products"></div>
-    </section>
-
-    <section class="admin-panel" aria-labelledby="admin-socials">
-      <div class="admin-panel-head">
-        <h2 id="admin-socials">Social links</h2>
-        <button class="admin-button admin-button--small" type="button" data-add="socials">
-          Add link
-        </button>
-      </div>
-      <div class="admin-stack" data-list="socials"></div>
-    </section>
-
-    <section class="admin-panel" aria-labelledby="admin-media">
-      <div class="admin-panel-head">
-        <h2 id="admin-media">Videos</h2>
-        <button class="admin-button admin-button--small" type="button" data-add="videos">
-          Add video
-        </button>
-      </div>
-      <div class="admin-stack" data-list="videos"></div>
-    </section>
-
-    <section class="admin-panel" aria-labelledby="admin-appearances">
-      <div class="admin-panel-head">
-        <h2 id="admin-appearances">Appearances</h2>
-        <button class="admin-button admin-button--small" type="button" data-add="appearances">
-          Add group
-        </button>
-      </div>
-      <div class="admin-stack" data-list="appearances"></div>
-    </section>
-
-    <section class="admin-panel" aria-labelledby="admin-pics">
-      <div class="admin-panel-head">
-        <h2 id="admin-pics">Pictures</h2>
-        <button class="admin-button admin-button--small" type="button" data-add="pics">
-          Add picture
-        </button>
-      </div>
-      <div class="admin-stack" data-list="pics"></div>
-    </section>
-
-    <section class="admin-panel" aria-labelledby="admin-policies">
-      <div class="admin-panel-head">
-        <h2 id="admin-policies">Store policies</h2>
-        <button class="admin-button admin-button--small" type="button" data-add="policies">
-          Add policy
-        </button>
-      </div>
-      <div class="admin-stack" data-list="policies"></div>
-    </section>
-
-    <section class="admin-panel" aria-labelledby="admin-import">
-      <h2 id="admin-import">Import content</h2>
-      <label>
-        <span>Paste exported JSON</span>
-        <textarea data-import rows="8" spellcheck="false"></textarea>
-      </label>
-      <button class="admin-button" type="button" data-import-button>
-        Import JSON
-      </button>
-    </section>
+      </section>
+    </div>
   </main>
 </Base>
 
@@ -263,6 +321,7 @@ const initialContent = JSON.stringify(siteContent);
     });
 
     Object.keys(templates).forEach((key) => renderList(key));
+    renderCounts();
   }
 
   function renderList(key) {
@@ -276,7 +335,10 @@ const initialContent = JSON.stringify(siteContent);
       card.className = "admin-item";
       card.innerHTML = `
         <div class="admin-item-head">
-          <strong>${escapeHtml(template.label(item))}</strong>
+          <div>
+            <span>${escapeHtml(key)}</span>
+            <strong>${escapeHtml(template.label(item))}</strong>
+          </div>
           <button class="admin-remove" type="button">Remove</button>
         </div>
         <div class="admin-grid"></div>
@@ -310,6 +372,7 @@ const initialContent = JSON.stringify(siteContent);
         content[key].splice(index, 1);
         saveQuietly();
         renderList(key);
+        renderCounts();
         announce("Removed item.");
       });
 
@@ -349,6 +412,14 @@ const initialContent = JSON.stringify(siteContent);
 
   function saveQuietly() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(content));
+    renderCounts();
+  }
+
+  function renderCounts() {
+    root.querySelectorAll("[data-count]").forEach((node) => {
+      const key = node.dataset.count;
+      node.textContent = String(content[key]?.length ?? 0);
+    });
   }
 
   function saveDraft() {
@@ -428,7 +499,8 @@ const initialContent = JSON.stringify(siteContent);
 
 <style is:global>
   body:has(.admin-shell) {
-    background: #0b0d10;
+    background: #f4f6f8;
+    color: #161a22;
   }
   body:has(.admin-shell) .site-header,
   body:has(.admin-shell) .mobile-social-bar,
@@ -440,99 +512,226 @@ const initialContent = JSON.stringify(siteContent);
 
 <style>
   .admin-shell {
-    width: min(1180px, calc(100% - 2rem));
+    width: min(1440px, 100%);
     margin: 0 auto;
-    padding: 2rem 0 5rem;
-    color: #f5f5f5;
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    min-height: 100dvh;
+    color: #161a22;
+  }
+  .admin-sidebar {
+    position: sticky;
+    top: 0;
+    align-self: start;
+    height: 100dvh;
+    padding: 1.25rem;
+    background: #10141b;
+    color: #fff;
+    border-right: 1px solid #d8dde6;
+  }
+  .admin-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: inherit;
+    text-decoration: none;
+    margin-bottom: 1.5rem;
+  }
+  .admin-brand span {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    border-radius: 8px;
+    background: var(--color-accent);
+    color: #fff;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+  }
+  .admin-brand strong {
+    font-size: 0.95rem;
+    letter-spacing: 0.01em;
+  }
+  .admin-nav {
+    display: grid;
+    gap: 0.25rem;
+  }
+  .admin-nav a {
+    display: block;
+    padding: 0.62rem 0.7rem;
+    border-radius: 6px;
+    color: rgba(255, 255, 255, 0.74);
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .admin-nav a:hover,
+  .admin-nav a:focus-visible {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+  }
+  .admin-workspace {
+    min-width: 0;
+    padding: 1.5rem clamp(1rem, 3vw, 2.25rem) 4rem;
   }
   .admin-topbar,
-  .admin-panel-head {
+  .admin-section-head {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
   }
   .admin-topbar {
-    margin-bottom: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    margin: -1.5rem calc(clamp(1rem, 3vw, 2.25rem) * -1) 0;
+    padding: 1rem clamp(1rem, 3vw, 2.25rem);
+    background: rgba(244, 246, 248, 0.92);
+    border-bottom: 1px solid #dce1e8;
+    backdrop-filter: blur(14px);
   }
   .admin-kicker {
-    margin: 0 0 0.25rem;
-    color: var(--color-accent);
-    font-size: 0.75rem;
+    margin: 0 0 0.15rem;
+    color: #586273;
+    font-size: 0.72rem;
     font-weight: 800;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
   }
   h1,
   h2 {
-    font-family: var(--font-display), system-ui, sans-serif;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
+    font-family: var(--font-sans), system-ui, sans-serif;
+    letter-spacing: 0;
   }
   h1 {
     margin: 0;
-    font-size: clamp(2rem, 5vw, 4rem);
+    color: #141922;
+    font-size: clamp(1.5rem, 2vw, 2rem);
+    line-height: 1.1;
   }
   h2 {
-    margin: 0 0 1rem;
-    font-size: 1.4rem;
-    color: #e8edc6;
-  }
-  .admin-panel-head h2 {
     margin: 0;
+    color: #111827;
+    font-size: 1.1rem;
+    line-height: 1.2;
+  }
+  .admin-section-head h2 {
+    margin: 0;
+  }
+  .admin-section-kicker {
+    margin: 0 0 0.2rem;
+    color: #6a7382;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
   }
   .admin-actions {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-end;
-    gap: 0.65rem;
+    gap: 0.5rem;
   }
   .admin-button,
   .admin-link,
   .admin-remove {
-    border: 1px solid rgba(255, 255, 255, 0.16);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 36px;
+    border: 1px solid #c9d0dc;
     border-radius: 6px;
-    background: #15191f;
-    color: #fff;
-    padding: 0.7rem 0.95rem;
-    font-weight: 800;
-    font-size: 0.78rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    background: #fff;
+    color: #141922;
+    padding: 0.55rem 0.8rem;
+    font-weight: 750;
+    font-size: 0.84rem;
+    letter-spacing: 0;
     text-decoration: none;
     cursor: pointer;
+    transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease;
+  }
+  .admin-button:hover,
+  .admin-link:hover {
+    border-color: #9ca8b8;
+    background: #f9fafb;
   }
   .admin-button--accent {
     background: var(--color-accent);
     border-color: var(--color-accent);
-    color: #000;
+    color: #fff;
   }
   .admin-button--ghost {
     background: transparent;
+    color: #485263;
   }
   .admin-button--small {
-    padding: 0.55rem 0.75rem;
+    min-height: 34px;
+    padding: 0.48rem 0.7rem;
   }
   .admin-remove {
-    padding: 0.45rem 0.65rem;
-    background: #2a1113;
-    color: #ffb8bd;
+    min-height: 30px;
+    padding: 0.38rem 0.62rem;
+    border-color: #f0c3c8;
+    background: #fff;
+    color: #b42332;
+    font-size: 0.78rem;
   }
   .admin-status {
-    min-height: 1.5rem;
-    margin: 0 0 1rem;
-    color: rgba(255, 255, 255, 0.72);
+    min-height: 1.25rem;
+    margin: 0.9rem 0;
+    color: #667085;
+    font-size: 0.9rem;
   }
-  .admin-panel {
-    margin-top: 1rem;
-    padding: 1.25rem;
-    border: 1px solid rgba(255, 255, 255, 0.12);
+  .admin-overview {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+  .admin-overview div {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.9rem 1rem;
+    border: 1px solid #dde3eb;
     border-radius: 8px;
-    background: rgba(255, 255, 255, 0.045);
+    background: #fff;
+  }
+  .admin-overview span {
+    color: #111827;
+    font-size: 1.45rem;
+    font-weight: 850;
+    line-height: 1;
+  }
+  .admin-overview strong {
+    color: #667085;
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .admin-section {
+    scroll-margin-top: 5.5rem;
+    margin-top: 0.85rem;
+    padding: 1rem;
+    border: 1px solid #dde3eb;
+    border-radius: 8px;
+    background: #fff;
+  }
+  .admin-section-head {
+    margin-bottom: 0.95rem;
+    padding-bottom: 0.85rem;
+    border-bottom: 1px solid #edf0f4;
   }
   .admin-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1rem;
+    gap: 0.85rem;
+  }
+  .admin-grid--primary {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
   .admin-wide {
     grid-column: 1 / -1;
@@ -540,28 +739,30 @@ const initialContent = JSON.stringify(siteContent);
   label {
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
+    gap: 0.35rem;
   }
   label span {
-    color: rgba(255, 255, 255, 0.68);
+    color: #5d6675;
     font-size: 0.72rem;
-    font-weight: 800;
-    letter-spacing: 0.12em;
+    font-weight: 760;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
   }
   input,
   textarea,
   select {
     width: 100%;
-    border: 1px solid rgba(255, 255, 255, 0.14);
+    border: 1px solid #cfd6e2;
     border-radius: 6px;
-    background: #080a0d;
-    color: #fff;
-    padding: 0.72rem 0.8rem;
+    background: #fff;
+    color: #141922;
+    padding: 0.62rem 0.72rem;
     font: inherit;
+    font-size: 0.92rem;
   }
   textarea {
     resize: vertical;
+    line-height: 1.45;
   }
   input:focus,
   textarea:focus,
@@ -571,29 +772,77 @@ const initialContent = JSON.stringify(siteContent);
   }
   .admin-stack {
     display: grid;
-    gap: 0.85rem;
-    margin-top: 1rem;
+    gap: 0.7rem;
   }
   .admin-item {
-    padding: 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 0.85rem;
+    border: 1px solid #e0e6ee;
     border-radius: 8px;
-    background: rgba(0, 0, 0, 0.28);
+    background: #fbfcfe;
   }
   .admin-item-head {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     gap: 1rem;
-    margin-bottom: 0.85rem;
+    margin-bottom: 0.75rem;
+  }
+  .admin-item-head div {
+    min-width: 0;
+  }
+  .admin-item-head span {
+    display: block;
+    margin-bottom: 0.12rem;
+    color: #7a8391;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
   }
   .admin-item-head strong {
+    display: block;
+    color: #172033;
+    font-size: 0.94rem;
+    line-height: 1.25;
     overflow-wrap: anywhere;
   }
 
-  @media (max-width: 760px) {
+  @media (max-width: 980px) {
+    .admin-shell {
+      grid-template-columns: 1fr;
+    }
+    .admin-sidebar {
+      position: static;
+      height: auto;
+      padding: 0.85rem 1rem;
+    }
+    .admin-brand {
+      margin-bottom: 0.75rem;
+    }
+    .admin-nav {
+      display: flex;
+      gap: 0.35rem;
+      overflow-x: auto;
+      padding-bottom: 0.2rem;
+    }
+    .admin-nav a {
+      white-space: nowrap;
+    }
+    .admin-topbar {
+      top: 0;
+    }
+    .admin-grid--primary,
+    .admin-overview {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 700px) {
+    .admin-workspace {
+      padding-inline: 1rem;
+    }
     .admin-topbar,
-    .admin-panel-head {
+    .admin-section-head {
       align-items: stretch;
       flex-direction: column;
     }
@@ -601,6 +850,9 @@ const initialContent = JSON.stringify(siteContent);
       justify-content: flex-start;
     }
     .admin-grid {
+      grid-template-columns: 1fr;
+    }
+    .admin-overview {
       grid-template-columns: 1fr;
     }
   }
