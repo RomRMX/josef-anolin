@@ -3,6 +3,9 @@ dist/
 .astro/
 .vercel/
 .DS_Store
+# Claude Code per-machine worktree checkouts — never commit these (they get
+# tracked as machine-specific gitlinks and break git on other machines).
+.claude/worktrees/
 .env
 .env.*
 !.env.example
