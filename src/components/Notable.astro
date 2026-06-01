@@ -29,42 +29,20 @@ const groups = [
 <div id="notable">
   <h2 class="section-h2 section-h2--sub">APPEARANCES</h2>
   <div class="notable-list">
-    <div class="notable-col">
-      {groups.slice(0, 2).map((g) => (
-        <section class="notable-group">
-          <h3 class="notable-group__label">{g.label.toUpperCase()}</h3>
-          <ul class="notable-group__items">
-            {g.items.map((item) => <li>{item}</li>)}
-          </ul>
-        </section>
-      ))}
-    </div>
-    <div class="notable-col">
+    {groups.map((g) => (
       <section class="notable-group">
-        <h3 class="notable-group__label">{groups[2].label.toUpperCase()}</h3>
+        <h3 class="notable-group__label">{g.label.toUpperCase()}</h3>
         <ul class="notable-group__items">
-          {groups[2].items.map((item) => <li>{item}</li>)}
+          {g.items.map((item) => <li>{item}</li>)}
         </ul>
       </section>
-    </div>
+    ))}
   </div>
 </div>
 
 <style>
+  /* Single column — HEADLINING, FEATURED, then FESTIVALS stacked. */
   .notable-list {
-    display: grid;
-    /* Each column sizes to its widest item so the FESTIVALS shift can
-       sit cleanly in the gap without colliding with FEATURED text. */
-    grid-template-columns: max-content max-content;
-    gap: 1.75rem 4.5rem;
-  }
-  @media (min-width: 900px) {
-    /* FESTIVALS column shifted left toward the FEATURED list. */
-    .notable-list .notable-col:nth-child(2) {
-      transform: translateX(-40px);
-    }
-  }
-  .notable-col {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
@@ -76,9 +54,9 @@ const groups = [
                 transform 360ms var(--ease-out-strong);
   }
   .notable-list.is-visible .notable-group { opacity: 1; transform: translateY(0); }
-  .notable-list.is-visible .notable-col:nth-child(1) .notable-group:nth-child(1) { transition-delay: 80ms; }
-  .notable-list.is-visible .notable-col:nth-child(1) .notable-group:nth-child(2) { transition-delay: 140ms; }
-  .notable-list.is-visible .notable-col:nth-child(2) .notable-group:nth-child(1) { transition-delay: 200ms; }
+  .notable-list.is-visible .notable-group:nth-child(1) { transition-delay: 80ms; }
+  .notable-list.is-visible .notable-group:nth-child(2) { transition-delay: 140ms; }
+  .notable-list.is-visible .notable-group:nth-child(3) { transition-delay: 200ms; }
 
   .notable-group__label {
     font-weight: 800;
@@ -97,7 +75,7 @@ const groups = [
   }
 
   @media (max-width: 899px) {
-    .notable-list { grid-template-columns: 1fr; gap: 1.25rem; }
+    .notable-list { gap: 1.25rem; }
   }
 
   @media (prefers-reduced-motion: reduce) {

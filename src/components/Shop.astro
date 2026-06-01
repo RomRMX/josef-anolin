@@ -9,14 +9,6 @@ const tees = [
     price: 3000,
   },
   {
-    id: "joe-tee-tour",
-    src: "/shop/items/blanktees_navy-a.png",
-    name: "Tour Tee — Bay Area",
-    description:
-      "Limited print celebrating Oakland to LA and back. Worn by every comic too cheap to buy two.",
-    price: 3500,
-  },
-  {
     id: "joe-tee-stand-up",
     src: "/shop/tee-black-front-2.png",
     name: "Stand Up Comedian Tee",
@@ -32,23 +24,9 @@ const tees = [
       "Heavyweight fleece, oversized fit. The unofficial uniform of every greenroom from Oakland to LA.",
     price: 6500,
   },
-  {
-    id: "joe-tote",
-    src: "/shop/items/tote_black.png",
-    name: "Joe Dobo Tote",
-    description:
-      "Carry your snacks, your set list, your delusions. Roomy enough for all three.",
-    price: 2200,
-  },
-  {
-    id: "joe-trucker",
-    src: "/shop/items/hat_trucker_camo.png",
-    name: "Trucker Hat",
-    description:
-      "Camo crown, mesh back, snapback close. Goes with everything in your closet that's also black.",
-    price: 2800,
-  },
 ];
+
+const sizes = ["Medium", "Large", "XL", "XXL"];
 
 const fmt = (cents: number) =>
   (cents / 100).toLocaleString("en-US", {
@@ -77,6 +55,12 @@ const fmt = (cents: number) =>
           <p class="tee-row__desc">{t.description}</p>
           <div class="tee-row__buy">
             <span class="tee-row__price">{fmt(t.price)}</span>
+            <label class="tee-size">
+              <span class="sr-only">Size</span>
+              <select class="tee-size__select" data-size aria-label={`Size for ${t.name}`}>
+                {sizes.map((s) => <option value={s}>{s}</option>)}
+              </select>
+            </label>
             <button
               type="button"
               class="add-to-cart-btn"
@@ -274,13 +258,38 @@ const fmt = (cents: number) =>
     color: var(--color-accent-2);
     font-size: 1rem;
   }
+  /* Size selector */
+  .tee-size {
+    display: inline-flex;
+  }
+  .tee-size__select {
+    appearance: none;
+    -webkit-appearance: none;
+    background: #000
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233381ff' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>")
+      no-repeat right 0.55rem center / 14px;
+    color: var(--color-ink);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 6px;
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    letter-spacing: 0.02em;
+    padding: 0.5rem 1.9rem 0.5rem 0.75rem;
+    cursor: pointer;
+    transition: border-color 160ms var(--ease-out-strong);
+  }
+  .tee-size__select:hover { border-color: rgba(255, 255, 255, 0.4); }
+  .tee-size__select:focus-visible {
+    outline: none;
+    border-color: var(--color-accent);
+  }
   .add-to-cart-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     background: #000;
     color: var(--color-ink);
-    border: 1px solid rgba(255, 255, 255, 0.18);
+    border: 1.5px solid var(--color-accent);
     font-family: var(--font-display), system-ui, sans-serif;
     font-size: 0.75rem;
     letter-spacing: 0.14em;
@@ -289,6 +298,7 @@ const fmt = (cents: number) =>
     cursor: pointer;
     transition: background-color 160ms var(--ease-out-strong),
                 color 160ms var(--ease-out-strong),
+                box-shadow 160ms var(--ease-out-strong),
                 transform 140ms var(--ease-out-strong);
   }
   .add-to-cart-btn:hover {
@@ -316,9 +326,13 @@ const fmt = (cents: number) =>
 <script>
   document.querySelectorAll<HTMLButtonElement>(".add-to-cart-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
+      const row = btn.closest(".tee-row");
+      const size = row?.querySelector<HTMLSelectElement>("[data-size]")?.value ?? "";
+      const baseId = btn.dataset.productId!;
+      const baseName = btn.dataset.productName!;
       const detail = {
-        id: btn.dataset.productId!,
-        name: btn.dataset.productName!,
+        id: size ? `${baseId}-${size}` : baseId,
+        name: size ? `${baseName} — ${size}` : baseName,
         price: Number(btn.dataset.productPrice),
         src: btn.dataset.productSrc!,
       };

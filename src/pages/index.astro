@@ -13,6 +13,9 @@ import Contact from "../components/Contact.astro";
   <main class="layout">
     <aside class="hero-rail">
       <Hero />
+      <p class="rail-copyright">
+        ©2026 <a href="https://www.JosefAnolin.com">www.JosefAnolin.com</a> All Rights Reserved.
+      </p>
     </aside>
 
     <div class="content-rail">
@@ -138,6 +141,40 @@ import Contact from "../components/Contact.astro";
     .rail-section--contact .contact-copyright {
       margin-top: auto;
       padding-top: 2rem;
+    }
+  }
+
+  /* Left-column footer. On desktop the copyright lives at the bottom of the
+     sticky hero rail; on mobile it falls back to the contact-section copy
+     (the rail one is hidden, the contact one shows at the page bottom). */
+  .rail-copyright {
+    display: none;
+  }
+  .rail-copyright a {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  .rail-copyright a:hover {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+  @media (min-width: 900px) {
+    .rail-copyright {
+      display: block;
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 1.25rem;
+      padding: 0 2rem;
+      font-size: var(--hero-copyright-fs, 0.7rem);
+      letter-spacing: 0.04em;
+      color: rgba(255, 255, 255, 0.45);
+      text-align: center;
+    }
+    /* Desktop shows the rail copyright instead of the contact one. */
+    .rail-section--contact .contact-copyright {
+      display: none;
     }
   }
 

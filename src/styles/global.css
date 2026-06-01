@@ -113,7 +113,7 @@
 @media (min-width: 900px) {
   :root {
     --socials-color: #3381ff;
-    --hero-stage-max-width: 700px;
+    --hero-stage-max-width: 600px;
     --hero-subject-scale: 0.97;
     --hero-subject-offset-y: 41px;
     --hero-title-width: 81%;
@@ -128,11 +128,33 @@
     --hero-nav-gap: 0rem;
     --hero-nav-font-size: 1.35rem;
     --hero-bio-max-width: 500px;
-    --hero-bio-extra-top: 20px;
+    --hero-bio-extra-top: 6px;
     --hero-socials-gap: 3rem;
     --hero-socials-icon: 23px;
+    --hero-socials-margin-top: 0.6rem;
     --hero-copyright-fs: 0.83rem;
     --hero-copyright-margin-top: 1.85rem;
+  }
+}
+
+/* Narrow desktop (900–1399px). The two-column split leaves the hero column
+   too tight for the wide-desktop "nav beside the head" layout, so the bio +
+   socials clipped on the right and the nav sat over the face. Drop the
+   x-shift, let the bio/socials fit, shrink the portrait, and lift the nav up
+   and out to the right so it clears the subject. Beside-head only returns at
+   >=1400px where the column is wide enough for it. */
+@media (min-width: 900px) and (max-width: 1399px) {
+  :root {
+    --hero-section-x-shift: 0px;
+    --hero-bio-max-width: min(500px, 100%);
+    --hero-socials-gap: 1.5rem;
+    --hero-stage-max-width: 520px;
+    --hero-subject-scale: 0.78;
+    --hero-subject-offset-y: 64px;
+    --hero-nav-top: calc(0% + 4px);
+    --hero-nav-right: 4px;
+    --hero-nav-font-size: 1.05rem;
+    --hero-nav-gap: 0.1rem;
   }
 }
 
