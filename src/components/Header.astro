@@ -57,6 +57,21 @@ const socials = [
   </div>
 </header>
 
+{/* DESKTOP / TABLET cart — at >=900px the hero rail owns the nav and there's
+    no header bar, so the cart lives as a fixed button in the top-right. */}
+<button
+  type="button"
+  class="cart-trigger cart-trigger--desktop"
+  aria-label="Open cart"
+>
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+    <path d="M3 6h18" />
+    <path d="M16 10a4 4 0 0 1-8 0" />
+  </svg>
+  <span class="cart-count" data-cart-count data-empty="true">0</span>
+</button>
+
 {/* DESKTOP header — DISABLED in the two-column redesign. The hero rail
     on the left now owns the primary nav; this block is kept for future
     revival but rendered hidden so neither logo nor cart trigger appears. */}
@@ -175,6 +190,22 @@ const socials = [
   .cart-trigger--mobile {
     width: 34px;
     height: 34px;
+  }
+  /* Desktop/tablet (>=900px): fixed cart button, top-right of the viewport. */
+  .cart-trigger--desktop {
+    display: none;
+    position: fixed;
+    top: 18px;
+    right: 24px;
+    z-index: 50;
+    width: 40px;
+    height: 40px;
+    margin-left: 0;
+    background: rgba(10, 10, 10, 0.7);
+    backdrop-filter: blur(8px);
+  }
+  @media (min-width: 900px) {
+    .cart-trigger--desktop { display: grid; }
   }
   .cart-count {
     position: absolute;
