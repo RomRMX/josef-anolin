@@ -76,8 +76,9 @@
   --content-rail-opacity: 0;
 }
 
-/* Mobile (< 900px) — overrides the desktop defaults above. Two-column desktop
-   activates at 900px+ now (was 1024). */
+/* Mobile (< 900px) — a SINGLE mobile size. Overrides the desktop @theme
+   defaults above; everything below 900px renders one uniform layout with no
+   sub-breakpoint. Two-column desktop activates at 900px+. */
 @media (max-width: 899px) {
   :root {
     --hero-section-pt: 5rem;
@@ -86,18 +87,6 @@
     --hero-section-x-shift: 0px;
     --hero-section-min-height: auto;
     --hero-stage-max-width: 360px;
-    --hero-nav-display: none;
-    --hero-bio-max-width: 32ch;
-    --hero-bio-font-size: 0.875rem;
-    --hero-bio-line-height: 1.45;
-    --hero-socials-display: none;
-  }
-}
-
-/* True-mobile overrides (< 768px). Layered on top of the (max-width: 1023px)
-   block above, so any token set there still applies unless re-set here. */
-@media (max-width: 767px) {
-  :root {
     --hero-subject-scale: 0.95;
     --hero-subject-offset-y: 27px;
     --hero-title-width: 86%;
@@ -107,11 +96,14 @@
     --hero-tag-left: 0%;
     --hero-tag-font-size: 0.96rem;
     --hero-tag-rotate: -9deg;
+    --hero-nav-display: none;
     --hero-nav-top: calc(-5% + 30px);
     --hero-nav-right: calc(-5.5% + 50px);
-    --hero-nav-display: none;
     --hero-bio-max-width: 300px;
     --hero-bio-extra-top: 3px;
+    --hero-bio-font-size: 0.875rem;
+    --hero-bio-line-height: 1.45;
+    --hero-socials-display: none;
     --hero-copyright-margin-top: 1.85rem;
   }
 }
