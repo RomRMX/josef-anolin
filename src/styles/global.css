@@ -128,7 +128,7 @@
     --hero-nav-gap: 0rem;
     --hero-nav-font-size: 1.35rem;
     --hero-bio-max-width: 510px;
-    --hero-bio-extra-top: 4px;
+    --hero-bio-extra-top: 12px;
     --hero-bio-font-size: calc(0.82rem + 4px);
     --hero-bio-line-height: 1.35;
     --hero-socials-gap: 3rem;
