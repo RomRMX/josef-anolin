@@ -6,7 +6,7 @@ const pics: string[] = Array.from(
 ---
 
 <div id="pics">
-  <h2 class="section-h2 section-h2--sub">PICTURES</h2>
+  <h2 class="section-h2 section-h2--sub">PHOTOS</h2>
   <div class="pics-grid">
     {pics.map((src, i) => (
       <a
@@ -26,6 +26,10 @@ const pics: string[] = Array.from(
 </div>
 
 <style>
+  /* Extra gap so PHOTOS sits well clear of the VIDEOS block above. */
+  #pics .section-h2--sub {
+    margin-top: 7rem;
+  }
   .pics-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
