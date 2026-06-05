@@ -130,7 +130,7 @@
     --hero-bio-max-width: 520px;
     --hero-bio-extra-top: 6px;
     --hero-bio-font-size: calc(0.82rem + 2px);
-    --hero-bio-line-height: 1.35;
+    --hero-bio-line-height: 1.4;
     --hero-socials-gap: 3rem;
     --hero-socials-icon: 23px;
     /* +15px above the social row on desktop (base desktop gap was 0.6rem). */
