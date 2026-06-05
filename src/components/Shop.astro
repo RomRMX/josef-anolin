@@ -77,6 +77,26 @@ const fmt = (cents: number) =>
       </li>
     ))}
   </ul>
+
+  <div class="shop-policies">
+    <p class="shop-policies__note">
+      Free shipping on U.S. orders over $50. Returns &amp; exchanges accepted
+      within 30 days of delivery on unworn items with tags attached. Apparel
+      runs true to size. Orders ship within 3–5 business days; taxes are
+      calculated at checkout.
+    </p>
+    <ul class="shop-policies__links">
+      <li><a href="#">Shipping &amp; Returns</a></li>
+      <li><a href="#">Refund Policy</a></li>
+      <li><a href="#">Terms of Service</a></li>
+      <li><a href="#">Privacy Policy</a></li>
+      <li><a href="mailto:josefanolin@gmail.com">Contact</a></li>
+    </ul>
+    <p class="shop-policies__fine">
+      Secure checkout. All sales final on clearance items. © 2026 Josef Anolin —
+      all rights reserved.
+    </p>
+  </div>
 </div>
 
 <div
@@ -250,10 +270,12 @@ const fmt = (cents: number) =>
   }
   .tee-row__buy {
     display: flex;
+    flex-wrap: nowrap;
     align-items: center;
-    gap: 1rem;
+    gap: 0.75rem;
   }
   .tee-row__price {
+    flex: 0 0 auto;
     font-weight: 700;
     color: var(--color-accent-2);
     font-size: 1rem;
@@ -261,7 +283,9 @@ const fmt = (cents: number) =>
   /* Size selector */
   .tee-size {
     display: inline-flex;
+    flex: 0 1 auto;
   }
+  .tee-row__buy .add-to-cart-btn { flex: 0 0 auto; white-space: nowrap; }
   .tee-size__select {
     appearance: none;
     -webkit-appearance: none;
@@ -311,6 +335,46 @@ const fmt = (cents: number) =>
     background: var(--color-accent);
     color: #000;
     border-color: var(--color-accent);
+  }
+
+  /* Store policies — typical ecommerce footer for the shop section. */
+  .shop-policies {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    max-width: 600px;
+  }
+  .shop-policies__note {
+    margin: 0;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.55);
+  }
+  .shop-policies__links {
+    list-style: none;
+    margin: 1rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.25rem;
+  }
+  .shop-policies__links a {
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    color: rgba(255, 255, 255, 0.75);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+    transition: color 140ms var(--ease-out-strong),
+                border-color 140ms var(--ease-out-strong);
+  }
+  .shop-policies__links a:hover {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+  .shop-policies__fine {
+    margin: 1rem 0 0;
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.4);
   }
 
   @media (max-width: 899px) {

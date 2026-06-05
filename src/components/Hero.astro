@@ -47,16 +47,21 @@ const socials = [
     </nav>
   </div>
 
-  <p class="hero-bio">
-    Josef Anolin is a stand-up comedian and actor based in Los Angeles. With
-    his mischievous, anecdotal humor, Josef has quickly become a standout
-    presence on the Southern California comedy circuit. He has been featured at
-    Punch Line SF, Cobb's Comedy Club, the Netflix is a Joke Festival 2026, and
-    regularly performs at the Hollywood Improv Lab. When he isn't on stage,
-    Josef enjoys his Android phone because he likes pissing you off with his
-    green text bubbles. You can follow them at @comedianjoe510 and
-    josefanolin.com for dates and upcoming projects.
-  </p>
+  <div class="hero-bio">
+    <p class="hero-bio__p">
+      Josef Anolin is a stand-up comedian and actor based in Los Angeles. With
+      his mischievous, anecdotal humor, Josef has quickly become a standout
+      presence on the Southern California comedy circuit. He has been featured
+      at Punch Line SF, Cobb's Comedy Club, the Netflix is a Joke Festival 2026,
+      and regularly performs at the Hollywood Improv Lab. When he isn't on
+      stage, Josef enjoys his Android phone because he likes pissing you off
+      with his green text bubbles.
+    </p>
+    <p class="hero-bio__p">
+      You can follow him at @comedianjoe510 and josefanolin.com for dates and
+      upcoming projects.
+    </p>
+  </div>
 
   <ul class="hero-socials" aria-label="Social links">
     {socials.map((s) => (
@@ -148,6 +153,8 @@ const socials = [
     color: rgb(210 210 210);
     flex-shrink: 0;
   }
+  .hero-bio__p { margin: 0; }
+  .hero-bio__p + .hero-bio__p { margin-top: 0.85rem; }
 
   .hero-socials {
     display: var(--hero-socials-display);

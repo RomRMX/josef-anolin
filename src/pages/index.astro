@@ -61,11 +61,8 @@ import Contact from "../components/Contact.astro";
     background: rgba(0, 0, 0, var(--content-rail-opacity, 0));
   }
   .rail-section {
-    padding: 4rem 1.25rem;
+    padding: 4.5rem 1.25rem;
     scroll-margin-top: 1rem;
-  }
-  .rail-section + .rail-section {
-    padding-top: 2rem;
   }
   /* 100px footer breathing room on every breakpoint (overrides the default
      rail-section bottom padding for the contact card). */
@@ -89,10 +86,11 @@ import Contact from "../components/Contact.astro";
       min-width: 0;
     }
     /* Asymmetric padding: 50px breathing room on the left between the
-       sticky hero column and content, and 2.5rem on the right edge. */
+       sticky hero column and content, and 2.5rem on the right edge.
+       Even, generous vertical padding spaces the sections consistently
+       (no forced 100dvh, which left short sections mostly empty). */
     .rail-section {
-      padding: 5rem 2.5rem 5rem 50px;
-      min-height: 100dvh;
+      padding: 6.5rem 2.5rem 6.5rem 50px;
     }
     /* Contact section: HIT ME UP pushed 160px down via margin on its
        inner wrapper. Make the section a flex column so the copyright
@@ -165,7 +163,7 @@ import Contact from "../components/Contact.astro";
       position: absolute;
       left: 0;
       right: 0;
-      bottom: 1.25rem;
+      bottom: 0.5rem;
       padding: 0 2rem;
       font-size: var(--hero-copyright-fs, 0.7rem);
       letter-spacing: 0.04em;

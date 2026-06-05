@@ -63,7 +63,7 @@
   --hero-socials-display: flex;
   --hero-socials-gap: 1.25rem;
   --hero-socials-icon: 22px;
-  --hero-socials-margin-top: 1.5rem;
+  --hero-socials-margin-top: 2.25rem;
   --socials-color: var(--color-accent);
   --socials-hover-color: var(--color-ink);
 
@@ -86,8 +86,8 @@
     --hero-section-px: 1.25rem;
     --hero-section-x-shift: 0px;
     --hero-section-min-height: auto;
-    --hero-stage-max-width: 360px;
-    --hero-subject-scale: 0.95;
+    --hero-stage-max-width: 470px;
+    --hero-subject-scale: 1.0;
     --hero-subject-offset-y: 27px;
     --hero-title-width: 86%;
     --hero-title-bottom: -1%;
@@ -150,8 +150,8 @@
     --hero-bio-max-width: min(520px, 100%);
     --hero-socials-gap: 1.5rem;
     --hero-stage-max-width: 440px;
-    --hero-subject-scale: 0.78;
-    --hero-subject-offset-y: 64px;
+    --hero-subject-scale: 1.0;
+    --hero-subject-offset-y: 18px;
     --hero-nav-top: calc(0% + 4px);
     --hero-nav-right: 4px;
     --hero-nav-font-size: 1.05rem;
