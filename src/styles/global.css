@@ -88,7 +88,7 @@
     --hero-section-min-height: auto;
     --hero-stage-max-width: 470px;
     --hero-subject-scale: 1.0;
-    --hero-subject-offset-y: 27px;
+    --hero-subject-offset-y: 57px;
     --hero-title-width: 86%;
     --hero-title-bottom: -1%;
     --hero-title-offset-x: -85px;
@@ -151,7 +151,7 @@
     --hero-socials-gap: 1.5rem;
     --hero-stage-max-width: 440px;
     --hero-subject-scale: 1.0;
-    --hero-subject-offset-y: 18px;
+    --hero-subject-offset-y: 48px;
     --hero-nav-top: calc(0% + 4px);
     --hero-nav-right: 4px;
     --hero-nav-font-size: 1.05rem;
