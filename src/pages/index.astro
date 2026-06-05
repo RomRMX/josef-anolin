@@ -64,10 +64,9 @@ import Contact from "../components/Contact.astro";
     padding: 4.5rem 1.25rem;
     scroll-margin-top: 1rem;
   }
-  /* 100px footer breathing room on every breakpoint (overrides the default
-     rail-section bottom padding for the contact card). */
+  /* Extra breathing room below HIT ME UP at the bottom of the page. */
   .rail-section--contact {
-    padding-bottom: 100px;
+    padding-bottom: 7rem;
   }
 
   /* Two-column layout kicks in at >= 900px (was 1024). */
@@ -92,16 +91,13 @@ import Contact from "../components/Contact.astro";
     .rail-section {
       padding: 6.5rem 2.5rem 6.5rem 50px;
     }
-    /* Contact section: HIT ME UP pushed 160px down via margin on its
-       inner wrapper. Make the section a flex column so the copyright
-       can stick to the bottom of the viewport via margin-top: auto. */
+    /* Contact section keeps the same top padding as the other sections so
+       the gap between sections is equal; extra padding below gives HIT ME UP
+       breathing room at the bottom of the page. */
     .rail-section--contact {
       display: flex;
       flex-direction: column;
-      padding-bottom: 100px;
-    }
-    .rail-section--contact #contact-inner {
-      margin-top: 160px;
+      padding-bottom: 10rem;
     }
     /* Cap col2 content at 600px wide — the section-h2's stay full-rail
        width so their hairlines can still bleed to the viewport edge. */
