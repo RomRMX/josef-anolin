@@ -60,8 +60,11 @@ import Contact from "../components/Contact.astro";
     gap: 0;
     background: rgba(0, 0, 0, var(--content-rail-opacity, 0));
   }
+  /* 3.5rem top + 3.5rem bottom = 7rem between every section, matching the
+     7rem gap used between sub-sections (SHOWS/APPEARANCES, VIDEOS/PHOTOS) so
+     the spacing between all content areas is equal. */
   .rail-section {
-    padding: 4.5rem 1.25rem;
+    padding: 3.5rem 1.25rem;
     scroll-margin-top: 1rem;
   }
   /* Extra breathing room below HIT ME UP at the bottom of the page. */
@@ -89,7 +92,7 @@ import Contact from "../components/Contact.astro";
        Even, generous vertical padding spaces the sections consistently
        (no forced 100dvh, which left short sections mostly empty). */
     .rail-section {
-      padding: 6.5rem 2.5rem 6.5rem 50px;
+      padding: 3.5rem 2.5rem 3.5rem 50px;
     }
     /* Contact section keeps the same top padding as the other sections so
        the gap between sections is equal; extra padding below gives HIT ME UP
@@ -125,11 +128,9 @@ import Contact from "../components/Contact.astro";
   .contact-copyright a {
     color: inherit;
     text-decoration: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   }
   .contact-copyright a:hover {
     color: var(--color-accent);
-    border-color: var(--color-accent);
   }
   @media (min-width: 900px) {
     .rail-section--contact .contact-copyright {
@@ -147,11 +148,9 @@ import Contact from "../components/Contact.astro";
   .rail-copyright a {
     color: inherit;
     text-decoration: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   }
   .rail-copyright a:hover {
     color: var(--color-accent);
-    border-color: var(--color-accent);
   }
   @media (min-width: 900px) {
     .rail-copyright {
