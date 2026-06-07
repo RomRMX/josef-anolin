@@ -1,12 +1,19 @@
 ---
 import { statSync } from "node:fs";
-import { fileURLToPath } from "node:url";
+import { join } from "node:path";
 import SocialIcon from "./SocialIcon.astro";
 
-const subjectImagePath = fileURLToPath(
-  new URL("../../public/subject_image.png", import.meta.url),
-);
-const subjectImageSrc = `/subject_image.png?v=${statSync(subjectImagePath).mtimeMs | 0}`;
+// Cache-bust the portrait by file mtime. Resolve from the project root so it
+// works in `astro dev` AND the SSR build (import.meta.url points into dist/ at
+// build time, which made statSync throw ENOENT).
+let subjectVersion = 0;
+try {
+  subjectVersion =
+    statSync(join(process.cwd(), "public", "subject_image.png")).mtimeMs | 0;
+} catch {
+  // file missing/unreadable — ship without a version query
+}
+const subjectImageSrc = `/subject_image.png${subjectVersion ? `?v=${subjectVersion}` : ""}`;
 
 const navLinks = [
   { href: "#shows", label: "SHOWS" },

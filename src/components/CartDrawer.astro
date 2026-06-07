@@ -54,104 +54,11 @@
         >
           CHECKOUT
         </button>
+        <p class="cart-error" data-cart-error hidden></p>
+        <p class="cart-secure-note">
+          Secure payment by Stripe. Shipping calculated at checkout.
+        </p>
       </div>
-    </section>
-
-    {/* CHECKOUT VIEW */}
-    <section class="cart-body" data-view="checkout">
-      <form class="cart-form" novalidate>
-        <fieldset>
-          <legend>Contact</legend>
-          <label>
-            <span>Email</span>
-            <input type="email" name="email" required value="joe@dobo.test" placeholder="you@email.com" autocomplete="email" />
-          </label>
-          <label>
-            <span>Name</span>
-            <input type="text" name="name" required value="Joe Dobo" placeholder="Jane Doe" autocomplete="name" />
-          </label>
-        </fieldset>
-
-        <fieldset>
-          <legend>Shipping</legend>
-          <label>
-            <span>Address</span>
-            <input type="text" name="address" required value="1984 Somewhere Ave" placeholder="123 Main St" autocomplete="street-address" />
-          </label>
-          <div class="cart-form-row">
-            <label>
-              <span>City</span>
-              <input type="text" name="city" required value="Oakland" placeholder="Oakland" autocomplete="address-level2" />
-            </label>
-            <label>
-              <span>State</span>
-              <input type="text" name="state" required value="CA" placeholder="CA" autocomplete="address-level1" maxlength="2" />
-            </label>
-            <label>
-              <span>Zip</span>
-              <input type="text" name="zip" required value="94601" placeholder="94601" autocomplete="postal-code" inputmode="numeric" />
-            </label>
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <legend>Payment <span class="cart-pay-note">— dummy, no charge</span></legend>
-          <label>
-            <span>Card number</span>
-            <input
-              type="text"
-              name="card"
-              required
-              value="4242 4242 4242 4242"
-              placeholder="4242 4242 4242 4242"
-              inputmode="numeric"
-              autocomplete="cc-number"
-            />
-          </label>
-          <div class="cart-form-row">
-            <label>
-              <span>Expiry</span>
-              <input type="text" name="expiry" required value="12/29" placeholder="MM/YY" autocomplete="cc-exp" />
-            </label>
-            <label>
-              <span>CVC</span>
-              <input type="text" name="cvc" required value="123" placeholder="123" inputmode="numeric" autocomplete="cc-csc" />
-            </label>
-          </div>
-          <button
-            type="button"
-            class="cart-fill-dummy"
-            data-action="fill-dummy"
-          >
-            Fill dummy info
-          </button>
-        </fieldset>
-
-        <div class="cart-summary">
-          <div class="cart-row">
-            <span>Subtotal</span>
-            <span data-total="subtotal">$0</span>
-          </div>
-          <div class="cart-row">
-            <span>Shipping (flat)</span>
-            <span>$5</span>
-          </div>
-          <div class="cart-row cart-row--total">
-            <span>Total</span>
-            <span data-total="grand">$0</span>
-          </div>
-          <button type="submit" class="cart-cta">
-            PLACE ORDER
-          </button>
-          <button
-            type="button"
-            class="cart-back"
-            data-action="back-to-cart"
-          >
-            ← Back to cart
-          </button>
-        </div>
-      </form>
     </section>
 
     {/* SUCCESS VIEW */}
@@ -164,10 +71,7 @@
         </div>
         <h3>Order placed!</h3>
         <p class="cart-success-line">
-          You're a real one. A receipt's heading to <strong data-success="email">your inbox</strong>.
-        </p>
-        <p class="cart-success-line cart-success-mute">
-          Order <span data-success="orderId">#JOE-0000</span>
+          You're a real one. Your receipt is on its way to your inbox.
         </p>
         <button type="button" class="cart-cta" data-action="continue">
           KEEP SHOPPING
@@ -407,6 +311,19 @@
     opacity: 0.45;
     cursor: not-allowed;
   }
+  .cart-error {
+    margin: 10px 0 0;
+    font-size: 13px;
+    color: #ff6b6b;
+    text-align: center;
+  }
+  .cart-error[hidden] { display: none; }
+  .cart-secure-note {
+    margin: 10px 0 0;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.42);
+    text-align: center;
+  }
   .cart-back {
     margin-top: 10px;
     width: 100%;
@@ -552,26 +469,25 @@
 <script>
   type CartItem = {
     id: string;
+    productId: string;
+    size: string;
     name: string;
     price: number;
     src: string;
     qty: number;
   };
 
-  const STORAGE_KEY = "joedobo:cart:v1";
+  const STORAGE_KEY = "joedobo:cart:v2";
 
   const overlay = document.querySelector<HTMLElement>(".cart-overlay")!;
   const panel = overlay.querySelector<HTMLElement>(".cart-panel")!;
   const itemsEl = overlay.querySelector<HTMLElement>(".cart-items")!;
   const subtotalEls = overlay.querySelectorAll<HTMLElement>('[data-total="subtotal"]');
-  const grandEl = overlay.querySelector<HTMLElement>('[data-total="grand"]');
   const checkoutBtn = overlay.querySelector<HTMLButtonElement>('[data-action="go-checkout"]')!;
-  const backBtn = overlay.querySelector<HTMLButtonElement>('[data-action="back-to-cart"]')!;
   const continueBtn = overlay.querySelector<HTMLButtonElement>('[data-action="continue"]')!;
-  const fillDummyBtn = overlay.querySelector<HTMLButtonElement>('[data-action="fill-dummy"]')!;
   const closeBtn = overlay.querySelector<HTMLButtonElement>(".cart-close")!;
   const backdrop = overlay.querySelector<HTMLButtonElement>(".cart-backdrop")!;
-  const form = overlay.querySelector<HTMLFormElement>(".cart-form")!;
+  const errorEl = overlay.querySelector<HTMLElement>("[data-cart-error]")!;
 
   // ---------- state ----------
   const load = (): CartItem[] => {
@@ -594,9 +510,7 @@
   const fmt = (cents: number) =>
     (cents / 100).toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
 
-  const SHIPPING_CENTS = 500;
-
-  const setView = (v: "cart" | "checkout" | "success") => {
+  const setView = (v: "cart" | "success") => {
     overlay.dataset.view = v;
   };
   const setOpen = (open: boolean) => {
@@ -634,7 +548,6 @@
     // Totals
     const subtotal = items.reduce((s, i) => s + i.price * i.qty, 0);
     subtotalEls.forEach((el) => (el.textContent = fmt(subtotal)));
-    if (grandEl) grandEl.textContent = fmt(subtotal + (items.length ? SHIPPING_CENTS : 0));
 
     // CTA enabled state
     checkoutBtn.disabled = items.length === 0;
@@ -652,11 +565,20 @@
   const escapeHtml = (s: string) =>
     s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]!));
 
-  const addItem = (p: { id: string; name: string; price: number; src: string }) => {
+  const addItem = (p: Omit<CartItem, "qty">) => {
     const existing = items.find((i) => i.id === p.id);
     if (existing) existing.qty += 1;
     else items.push({ ...p, qty: 1 });
     render();
+  };
+
+  const showError = (msg: string) => {
+    errorEl.textContent = msg;
+    errorEl.hidden = false;
+  };
+  const clearError = () => {
+    errorEl.hidden = true;
+    errorEl.textContent = "";
   };
 
   const adjust = (id: string, delta: number) => {
@@ -669,18 +591,10 @@
 
   // ---------- events ----------
   window.addEventListener("cart:add", (e: Event) => {
-    const detail = (e as CustomEvent).detail;
-    addItem(detail);
-    setOpen(true);
+    clearError();
+    addItem((e as CustomEvent).detail);
     setView("cart");
-    // brief pulse on the originating button
-    const btn = document.querySelector<HTMLButtonElement>(
-      `.add-to-cart-btn[data-product-id="${detail.id}"]`
-    );
-    if (btn) {
-      btn.classList.add("is-added");
-      setTimeout(() => btn.classList.remove("is-added"), 600);
-    }
+    setOpen(true);
   });
   window.addEventListener("cart:open", () => {
     setView("cart");
@@ -697,68 +611,54 @@
     const target = e.target as HTMLElement;
     const btn = target.closest<HTMLButtonElement>("button[data-act]");
     if (!btn) return;
-    const id = btn.dataset.id!;
-    adjust(id, btn.dataset.act === "inc" ? 1 : -1);
+    adjust(btn.dataset.id!, btn.dataset.act === "inc" ? 1 : -1);
   });
 
-  checkoutBtn.addEventListener("click", () => {
+  // Checkout → create a Stripe Checkout Session and redirect to it.
+  checkoutBtn.addEventListener("click", async () => {
     if (items.length === 0) return;
-    setView("checkout");
+    clearError();
+    const label = checkoutBtn.textContent;
+    checkoutBtn.disabled = true;
+    checkoutBtn.textContent = "REDIRECTING…";
+    try {
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          items: items.map((i) => ({ productId: i.productId, size: i.size, qty: i.qty })),
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.url) throw new Error(data.error || "Checkout failed.");
+      window.location.href = data.url;
+    } catch (err) {
+      showError(err instanceof Error ? err.message : "Checkout failed. Please try again.");
+      checkoutBtn.disabled = false;
+      checkoutBtn.textContent = label;
+    }
   });
-  backBtn.addEventListener("click", () => setView("cart"));
+
   continueBtn.addEventListener("click", () => setOpen(false));
 
-  fillDummyBtn.addEventListener("click", () => {
-    const dummy: Record<string, string> = {
-      email: "joe@dobo.test",
-      name: "Joe Dobo",
-      address: "1984 Somewhere Ave",
-      city: "Oakland",
-      state: "CA",
-      zip: "94601",
-      card: "4242 4242 4242 4242",
-      expiry: "12/29",
-      cvc: "123",
-    };
-    for (const [name, value] of Object.entries(dummy)) {
-      const input = form.querySelector<HTMLInputElement>(`[name="${name}"]`);
-      if (input) {
-        input.value = value;
-        input.classList.remove("is-invalid");
-      }
-    }
-  });
-
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    // Lightweight inline validation — flag empty required fields
-    let firstInvalid: HTMLInputElement | null = null;
-    form.querySelectorAll<HTMLInputElement>("input[required]").forEach((input) => {
-      if (!input.value.trim()) {
-        input.classList.add("is-invalid");
-        if (!firstInvalid) firstInvalid = input;
-      } else {
-        input.classList.remove("is-invalid");
-      }
-    });
-    if (firstInvalid) {
-      firstInvalid.focus();
-      return;
-    }
-
-    const email = (form.elements.namedItem("email") as HTMLInputElement).value.trim();
-    const orderId = `JOE-${String(Math.floor(Math.random() * 9000) + 1000)}`;
-    const emailEl = overlay.querySelector<HTMLElement>('[data-success="email"]');
-    const orderIdEl = overlay.querySelector<HTMLElement>('[data-success="orderId"]');
-    if (emailEl) emailEl.textContent = email;
-    if (orderIdEl) orderIdEl.textContent = `#${orderId}`;
-
-    // Clear cart on successful "order"
+  // Returning from Stripe: ?checkout=success clears the cart and says thanks.
+  const params = new URLSearchParams(window.location.search);
+  const checkoutResult = params.get("checkout");
+  if (checkoutResult === "success") {
     items = [];
     render();
-    form.reset();
     setView("success");
-  });
+    setOpen(true);
+  }
+  if (checkoutResult) {
+    params.delete("checkout");
+    const q = params.toString();
+    history.replaceState(
+      {},
+      "",
+      window.location.pathname + (q ? `?${q}` : "") + window.location.hash,
+    );
+  }
 
   // initial paint (count badge etc.)
   render();

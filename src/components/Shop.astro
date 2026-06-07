@@ -1,32 +1,5 @@
 ---
-const tees = [
-  {
-    id: "joe-tee-classic",
-    src: "/shop/tee-black-front.png",
-    name: "Joe Dobo Classic Tee",
-    description:
-      "Soft cotton, blast yellow logo on jet black. Roomy fit so your beer doesn't have to compete for space.",
-    price: 3000,
-  },
-  {
-    id: "joe-tee-stand-up",
-    src: "/shop/tee-black-front-2.png",
-    name: "Stand Up Comedian Tee",
-    description:
-      "Anton block letters across the chest. The shirt that says you're funnier than the venue paid for.",
-    price: 3000,
-  },
-  {
-    id: "joe-hoodie",
-    src: "/shop/hoodie-black.png",
-    name: "Joe Dobo Hoodie",
-    description:
-      "Heavyweight fleece, oversized fit. The unofficial uniform of every greenroom from Oakland to LA.",
-    price: 6500,
-  },
-];
-
-const sizes = ["Medium", "Large", "XL", "XXL"];
+import { products as tees, sizes } from "../data/products";
 
 const fmt = (cents: number) =>
   (cents / 100).toLocaleString("en-US", {
@@ -392,6 +365,8 @@ const fmt = (cents: number) =>
       const baseName = btn.dataset.productName!;
       const detail = {
         id: size ? `${baseId}-${size}` : baseId,
+        productId: baseId,
+        size,
         name: size ? `${baseName} — ${size}` : baseName,
         price: Number(btn.dataset.productPrice),
         src: btn.dataset.productSrc!,
