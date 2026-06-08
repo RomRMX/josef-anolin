@@ -29,7 +29,7 @@ export const products: Product[] = [
   },
   {
     id: "alcoholics-adjacent-hoodie",
-    src: "/shop/hoodie-black.png",
+    src: "/shop/hoodie-black-front.png",
     name: "Alcoholics Adjacent — Hoodie",
     description:
       "Heavyweight fleece for the designated 'I'll just have one' friend. Oversized fit.",
@@ -38,7 +38,7 @@ export const products: Product[] = [
   // ── PTing! ───────────────────────────────────────────────────────────
   {
     id: "pting-tee",
-    src: "/shop/tee-black-front-2.png",
+    src: "/shop/tee-black-front.png",
     name: "PTing! — Tee",
     description:
       "The sound of a green bubble landing in the group chat. Wear it and annoy people in person too.",
@@ -46,7 +46,7 @@ export const products: Product[] = [
   },
   {
     id: "pting-hoodie",
-    src: "/shop/hoodie-black.png",
+    src: "/shop/hoodie-black-front.png",
     name: "PTing! — Hoodie",
     description:
       "Cozy fleece that says 'sent from my Android.' Heavyweight, oversized fit.",
@@ -63,7 +63,7 @@ export const products: Product[] = [
   },
   {
     id: "why-cant-these-hoes-hoodie",
-    src: "/shop/hoodie-black.png",
+    src: "/shop/hoodie-black-front.png",
     name: "Why Can't These Hoes? — Hoodie",
     description:
       "Pose the eternal question in heavyweight fleece. Oversized, greenroom-approved.",
