@@ -1,6 +1,10 @@
 // Single source of truth for the shop catalog.
 // Prices live here (server-side) so the Stripe checkout endpoint never trusts
 // a price sent from the browser. Shop.astro renders from this list too.
+//
+// TODO(artwork): the `src` images are PLACEHOLDERS reusing the generic tee /
+// hoodie mockups. Replace each with the real design mockup once available
+// (drop the files in /public/shop/ and point `src` at them).
 
 export type Product = {
   id: string;
@@ -10,30 +14,60 @@ export type Product = {
   price: number; // in cents (USD)
 };
 
+const TEE = 3000; // $30
+const HOODIE = 6500; // $65
+
 export const products: Product[] = [
+  // ── Alcoholics Adjacent ──────────────────────────────────────────────
   {
-    id: "joe-tee-classic",
+    id: "alcoholics-adjacent-tee",
     src: "/shop/tee-black-front.png",
-    name: "Joe Dobo Classic Tee",
+    name: "Alcoholics Adjacent — Tee",
     description:
-      "Soft cotton, blast yellow logo on jet black. Roomy fit so your beer doesn't have to compete for space.",
-    price: 3000,
+      "You're not the problem — you're just always standing next to it. Soft cotton, jet black.",
+    price: TEE,
   },
   {
-    id: "joe-tee-stand-up",
-    src: "/shop/tee-black-front-2.png",
-    name: "Stand Up Comedian Tee",
-    description:
-      "Anton block letters across the chest. The shirt that says you're funnier than the venue paid for.",
-    price: 3000,
-  },
-  {
-    id: "joe-hoodie",
+    id: "alcoholics-adjacent-hoodie",
     src: "/shop/hoodie-black.png",
-    name: "Joe Dobo Hoodie",
+    name: "Alcoholics Adjacent — Hoodie",
     description:
-      "Heavyweight fleece, oversized fit. The unofficial uniform of every greenroom from Oakland to LA.",
-    price: 6500,
+      "Heavyweight fleece for the designated 'I'll just have one' friend. Oversized fit.",
+    price: HOODIE,
+  },
+  // ── PTing! ───────────────────────────────────────────────────────────
+  {
+    id: "pting-tee",
+    src: "/shop/tee-black-front-2.png",
+    name: "PTing! — Tee",
+    description:
+      "The sound of a green bubble landing in the group chat. Wear it and annoy people in person too.",
+    price: TEE,
+  },
+  {
+    id: "pting-hoodie",
+    src: "/shop/hoodie-black.png",
+    name: "PTing! — Hoodie",
+    description:
+      "Cozy fleece that says 'sent from my Android.' Heavyweight, oversized fit.",
+    price: HOODIE,
+  },
+  // ── Why can't these hoes? ────────────────────────────────────────────
+  {
+    id: "why-cant-these-hoes-tee",
+    src: "/shop/tee-black-front.png",
+    name: "Why Can't These Hoes? — Tee",
+    description:
+      "A question for the ages, across your chest in Anton block letters. Black cotton.",
+    price: TEE,
+  },
+  {
+    id: "why-cant-these-hoes-hoodie",
+    src: "/shop/hoodie-black.png",
+    name: "Why Can't These Hoes? — Hoodie",
+    description:
+      "Pose the eternal question in heavyweight fleece. Oversized, greenroom-approved.",
+    price: HOODIE,
   },
 ];
 
