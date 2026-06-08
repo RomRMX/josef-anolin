@@ -1,20 +1,9 @@
 ---
-import SocialIcon from "./SocialIcon.astro";
-
 const links = [
   { href: "#shows", label: "SHOWS" },
   { href: "#media", label: "MEDIA" },
   { href: "#shop", label: "SHOP" },
   { href: "#contact", label: "HIT ME UP" },
-];
-
-const socials = [
-  { label: "YouTube",   href: "https://www.youtube.com/@comedianjoe510",                                  icon: "youtube"   as const },
-  { label: "Instagram", href: "https://www.instagram.com/comedianjoe510/",                                icon: "instagram" as const },
-  { label: "TikTok",    href: "https://www.tiktok.com/@comedianjoe510?is_from_webapp=1&sender_device=pc", icon: "tiktok"    as const },
-  { label: "Facebook",  href: "https://www.facebook.com/JosefAnolinComedian",                             icon: "facebook"  as const },
-  { label: "Threads",   href: "https://www.threads.com/@comedianjoe510",                                  icon: "threads"   as const },
-  { label: "Email",     href: "mailto:josefanolin@gmail.com",                                             icon: "email"     as const },
 ];
 ---
 
@@ -72,99 +61,19 @@ const socials = [
   <span class="cart-count" data-cart-count data-empty="true">0</span>
 </button>
 
-{/* DESKTOP header — DISABLED in the two-column redesign. The hero rail
-    on the left now owns the primary nav; this block is kept for future
-    revival but rendered hidden so neither logo nor cart trigger appears. */}
-<header class="site-header-desktop hidden fixed top-0 left-0 right-0 z-50 bg-[#0a0a0a]/95 backdrop-blur-md backdrop-saturate-150 border-b border-white/5">
-  <div class="max-w-7xl mx-auto px-6 py-3 flex items-center gap-6">
-    <a href="#" aria-label="Josef Anolin — back to top" class="shrink-0">
-      <img
-        src="/joedobo_straightlogo.png"
-        alt="Josef Anolin"
-        class="h-[26px] w-auto select-none pointer-events-none"
-      />
-    </a>
-    <nav
-      class="flex items-center gap-7 text-[13px] font-semibold tracking-[0.18em]"
-      aria-label="Primary"
-    >
-      {
-        links.map((l) => (
-          <a
-            href={l.href}
-            class="text-white hover:text-[color:var(--color-accent)] transition-colors"
-          >
-            {l.label}
-          </a>
-        ))
-      }
-    </nav>
-    <div class="ml-auto flex items-center gap-[76px]">
-      <ul class="flex items-center gap-2">
-        {
-          socials.map((s) => (
-            <li>
-              <a
-                href={s.href}
-                target={s.href.startsWith("http") ? "_blank" : undefined}
-                rel={s.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                aria-label={s.label}
-                title={s.label}
-                class="social-icon-link inline-flex items-center justify-center w-[23px] h-[23px] rounded-sm text-[color:var(--socials-color)]"
-              >
-                <SocialIcon name={s.icon} class="w-[17px] h-[17px]" />
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-      <button type="button" class="cart-trigger" aria-label="Open cart">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
-          <path d="M3 6h18" />
-          <path d="M16 10a4 4 0 0 1-8 0" />
-        </svg>
-        <span class="cart-count" data-cart-count data-empty="true">0</span>
-      </button>
-    </div>
-  </div>
-</header>
-
 <style>
-  .site-header-desktop {
-    transform: translateY(-100%);
-    transition: transform 280ms var(--ease-out-strong);
-    will-change: transform;
-  }
-  .site-header-desktop.is-visible {
-    transform: translateY(0);
-  }
-  /* Press feedback for any interactive element inside either header. */
-  .site-header a,
-  .site-header-desktop a {
+  /* Press feedback for links in the mobile header. */
+  .site-header a {
     transition: color 160ms var(--ease-out-strong),
                 background-color 160ms var(--ease-out-strong),
                 transform 120ms var(--ease-out-strong);
   }
-  .site-header a:active,
-  .site-header-desktop a:active {
+  .site-header a:active {
     transform: scale(0.97);
   }
 
-  /* Desktop social icon links — subtle hover lift. */
-  .social-icon-link {
-    transition: background-color 160ms var(--ease-out-strong),
-                transform 140ms var(--ease-out-strong);
-  }
-  .social-icon-link:hover {
-    background-color: rgba(255, 255, 255, 0.08);
-    transform: translateY(-1px);
-  }
-  .social-icon-link:active {
-    transform: scale(0.94);
-  }
-
-  /* Cart trigger button — shared between mobile + desktop headers. */
+  /* Cart trigger button — shared by the mobile header cart and the fixed
+     desktop/tablet cart button. */
   .cart-trigger {
     position: relative;
     width: 36px;
@@ -233,15 +142,12 @@ const socials = [
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .site-header-desktop,
     .site-header a,
-    .site-header-desktop a,
     .cart-trigger,
     .cart-count {
       transition: none;
     }
     .site-header a:active,
-    .site-header-desktop a:active,
     .cart-trigger:active {
       transform: none;
     }
@@ -249,18 +155,6 @@ const socials = [
 </style>
 
 <script>
-  // Show the desktop header after the hero card scrolls past the top.
-  const header = document.querySelector<HTMLElement>(".site-header-desktop");
-  if (header) {
-    const update = () => {
-      // Roughly: hide while still on the hero card (first viewport-height of scroll).
-      const visible = window.scrollY > window.innerHeight * 0.6;
-      header.classList.toggle("is-visible", visible);
-    };
-    window.addEventListener("scroll", update, { passive: true });
-    update();
-  }
-
   // Cart trigger — open the drawer.
   document.querySelectorAll<HTMLButtonElement>(".cart-trigger").forEach((btn) => {
     btn.addEventListener("click", () => {
