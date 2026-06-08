@@ -52,6 +52,12 @@ const fmt = (cents: number) =>
   </ul>
 
   <div class="shop-policies">
+    <img
+      class="shop-policies__pay"
+      src="/stripe_paylogos.png"
+      alt="Secure payments via Stripe — major cards accepted"
+      loading="lazy"
+    />
     <p class="shop-policies__note">
       Free shipping on U.S. orders over $50. Returns &amp; exchanges accepted
       within 30 days of delivery on unworn items with tags attached. Apparel
@@ -313,11 +319,21 @@ const fmt = (cents: number) =>
     border-top: 1px solid rgba(255, 255, 255, 0.12);
     max-width: 600px;
   }
+  .shop-policies__pay {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: 260px;
+    margin: 0 0 1.25rem;
+  }
   .shop-policies__note {
     margin: 0;
     font-size: 0.8rem;
     line-height: 1.5;
     color: rgba(255, 255, 255, 0.55);
+  }
+  @media (max-width: 899px) {
+    .shop-policies__pay { margin-inline: auto; }
   }
   .shop-policies__links {
     list-style: none;
