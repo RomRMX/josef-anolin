@@ -24,7 +24,7 @@ export const products: Product[] = [
     src: "/shop/tee-black-front.png",
     name: "Alcoholics Adjacent — Tee",
     description:
-      "You're not the problem — you're just always standing next to it. Soft cotton, jet black.",
+      "For the friend who's never the problem, just always standing next to it. Soft ringspun cotton, jet black, relaxed fit.",
     price: TEE,
   },
   {
@@ -32,7 +32,7 @@ export const products: Product[] = [
     src: "/shop/hoodie-black-front.png",
     name: "Alcoholics Adjacent — Hoodie",
     description:
-      "Heavyweight fleece for the designated 'I'll just have one' friend. Oversized fit.",
+      "The official uniform of the designated 'I'll just have one.' Heavyweight fleece, oversized, jet black.",
     price: HOODIE,
   },
   // ── PTing! ───────────────────────────────────────────────────────────
@@ -41,7 +41,7 @@ export const products: Product[] = [
     src: "/shop/tee-black-front.png",
     name: "PTing! — Tee",
     description:
-      "The sound of a green bubble landing in the group chat. Wear it and annoy people in person too.",
+      "That's the sound of a green bubble landing in the group chat. Now you can annoy people in person too. Soft ringspun cotton, relaxed fit.",
     price: TEE,
   },
   {
@@ -49,7 +49,7 @@ export const products: Product[] = [
     src: "/shop/hoodie-black-front.png",
     name: "PTing! — Hoodie",
     description:
-      "Cozy fleece that says 'sent from my Android.' Heavyweight, oversized fit.",
+      "Sent from his Android, worn on your back. Cozy heavyweight fleece, oversized fit.",
     price: HOODIE,
   },
   // ── Why can't these hoes? ────────────────────────────────────────────
@@ -58,7 +58,7 @@ export const products: Product[] = [
     src: "/shop/tee-black-front.png",
     name: "Why Can't These Hoes? — Tee",
     description:
-      "A question for the ages, across your chest in Anton block letters. Black cotton.",
+      "The eternal question, right across your chest. Soft ringspun cotton, jet black, relaxed fit.",
     price: TEE,
   },
   {
@@ -66,7 +66,7 @@ export const products: Product[] = [
     src: "/shop/hoodie-black-front.png",
     name: "Why Can't These Hoes? — Hoodie",
     description:
-      "Pose the eternal question in heavyweight fleece. Oversized, greenroom-approved.",
+      "Ask the big questions in maximum comfort. Heavyweight fleece, oversized, greenroom-approved.",
     price: HOODIE,
   },
 ];

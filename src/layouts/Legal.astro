@@ -1,0 +1,91 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+const {
+  title = "Policies — Josef Anolin",
+  description = "Shipping, returns, refund, terms, and privacy for the Josef Anolin shop.",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#0a0a0a" />
+    <link rel="icon" type="image/png" href="/joe-logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Covered+By+Your+Grace&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <title>{title}</title>
+  </head>
+  <body>
+    <main class="legal">
+      <a href="/" class="legal__home" aria-label="Back to Josef Anolin home">
+        <img src="/joedobo_straightlogo.png" alt="Josef Anolin" />
+      </a>
+      <slot />
+      <p class="legal__back"><a href="/">&larr; Back to site</a></p>
+    </main>
+
+    <style is:global>
+      .legal {
+        max-width: 760px;
+        margin: 0 auto;
+        padding: 3.5rem 1.5rem 5rem;
+      }
+      .legal__home img {
+        height: 44px;
+        width: auto;
+        display: block;
+        margin: 0 auto 3rem;
+      }
+      .legal h1 {
+        font-family: var(--font-title), system-ui, sans-serif;
+        font-size: clamp(2.25rem, 1.6rem + 2.4vw, 3.25rem);
+        letter-spacing: calc(0.06em - 4px);
+        color: #e8edc6;
+        text-align: center;
+        margin: 0 0 0.4rem;
+      }
+      .legal__updated {
+        text-align: center;
+        color: var(--color-mute);
+        font-size: 0.8rem;
+        margin: 0 0 3rem;
+      }
+      .legal h2 {
+        font-family: var(--font-sans);
+        font-weight: 700;
+        font-size: 1.15rem;
+        letter-spacing: 0.02em;
+        color: var(--color-accent);
+        margin: 2.75rem 0 0.6rem;
+        scroll-margin-top: 1.5rem;
+      }
+      .legal p,
+      .legal li {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 0.95rem;
+        line-height: 1.65;
+      }
+      .legal p { margin: 0 0 0.9rem; }
+      .legal ul { margin: 0 0 0.9rem; padding-left: 1.25rem; }
+      .legal li { margin-bottom: 0.35rem; }
+      .legal a { color: var(--color-accent); }
+      .legal strong { color: #fff; }
+      .legal__back {
+        margin-top: 3.5rem;
+        text-align: center;
+      }
+    </style>
+  </body>
+</html>
