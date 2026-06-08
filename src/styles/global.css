@@ -207,7 +207,7 @@ hr.rule,
    sub-headings (APPEARANCES / VIDEOS / PICTURES). */
 .section-h2 {
   font-family: var(--font-title), system-ui, sans-serif;
-  font-size: 38px;
+  font-size: 48px;
   letter-spacing: calc(0.06em - 4px);
   color: #e8edc6;
   text-transform: uppercase;
@@ -223,10 +223,16 @@ hr.rule,
   /* Raised into the title so the handwritten letters slightly overlap it. */
   bottom: 14px;
   height: 1px;
-  background: rgba(255, 255, 255, 0.32);
+  /* Fade out toward the right edge of the screen. */
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.32) 0%,
+    rgba(255, 255, 255, 0.32) 45%,
+    rgba(255, 255, 255, 0) 100%
+  );
 }
 .section-h2--lead {
-  font-size: 38px;
+  font-size: 48px;
   margin-bottom: 1.5rem;
 }
 /* On desktop, every section heading rule (lead AND sub) bleeds past
