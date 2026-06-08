@@ -175,6 +175,11 @@ import Contact from "../components/Contact.astro";
     }
   }
 
+  /* Mobile: center the content of every section to match the centered hero. */
+  @media (max-width: 899px) {
+    .rail-section { text-align: center; }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .hero-rail {
       position: relative;
