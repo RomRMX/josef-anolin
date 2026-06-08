@@ -58,6 +58,9 @@ import Contact from "../components/Contact.astro";
     display: flex;
     flex-direction: column;
     gap: 0;
+    /* min-width:0 lets children (e.g. the horizontal photo strip) scroll
+       internally instead of stretching the column wider than the viewport. */
+    min-width: 0;
     background: rgba(0, 0, 0, var(--content-rail-opacity, 0));
   }
   /* 3.5rem top + 3.5rem bottom = 7rem between every section, matching the
@@ -66,6 +69,7 @@ import Contact from "../components/Contact.astro";
   .rail-section {
     padding: 3.5rem 1.25rem;
     scroll-margin-top: 1rem;
+    min-width: 0;
   }
   /* Extra breathing room below HIT ME UP at the bottom of the page. */
   .rail-section--contact {

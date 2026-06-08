@@ -220,7 +220,8 @@ hr.rule,
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 0;
+  /* Raised into the title so the handwritten letters slightly overlap it. */
+  bottom: 14px;
   height: 1px;
   background: rgba(255, 255, 255, 0.32);
 }
