@@ -94,15 +94,15 @@
     --hero-title-width: 86%;
     --hero-title-bottom: -1%;
     --hero-title-offset-x: -85px;
-    --hero-tag-top: calc(16.5% + 20px);
-    --hero-tag-left: 0%;
+    --hero-tag-top: calc(16.5% + 60px);
+    --hero-tag-left: 50px;
     --hero-tag-font-size: 0.96rem;
     --hero-tag-rotate: -9deg;
     --hero-nav-display: none;
     --hero-nav-top: calc(-5% + 30px);
     --hero-nav-right: calc(-5.5% + 50px);
-    --hero-bio-max-width: 300px;
-    --hero-bio-extra-top: 3px;
+    --hero-bio-max-width: 410px;
+    --hero-bio-extra-top: 19px;
     --hero-bio-font-size: calc(0.875rem + 2px);
     --hero-bio-line-height: 1.45;
     --hero-socials-display: none;
@@ -241,6 +241,12 @@ hr.rule,
 @media (min-width: 900px) {
   .section-h2::after {
     right: -2.5rem;
+  }
+}
+/* On mobile, the rule is solid (no fade toward the right edge). */
+@media (max-width: 899px) {
+  .section-h2::after {
+    background: rgba(255, 255, 255, 0.32);
   }
 }
 .section-h2--sub {

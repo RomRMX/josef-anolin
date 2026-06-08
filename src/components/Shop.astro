@@ -367,11 +367,41 @@ const fmt = (cents: number) =>
 
   @media (max-width: 899px) {
     .tee-row {
-      grid-template-columns: 110px 1fr;
+      grid-template-columns: 130px 1fr;
       gap: 1rem;
+      align-items: stretch;
     }
-    .tee-row__name { font-size: 1.2rem; }
-    .tee-row__desc { font-size: 0.85rem; }
+    .tee-row__media {
+      aspect-ratio: auto;
+      height: 100%;
+    }
+    .tee-row__name {
+      font-size: 1.2rem;
+      text-align: left;
+    }
+    .tee-row__desc {
+      font-size: 0.85rem;
+      text-align: left;
+    }
+    .tee-size__select {
+      padding: 0.4rem 1.6rem 0.4rem 0.6rem;
+    }
+    .add-to-cart-btn {
+      padding: 0.4rem 0.7rem;
+    }
+    .shop-policies__links {
+      flex-wrap: nowrap;
+      gap: 0.5rem;
+      justify-content: center;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .shop-policies__links::-webkit-scrollbar { display: none; }
+    .shop-policies__links a {
+      font-size: clamp(0.5rem, 1.9vw, 0.62rem);
+      letter-spacing: 0;
+      white-space: nowrap;
+    }
   }
 </style>
 

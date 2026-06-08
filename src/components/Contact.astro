@@ -98,6 +98,10 @@ const action = FORMSPREE_ID
   .contact-send:active { transform: scale(0.97); }
 
   @media (max-width: 899px) {
+    .contact-form {
+      max-width: 400px;
+      margin-inline: auto;
+    }
     .contact-form__row { grid-template-columns: 1fr; }
     .contact-send { align-self: center; }
   }
