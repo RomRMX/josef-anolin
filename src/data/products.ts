@@ -15,7 +15,7 @@ export type Product = {
 };
 
 const TEE = 3000; // $30
-const HOODIE = 6500; // $65
+const HOODIE = 5000; // $50
 
 export const products: Product[] = [
   // ── Alcoholics Adjacent ──────────────────────────────────────────────
