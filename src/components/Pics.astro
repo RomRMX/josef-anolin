@@ -25,6 +25,36 @@ const pics: string[] = Array.from(
   </div>
 </div>
 
+<div
+  class="pics-lightbox"
+  data-lightbox
+  role="dialog"
+  aria-modal="true"
+  aria-label="Photo"
+  hidden
+>
+  <button
+    type="button"
+    class="pics-lightbox__backdrop"
+    data-lightbox-close
+    aria-label="Close"
+  ></button>
+  <div class="pics-lightbox__panel">
+    <img class="pics-lightbox__img" alt="" />
+    <button
+      type="button"
+      class="pics-lightbox__close"
+      data-lightbox-close
+      aria-label="Close"
+    >
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M18 6 6 18" />
+        <path d="m6 6 12 12" />
+      </svg>
+    </button>
+  </div>
+</div>
+
 <style>
   /* Extra gap so PHOTOS sits well clear of the VIDEOS block above. */
   #pics .section-h2--sub {
@@ -65,6 +95,77 @@ const pics: string[] = Array.from(
   @media (max-width: 899px) {
     .pics-grid { --pic-size: 150px; }
   }
+
+  /* ---------- enlarged photo lightbox ---------- */
+  .pics-lightbox[hidden] { display: none; }
+  .pics-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    display: grid;
+    place-items: center;
+    padding: 4vmin;
+    animation: pics-lightbox-in 180ms var(--ease-out-strong);
+  }
+  .pics-lightbox__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.88);
+    backdrop-filter: blur(6px);
+    border: 0;
+    padding: 0;
+    cursor: zoom-out;
+  }
+  .pics-lightbox__panel {
+    position: relative;
+    z-index: 1;
+    max-width: min(94vw, 1100px);
+    max-height: 90vh;
+    display: flex;
+  }
+  .pics-lightbox__img {
+    max-width: 100%;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+    user-select: none;
+  }
+  .pics-lightbox__close {
+    position: absolute;
+    top: -14px;
+    right: -14px;
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background-color 140ms var(--ease-out-strong),
+                color 140ms var(--ease-out-strong),
+                transform 120ms var(--ease-out-strong);
+  }
+  .pics-lightbox__close:hover {
+    background: var(--color-accent);
+    color: #000;
+    border-color: var(--color-accent);
+  }
+  .pics-lightbox__close:active { transform: scale(0.94); }
+  @keyframes pics-lightbox-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @media (max-width: 899px) {
+    .pics-lightbox__close { top: -10px; right: -10px; width: 36px; height: 36px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pics-lightbox { animation: none; }
+    .pics-lightbox__close { transition: none; }
+  }
 </style>
 
 <script>
@@ -86,5 +187,49 @@ const pics: string[] = Array.from(
       },
       { passive: false },
     );
+  }
+
+  // Lightbox: click a photo to open it enlarged; X / backdrop / Esc to close.
+  const lightbox = document.querySelector<HTMLElement>("[data-lightbox]");
+  if (lightbox) {
+    const lbImg = lightbox.querySelector<HTMLImageElement>(".pics-lightbox__img")!;
+    let lastFocus: HTMLElement | null = null;
+
+    const openLightbox = (src: string, alt: string, trigger: HTMLElement) => {
+      lastFocus = trigger;
+      lbImg.src = src;
+      lbImg.alt = alt;
+      lightbox.hidden = false;
+      document.body.style.overflow = "hidden";
+      lightbox
+        .querySelector<HTMLButtonElement>(".pics-lightbox__close")
+        ?.focus();
+    };
+    const closeLightbox = () => {
+      lightbox.hidden = true;
+      lbImg.removeAttribute("src");
+      document.body.style.overflow = "";
+      lastFocus?.focus();
+    };
+
+    document
+      .querySelectorAll<HTMLAnchorElement>("a.pic-tile")
+      .forEach((a) => {
+        a.addEventListener("click", (e) => {
+          e.preventDefault();
+          openLightbox(
+            a.getAttribute("href") ?? "",
+            a.querySelector("img")?.alt ?? "",
+            a,
+          );
+        });
+      });
+
+    lightbox
+      .querySelectorAll<HTMLElement>("[data-lightbox-close]")
+      .forEach((el) => el.addEventListener("click", closeLightbox));
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !lightbox.hidden) closeLightbox();
+    });
   }
 </script>
