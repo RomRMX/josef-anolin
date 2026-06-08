@@ -60,26 +60,16 @@ const pics: string[] = Array.from(
   #pics .section-h2--sub {
     margin-top: 7rem;
   }
-  /* 3 fixed rows; photos flow top-to-bottom into columns and overflow
-     horizontally. Same thumbnail size as the old 3-up grid; the extra
-     columns scroll sideways with the scrollbar hidden (wheel-scroll on
-     hover via the script below). */
+  /* Wrapping grid, ~30% smaller thumbnails than before (no horizontal
+     scroll). 4 across on desktop, 3 on mobile. */
   .pics-grid {
-    --pic-size: 190px;
     display: grid;
-    grid-auto-flow: column;
-    grid-template-rows: repeat(3, var(--pic-size));
-    grid-auto-columns: var(--pic-size);
+    grid-template-columns: repeat(4, 1fr);
     gap: 0.6rem;
-    overflow-x: auto;
-    overflow-y: hidden;
-    overscroll-behavior-x: contain;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* legacy Edge */
   }
-  .pics-grid::-webkit-scrollbar { display: none; } /* Chromium / Safari */
   .pic-tile {
     display: block;
+    aspect-ratio: 1 / 1;
     overflow: hidden;
     border-radius: 4px;
     background: var(--color-panel);
@@ -93,7 +83,7 @@ const pics: string[] = Array.from(
   .pic-tile:hover img { transform: scale(1.06); }
 
   @media (max-width: 899px) {
-    .pics-grid { --pic-size: 150px; }
+    .pics-grid { grid-template-columns: repeat(3, 1fr); }
   }
 
   /* ---------- enlarged photo lightbox ---------- */
@@ -169,26 +159,6 @@ const pics: string[] = Array.from(
 </style>
 
 <script>
-  // Hover-scroll: translate a vertical wheel into horizontal scrolling while
-  // the cursor is over the photo strip, but let the page scroll at the ends.
-  const grid = document.querySelector<HTMLElement>(".pics-grid");
-  if (grid) {
-    grid.addEventListener(
-      "wheel",
-      (e) => {
-        if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
-        const max = grid.scrollWidth - grid.clientWidth;
-        const atStart = grid.scrollLeft <= 0;
-        const atEnd = grid.scrollLeft >= max - 1;
-        if ((e.deltaY < 0 && !atStart) || (e.deltaY > 0 && !atEnd)) {
-          e.preventDefault();
-          grid.scrollLeft += e.deltaY;
-        }
-      },
-      { passive: false },
-    );
-  }
-
   // Lightbox: click a photo to open it enlarged; X / backdrop / Esc to close.
   const lightbox = document.querySelector<HTMLElement>("[data-lightbox]");
   if (lightbox) {
