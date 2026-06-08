@@ -1,5 +1,6 @@
 ---
 import { products as tees, sizes } from "../data/products";
+import PoliciesModal from "./PoliciesModal.astro";
 
 const fmt = (cents: number) =>
   (cents / 100).toLocaleString("en-US", {
@@ -104,6 +105,8 @@ const fmt = (cents: number) =>
     </button>
   </div>
 </div>
+
+<PoliciesModal />
 
 <style>
   .tee-list {
