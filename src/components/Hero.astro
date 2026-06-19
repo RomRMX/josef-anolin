@@ -63,8 +63,10 @@ const socials = [
       Joke Fest 2026, and performs regularly at the Hollywood Improv Lab. Off
       stage, he's on his Android, mostly to annoy you with green text bubbles.
     </p>
-    <p class="hero-bio__p">
-      Follow him at @comedianjoe510.
+    <p class="hero-bio__p hero-bio__contact">
+      Follow him at @comedianjoe510.<br />
+      Join the most out of pocket mailing list
+      <a href="#" class="hero-bio__join">JOIN</a>
     </p>
   </div>
 
@@ -174,6 +176,29 @@ const socials = [
   }
   .hero-bio__p { margin: 0; }
   .hero-bio__p + .hero-bio__p { margin-top: 0.85rem; }
+  .hero-bio__contact {
+    font-size: calc(var(--hero-bio-font-size) + 3px);
+    font-weight: 700;
+  }
+  .hero-bio__join {
+    display: inline-block;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--color-accent);
+    text-decoration: none;
+    border: 1.5px solid var(--color-accent);
+    border-radius: 6px;
+    padding: 0.12em 0.5em;
+    margin-left: 0.25em;
+    transition: background-color 160ms var(--ease-out-strong),
+                color 160ms var(--ease-out-strong);
+  }
+  .hero-bio__join:hover { background: var(--color-accent); color: #000; }
+  .hero-bio__join.is-soon {
+    pointer-events: none;
+    background: transparent;
+    color: var(--color-accent);
+  }
 
   .hero-socials {
     display: var(--hero-socials-display);
@@ -246,6 +271,14 @@ const socials = [
 </style>
 
 <script>
+  // JOIN — mailing list isn't live yet, so clicking it swaps to "COMING SOON".
+  const joinLink = document.querySelector<HTMLAnchorElement>(".hero-bio__join");
+  joinLink?.addEventListener("click", (e) => {
+    e.preventDefault();
+    joinLink.textContent = "COMING SOON";
+    joinLink.classList.add("is-soon");
+  });
+
   // Highlight the nav link whose section is currently in the viewport.
   const links = Array.from(
     document.querySelectorAll<HTMLAnchorElement>(".hero-nav-link[data-target]"),

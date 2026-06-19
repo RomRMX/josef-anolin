@@ -179,6 +179,18 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* On mobile, `cover` zooms a landscape texture into a narrow center slice.
+   Fit the image to the viewport width instead so the full texture reads, and
+   tile it down the (much taller) page. `fixed` is also unreliable on mobile. */
+@media (max-width: 899px) {
+  body {
+    background-size: 100% auto;
+    background-repeat: repeat-y;
+    background-attachment: scroll;
+    background-position: top center;
+  }
+}
+
 /* Solid horizontal divider — used as a standalone <hr class="rule"> element.
    display:block + min-height:1px protect against UA default hr rendering at
    sub-pixel heights on retina. */
