@@ -115,6 +115,7 @@ function renderAll() {
     renderAppearances(),
     renderVideos(),
     renderPics(),
+    renderMerch(),
     renderSocials(),
     renderContact(),
   );
@@ -357,6 +358,125 @@ async function uploadFile(file: File): Promise<string | null> {
   }
 }
 
+function renderMerch(): HTMLElement {
+  const products: Dict[] = state.products;
+
+  // Shop status toggle (placeholder vs. live storefront).
+  const statusSel = h("select", { class: "fld-input" }) as HTMLSelectElement;
+  for (const [value, label] of [
+    ["coming-soon", "Coming soon — show placeholder"],
+    ["open", "Open — show the storefront"],
+  ]) {
+    const opt = h("option", { value }, label) as HTMLOptionElement;
+    if (state.shopStatus === value) opt.selected = true;
+    statusSel.append(opt);
+  }
+  statusSel.addEventListener("change", () => {
+    state.shopStatus = statusSel.value;
+    markDirty();
+  });
+  const statusField = h(
+    "label",
+    { class: "fld" },
+    h("span", { class: "fld-label" }, "Shop status"),
+    statusSel,
+    h("span", { class: "fld-hint" }, 'The shop only sells when set to "Open".'),
+  );
+
+  // Per-product image: preview + upload + URL.
+  const productImage = (p: Dict, redraw: () => void) => {
+    const fileInput = h("input", { type: "file", accept: "image/*", class: "sr-only" }) as HTMLInputElement;
+    fileInput.addEventListener("change", async () => {
+      const f = fileInput.files?.[0];
+      fileInput.value = "";
+      if (!f) return;
+      const url = await uploadFile(f);
+      if (url) { p.src = url; redraw(); markDirty(); }
+    });
+    return h(
+      "div",
+      { class: "merch-media" },
+      h("img", { class: "merch-thumb", src: p.src || "", alt: "" }),
+      h(
+        "div",
+        { class: "btn-row" },
+        fileInput,
+        h("button", { type: "button", class: "add-btn", onclick: () => fileInput.click() }, "⬆ Image"),
+        h("button", { type: "button", class: "add-btn add-btn--ghost", onclick: () => {
+          const u = prompt("Paste an image URL:");
+          if (u) { p.src = u.trim(); redraw(); markDirty(); }
+        } }, "URL"),
+      ),
+    );
+  };
+
+  // Price shown in dollars; stored in cents.
+  const priceField = (p: Dict) => {
+    const input = h("input", {
+      class: "fld-input",
+      type: "text",
+      inputmode: "decimal",
+      placeholder: "30",
+    }) as HTMLInputElement;
+    input.value = p.price ? String(p.price / 100) : "";
+    input.addEventListener("input", () => {
+      const dollars = parseFloat(input.value.replace(/[^0-9.]/g, ""));
+      p.price = Number.isFinite(dollars) ? Math.round(dollars * 100) : 0;
+      markDirty();
+    });
+    return h(
+      "label",
+      { class: "fld" },
+      h("span", { class: "fld-label" }, "Price (USD)"),
+      input,
+    );
+  };
+
+  const list = h("div", { class: "list" });
+  const draw = () => {
+    list.replaceChildren(
+      ...(products.length
+        ? products.map((p, i) =>
+            h(
+              "div",
+              { class: "list-row" },
+              rowControls(
+                () => { move(products, i, -1); draw(); markDirty(); },
+                () => { move(products, i, 1); draw(); markDirty(); },
+                () => { products.splice(i, 1); draw(); markDirty(); },
+              ),
+              h(
+                "div",
+                { class: "row-fields" },
+                productImage(p, draw),
+                h(
+                  "div",
+                  { class: "row-fields--grid2" },
+                  textField({ label: "Name", value: p.name, placeholder: "PTing! — Tee", onInput: (v) => (p.name = v) }),
+                  priceField(p),
+                ),
+                textField({ label: "Description", value: p.description ?? "", multiline: true, rows: 3, onInput: (v) => (p.description = v) }),
+              ),
+            ),
+          )
+        : [h("p", { class: "empty-note" }, "No products yet.")]),
+    );
+  };
+  draw();
+
+  return card(
+    "Merch",
+    "Your shop. Set the status, then add products with a photo, price, and description. Prices are charged exactly as set here.",
+    statusField,
+    list,
+    addBtn("Add product", () => {
+      products.push({ id: "", src: "", name: "", description: "", price: 3000 });
+      draw();
+      markDirty();
+    }),
+  );
+}
+
 function renderSocials(): HTMLElement {
   const ICONS = ["youtube", "instagram", "tiktok", "facebook", "threads", "email"];
   const socials: Dict[] = state.socials;
@@ -446,6 +566,7 @@ async function save() {
     if (!res.ok) throw new Error(data.error || "Save failed.");
     if (data.content) state = data.content; // adopt the server-normalized version
     savedSnapshot = JSON.stringify(state);
+    renderAll(); // rebind fields to the adopted state (e.g. server-assigned ids)
     showToast("Saved ✓ — refresh the site to see it live.");
   } catch (err) {
     showToast(err instanceof Error ? err.message : "Save failed.", true);

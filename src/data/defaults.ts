@@ -25,6 +25,17 @@ export type Show = {
 export type AppearanceGroup = { label: string; items: string[] };
 export type Video = { id: string; title?: string };
 export type Pic = { src: string; alt?: string };
+export type Product = {
+  id: string;
+  src: string;
+  name: string;
+  description: string;
+  price: number; // in cents (USD) — the SERVER price authority used by checkout
+};
+export type ShopStatus = "open" | "coming-soon";
+
+// Apparel sizes offered in the shop. Structural, not owner-editable.
+export const SHOP_SIZES = ["Medium", "Large", "XL", "XXL"] as const;
 
 export type SiteContent = {
   hero: {
@@ -36,6 +47,8 @@ export type SiteContent = {
   appearances: AppearanceGroup[];
   videos: Video[];
   pics: Pic[];
+  shopStatus: ShopStatus;
+  products: Product[];
   contact: {
     heading: string;
     lede: string;
@@ -99,6 +112,59 @@ export const defaultContent: SiteContent = {
     src: `/pics/joe-${String(i + 1).padStart(2, "0")}.webp`,
     alt: `Josef Anolin photo ${i + 1}`,
   })),
+
+  // Shop is "opening soon" until the owner flips shopStatus to "open" in /admin.
+  shopStatus: "coming-soon",
+  products: [
+    {
+      id: "alcoholics-adjacent-tee",
+      src: "/shop/tee-black-front.png",
+      name: "Alcoholics Adjacent — Tee",
+      description:
+        "For the friend who's never the problem, just always standing next to it. Soft ringspun cotton, jet black, relaxed fit.",
+      price: 3000,
+    },
+    {
+      id: "alcoholics-adjacent-hoodie",
+      src: "/shop/hoodie-black-front.png",
+      name: "Alcoholics Adjacent — Hoodie",
+      description:
+        "The official uniform of the designated 'I'll just have one.' Heavyweight fleece, oversized, jet black.",
+      price: 5000,
+    },
+    {
+      id: "pting-tee",
+      src: "/shop/tee-black-front.png",
+      name: "PTing! — Tee",
+      description:
+        "That's the sound of a green bubble landing in the group chat. Now you can annoy people in person too. Soft ringspun cotton, relaxed fit.",
+      price: 3000,
+    },
+    {
+      id: "pting-hoodie",
+      src: "/shop/hoodie-black-front.png",
+      name: "PTing! — Hoodie",
+      description:
+        "Sent from his Android, worn on your back. Cozy heavyweight fleece, oversized fit.",
+      price: 5000,
+    },
+    {
+      id: "why-cant-these-hoes-tee",
+      src: "/shop/tee-black-front.png",
+      name: "Why Can't These Hoes? — Tee",
+      description:
+        "The eternal question, right across your chest. Soft ringspun cotton, jet black, relaxed fit.",
+      price: 3000,
+    },
+    {
+      id: "why-cant-these-hoes-hoodie",
+      src: "/shop/hoodie-black-front.png",
+      name: "Why Can't These Hoes? — Hoodie",
+      description:
+        "Ask the big questions in maximum comfort. Heavyweight fleece, oversized, greenroom-approved.",
+      price: 5000,
+    },
+  ],
 
   contact: {
     heading: "HIT ME UP",

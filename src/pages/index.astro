@@ -36,7 +36,7 @@ const content = await getContent();
       </section>
 
       <section id="shop" class="rail-section">
-        <Shop />
+        <Shop products={content.products} shopStatus={content.shopStatus} />
       </section>
 
       <section id="contact" class="rail-section rail-section--contact">

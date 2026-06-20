@@ -56,6 +56,42 @@ const str = (v: unknown, max = 5000): string =>
 
 const arr = (v: unknown): unknown[] => (Array.isArray(v) ? v : []);
 
+const slugify = (s: string): string =>
+  s
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 50);
+
+// Products carry the price authority for checkout, so coerce price to a
+// non-negative integer (cents) and guarantee every product has a stable,
+// unique id (the cart + Stripe checkout match on it).
+function normalizeProducts(raw: unknown[]): {
+  id: string;
+  src: string;
+  name: string;
+  description: string;
+  price: number;
+}[] {
+  const seen = new Set<string>();
+  return raw.map((item, i) => {
+    const p = (item ?? {}) as Record<string, unknown>;
+    const name = str(p.name, 160);
+    let id = slugify(str(p.id, 80)) || slugify(name) || `product-${i + 1}`;
+    while (seen.has(id)) id = `${id}-${i + 1}`;
+    seen.add(id);
+    const priceRaw = Number(p.price);
+    const price = Number.isFinite(priceRaw) ? Math.max(0, Math.round(priceRaw)) : 0;
+    return {
+      id,
+      src: str(p.src, 500),
+      name,
+      description: str(p.description, 1000),
+      price,
+    };
+  });
+}
+
 function normalize(input: unknown): SiteContent {
   const b = (input ?? {}) as Record<string, unknown>;
   const hero = (b.hero ?? {}) as Record<string, unknown>;
@@ -104,6 +140,8 @@ function normalize(input: unknown): SiteContent {
       const p = (raw ?? {}) as Record<string, unknown>;
       return { src: str(p.src, 500), alt: str(p.alt, 200) };
     }),
+    shopStatus: b.shopStatus === "open" ? "open" : "coming-soon",
+    products: normalizeProducts(arr(b.products)),
     contact: {
       heading: str(contact.heading, 120),
       lede: str(contact.lede, 500),

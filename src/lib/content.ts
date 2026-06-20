@@ -129,6 +129,8 @@ function mergeWithDefaults(stored: unknown): SiteContent {
     appearances: Array.isArray(s.appearances) ? s.appearances : d.appearances,
     videos: Array.isArray(s.videos) ? s.videos : d.videos,
     pics: Array.isArray(s.pics) ? s.pics : d.pics,
+    shopStatus: s.shopStatus === "open" ? "open" : d.shopStatus,
+    products: Array.isArray(s.products) ? s.products : d.products,
     contact: { ...d.contact, ...(s.contact ?? {}) },
   };
 }

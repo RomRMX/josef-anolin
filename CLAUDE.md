@@ -67,11 +67,15 @@ so it still renders standalone. To change the *default* copy, edit
 `src/data/defaults.ts`; to change *live* copy, use `/admin`.
 
 Editable today: Hero bio, social links, shows/dates, appearances, videos, photos
-(with upload), contact. **Not** yet editable (still in code): the shop catalog
-(`src/data/products.ts` → Stripe `checkout.ts`) and `PoliciesContent.astro`.
+(with upload), **merch** (products/prices + an `open`/`coming-soon` toggle), and
+contact. The shop catalog now lives in the content store: `Shop.astro` renders the
+storefront from `content.products` when `content.shopStatus === "open"` (else the
+placeholder), and `api/checkout.ts` reads prices from `getContent()` — so the
+browser still can't set its own price (there is no more `src/data/products.ts`).
+**Not** yet editable (still in code): `PoliciesContent.astro`.
 
 Structural bits that are still code-level: `Header.astro` `links[]` (nav anchors;
-section ids must match) and `Shop.astro` / `CartDrawer.astro` (tee shop + slide-in cart).
+section ids must match) and `CartDrawer.astro` (the slide-in cart + Stripe redirect).
 
 ## Assets
 

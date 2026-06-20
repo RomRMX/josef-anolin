@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro";
 import Stripe from "stripe";
-import { productById } from "../../data/products";
+import { getContent } from "../../lib/content";
 
 // On-demand (serverless) — must not be prerendered.
 export const prerender = false;
@@ -36,12 +36,22 @@ export const POST: APIRoute = async ({ request }) => {
   const items = Array.isArray(body.items) ? body.items : [];
   if (items.length === 0) return json({ error: "Your cart is empty." }, 400);
 
+  // Catalog + prices come from the owner-edited content store (server-side), so
+  // the browser can never set its own price. The shop must also be "open".
+  const content = await getContent();
+  if (content.shopStatus !== "open") {
+    return json({ error: "The shop isn't open right now." }, 400);
+  }
+  const catalog = content.products;
+
   const origin = new URL(request.url).origin;
 
   // Build line items from the SERVER catalog — never trust client prices.
   const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
   for (const it of items) {
-    const product = it.productId ? productById(it.productId) : undefined;
+    const product = it.productId
+      ? catalog.find((p) => p.id === it.productId)
+      : undefined;
     if (!product) continue; // ignore unknown / tampered ids
     const qty = Math.max(1, Math.min(99, Math.floor(Number(it.qty) || 1)));
     const sizeLabel =

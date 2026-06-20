@@ -30,6 +30,7 @@ const navItems = [
   { id: "card-appearances", label: "Appearances" },
   { id: "card-videos", label: "Videos" },
   { id: "card-photos", label: "Photos" },
+  { id: "card-merch", label: "Merch" },
   { id: "card-social-links", label: "Socials" },
   { id: "card-contact", label: "Contact" },
 ];
@@ -433,6 +434,19 @@ const navItems = [
       .btn-row { display: flex; gap: 0.6rem; flex-wrap: wrap; }
 
       .vid-thumb { width: 80px; height: 60px; object-fit: cover; border-radius: 6px; flex: 0 0 auto; background: #000; }
+
+      /* ---------- merch ---------- */
+      .merch-media { display: flex; flex-direction: column; gap: 0.5rem; align-items: flex-start; }
+      .merch-thumb {
+        width: 96px;
+        height: 96px;
+        object-fit: contain;
+        background: #3481ff;
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .merch-media .btn-row { gap: 0.4rem; }
+      .merch-media .add-btn { padding: 0.35rem 0.6rem; font-size: 0.78rem; }
 
       /* ---------- photos ---------- */
       .pic-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 0.7rem; }

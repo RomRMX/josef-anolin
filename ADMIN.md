@@ -15,7 +15,13 @@ Only Google accounts listed in `ADMIN_ALLOWED_EMAILS` can get in; everyone else
 is rejected after the Google screen.
 
 Editable sections: **Hero bio**, **Social links**, **Shows** (tour dates),
-**Appearances**, **Videos**, **Photos** (with upload), and **Contact**.
+**Appearances**, **Videos**, **Photos** (with upload), **Merch** (products,
+prices, and an open / coming-soon toggle), and **Contact**.
+
+The **Merch** panel has a status toggle: leave it on *Coming soon* to show the
+"Shop opening soon" placeholder while you prep products; switch to *Open* to put
+the storefront (and Stripe checkout) live. Prices are charged exactly as set in
+the editor — the browser can never change them.
 
 ## One-time launch setup (Vercel)
 
@@ -93,7 +99,8 @@ the site serves the built-in default content.
 
 ## Not yet editable (developer-managed)
 
-The **shop catalog / prices** (`src/data/products.ts`, used by Stripe checkout) and
-the **legal/policy pages** (`src/components/PoliciesContent.astro`) are intentionally
-left in code for now — the shop is still "opening soon" and policy copy is legal
-boilerplate. They can be added to the editor as a phase 2.
+The **legal/policy pages** (`src/components/PoliciesContent.astro`, shown on
+`/policies` and in the shop's policies popup) are intentionally left in code —
+it's legal boilerplate that should be reviewed, not casually edited. The Stripe
+**secret key** also stays an env var (`STRIPE_SECRET_KEY`); the editor manages
+the product catalog and prices, but not the payment credentials.
