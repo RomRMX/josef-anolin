@@ -7,6 +7,7 @@ type Dict = Record<string, any>;
 let state: Dict = {};
 let savedSnapshot = "";
 let writable = true;
+let activeSection = "card-hero"; // which section is currently shown (default: Hero/home)
 
 // ---------- tiny DOM helper ----------
 type Child = Node | string | null | undefined | false;
@@ -106,6 +107,23 @@ function card(title: string, hint: string | null, ...body: Child[]): HTMLElement
   );
 }
 
+// Show only the selected section (tabbed view) and highlight its nav tab.
+function showSection(id: string) {
+  activeSection = id;
+  document.querySelectorAll<HTMLElement>(".ed-card").forEach((el) => {
+    el.hidden = el.id !== id;
+  });
+  let activeLink: HTMLElement | null = null;
+  document.querySelectorAll<HTMLElement>("[data-jump]").forEach((a) => {
+    const on = a.dataset.jump === id;
+    a.classList.toggle("is-active", on);
+    if (on) activeLink = a;
+  });
+  window.scrollTo({ top: 0 });
+  // Keep the active tab in view within the horizontally-scrolling nav.
+  activeLink?.scrollIntoView({ block: "nearest", inline: "center" });
+}
+
 // ---------- section renderers ----------
 function renderAll() {
   const root = byId("editor-sections");
@@ -120,6 +138,8 @@ function renderAll() {
     renderContact(),
   );
   markDirty();
+  // Re-apply the active section after a (re)render so only it stays visible.
+  showSection(activeSection);
 }
 
 function renderHero(): HTMLElement {
@@ -601,11 +621,11 @@ async function boot() {
     location.reload();
   });
 
-  // Section quick-nav.
+  // Section tabs — switch which section is visible.
   document.querySelectorAll<HTMLAnchorElement>("[data-jump]").forEach((a) => {
     a.addEventListener("click", (e) => {
       e.preventDefault();
-      document.getElementById(a.dataset.jump!)?.scrollIntoView({ behavior: "smooth", block: "start" });
+      showSection(a.dataset.jump!);
     });
   });
 
