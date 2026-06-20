@@ -3,15 +3,18 @@ import "../styles/global.css";
 import Header from "../components/Header.astro";
 import MobileSocialBar from "../components/MobileSocialBar.astro";
 import CartDrawer from "../components/CartDrawer.astro";
+import { defaultContent, type Social } from "../data/defaults";
 
 interface Props {
   title?: string;
   description?: string;
+  socials?: Social[];
 }
 
 const {
   title = "Josef Anolin — Stand-Up Comedian",
   description = "Stand-up comedian from Oakland, California. Currently based in Los Angeles.",
+  socials = defaultContent.socials,
 } = Astro.props;
 ---
 
@@ -46,7 +49,7 @@ const {
     </a>
     <Header />
     <slot />
-    <MobileSocialBar />
+    <MobileSocialBar socials={socials} />
     <CartDrawer />
 
     {/* Floating back-to-top. Hidden until the user has scrolled past the

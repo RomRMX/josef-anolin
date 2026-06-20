@@ -16,3 +16,10 @@ yarn-error.log*
 
 # Local scratch doc
 PUNCHLIST.html
+
+# Local dev content store (admin edits persist here in `npm run dev`)
+.data/
+
+# Dev-only image uploads (production uploads go to Vercel Blob)
+/public/uploads/*
+!/public/uploads/.gitkeep

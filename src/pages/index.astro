@@ -7,12 +7,18 @@ import Videos from "../components/Videos.astro";
 import Pics from "../components/Pics.astro";
 import Shop from "../components/Shop.astro";
 import Contact from "../components/Contact.astro";
+import { getContent } from "../lib/content";
+
+// On-demand: read the owner-edited content store at request time so updates
+// made in /admin appear on the next page load (no rebuild needed).
+export const prerender = false;
+const content = await getContent();
 ---
 
-<Base>
+<Base socials={content.socials}>
   <main class="layout">
     <aside class="hero-rail">
-      <Hero />
+      <Hero hero={content.hero} socials={content.socials} />
       <p class="rail-copyright">
         ©2026 <a href="https://www.JosefAnolin.com">www.JosefAnolin.com</a> All Rights Reserved.
       </p>
@@ -20,13 +26,13 @@ import Contact from "../components/Contact.astro";
 
     <div class="content-rail">
       <section id="shows" class="rail-section">
-        <Dates />
-        <Notable />
+        <Dates shows={content.shows} />
+        <Notable groups={content.appearances} />
       </section>
 
       <section id="media" class="rail-section">
-        <Videos />
-        <Pics />
+        <Videos videos={content.videos} />
+        <Pics pics={content.pics} />
       </section>
 
       <section id="shop" class="rail-section">
@@ -34,7 +40,7 @@ import Contact from "../components/Contact.astro";
       </section>
 
       <section id="contact" class="rail-section rail-section--contact">
-        <Contact />
+        <Contact contact={content.contact} />
         <p class="contact-copyright">
           ©2026 <a href="https://www.JosefAnolin.com">www.JosefAnolin.com</a> All Rights Reserved.
         </p>

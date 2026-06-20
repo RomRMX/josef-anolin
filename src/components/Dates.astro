@@ -1,12 +1,46 @@
 ---
-// SHOWS section. No live dates yet, so it shows a placeholder. To restore a
-// real schedule, add a dates array + list markup here (the previous
-// implementation is in git history).
+// SHOWS section. Renders the schedule managed in /admin. With no dates, it
+// falls back to the "Updates Coming Soon!" placeholder.
+import { defaultContent, type Show } from "../data/defaults";
+
+interface Props {
+  shows?: Show[];
+}
+const { shows = defaultContent.shows } = Astro.props;
+const hasShows = shows.length > 0;
 ---
 
 <div id="dates">
   <h2 class="section-h2 section-h2--lead">SHOWS</h2>
-  <p class="dates-soon">Updates Coming Soon!</p>
+
+  {hasShows ? (
+    <ul class="dates-list">
+      {shows.map((s) => (
+        <li class="date-row">
+          <div class="date-when">{s.date}</div>
+          <div class="date-where">
+            <span class="date-venue">{s.venue}</span>
+            {s.city && <span class="date-city">{s.city}</span>}
+            {s.address && <span class="date-address">{s.address}</span>}
+          </div>
+          {s.tickets ? (
+            <a
+              class="date-tickets"
+              href={s.tickets}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              TICKETS
+            </a>
+          ) : (
+            <span class="date-tickets date-tickets--soon">SOON</span>
+          )}
+        </li>
+      ))}
+    </ul>
+  ) : (
+    <p class="dates-soon">Updates Coming Soon!</p>
+  )}
 </div>
 
 <style>
@@ -16,5 +50,71 @@
     font-size: clamp(1rem, 0.8rem + 0.8vw, 1.33rem);
     letter-spacing: 0.04em;
     color: var(--color-accent);
+  }
+
+  .dates-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    max-width: 600px;
+  }
+  .date-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "when tickets"
+      "where tickets";
+    align-items: center;
+    gap: 0.15rem 1rem;
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .date-when {
+    grid-area: when;
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-size: 1.05rem;
+    letter-spacing: 0.03em;
+    color: var(--color-accent);
+  }
+  .date-where {
+    grid-area: where;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.15rem 0.6rem;
+    color: #fff;
+  }
+  .date-venue { font-size: 1rem; font-weight: 600; }
+  .date-city { font-size: 0.9rem; color: rgba(255, 255, 255, 0.7); }
+  .date-address { font-size: 0.82rem; color: rgba(255, 255, 255, 0.5); flex-basis: 100%; }
+  .date-tickets {
+    grid-area: tickets;
+    align-self: center;
+    justify-self: end;
+    background: var(--color-accent);
+    color: #fff;
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    padding: 0.45rem 0.9rem;
+    border-radius: 6px;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: filter 160ms var(--ease-out-strong), transform 140ms var(--ease-out-strong);
+  }
+  .date-tickets:hover { filter: brightness(1.1); }
+  .date-tickets:active { transform: scale(0.97); }
+  .date-tickets--soon {
+    background: transparent;
+    color: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    cursor: default;
+  }
+
+  @media (max-width: 899px) {
+    .date-tickets { padding: 0.4rem 0.75rem; font-size: 0.75rem; }
   }
 </style>

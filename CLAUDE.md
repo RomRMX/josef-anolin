@@ -8,7 +8,7 @@ Static personal site for stand-up comedian Josef Anolin, rebuilt from a Carrd te
 
 ## Stack
 
-- **Astro 5** (static output) with the Vercel adapter — see `astro.config.mjs`. Adapter is wired but the build emits static HTML; `vercel deploy` works without serverless functions.
+- **Astro 5** (default `static` output, with on-demand routes) and the Vercel adapter — see `astro.config.mjs`. Most pages prerender to static HTML, but the homepage (`index.astro`) and the admin + `/api/*` routes set `export const prerender = false`, so they render as serverless functions. This is what lets owner edits go live without a rebuild.
 - **Tailwind v4** via `@tailwindcss/vite`. There is no `tailwind.config.*` — design tokens (colors, fonts) live in the `@theme` block in `src/styles/global.css` and are referenced as `var(--color-accent)` / `font-[family-name:var(--font-display)]` etc.
 - **Fonts:** Inter (body) + Anton (display) loaded from Google Fonts in `src/layouts/Base.astro`.
 
@@ -41,17 +41,37 @@ Critical CSS gotcha: `.stack` must be `display: block`, **not** `display: grid`.
 
 `prefers-reduced-motion: reduce` falls back to a non-sticky linear scroll.
 
-To edit content, edit the section file directly:
+### Content editing (owner-facing)
 
-- `Hero.astro` — bio paragraph
-- `Header.astro` — `links[]` (nav anchors) and `socials[]` (icon row); section ids must match the `links[]` hrefs
-- `MobileSocialBar.astro` — fixed-bottom social row on mobile; mirrors `socials[]` from Header
-- `Dates.astro` — `dates[]` array of `{date, city, venue, address, tickets}`
-- `Videos.astro` — `reels[]` array of Instagram permalinks; renders the official IG embed.js when populated, otherwise shows a placeholder card
-- `Pics.astro` — `pics[]` array of paths relative to `/public/pics/` (currently `/pics/joe-01.webp` … `joe-20.webp`)
-- `Notable.astro` — `groups[]` (Headlining / Featured / Festivals)
-- `Shop.astro` / `CartDrawer.astro` — tee shop + slide-in cart
-- `Contact.astro` — form action defaults to a `mailto:` fallback; set `FORMSPREE_ID` in the frontmatter to POST to Formspree
+Owner-editable copy is **no longer hardcoded** in the section files. It lives in a
+`SiteContent` document that the owner edits through a password-protected admin —
+see **`ADMIN.md`** for the setup and workflow. Key pieces:
+
+- `src/data/defaults.ts` — the `SiteContent` type and the seed/default values (what
+  renders before anything is saved, and the fallback if the store is unreachable).
+- `src/lib/content.ts` — `getContent()` / `saveContent()`; persists to a KV store in
+  production (`KV_REST_API_URL` / `KV_REST_API_TOKEN`) or `.data/content.json` in dev,
+  always merged over the defaults.
+- `src/lib/auth.ts` + `src/lib/google.ts` + `src/middleware.ts` — auth: **Google
+  sign-in** (allowlisted via `ADMIN_ALLOWED_EMAILS`) and an optional password
+  fallback, both ending in one signed cookie; middleware guards `/api/admin/*`
+  (login routes `/api/admin/login` + `/api/admin/auth/*` stay public).
+- `src/pages/admin/index.astro` + `src/scripts/admin-editor.ts` — the editor UI.
+- `src/pages/api/admin/*` — `login`, `logout`, `content` (GET/PUT), `upload`,
+  `auth/google`, `auth/callback`.
+
+`index.astro` calls `getContent()` and passes slices down as props. Each section
+component (`Hero`, `Dates`, `Notable`, `Videos`, `Pics`, `Contact`,
+`MobileSocialBar`, and `Base`) takes a prop **with a default from `defaultContent`**,
+so it still renders standalone. To change the *default* copy, edit
+`src/data/defaults.ts`; to change *live* copy, use `/admin`.
+
+Editable today: Hero bio, social links, shows/dates, appearances, videos, photos
+(with upload), contact. **Not** yet editable (still in code): the shop catalog
+(`src/data/products.ts` → Stripe `checkout.ts`) and `PoliciesContent.astro`.
+
+Structural bits that are still code-level: `Header.astro` `links[]` (nav anchors;
+section ids must match) and `Shop.astro` / `CartDrawer.astro` (tee shop + slide-in cart).
 
 ## Assets
 
@@ -65,7 +85,11 @@ The accent color (`--color-accent: #f5e90b`) is tuned to match the logo's yellow
 
 ## Known placeholders
 
-The original Carrd site had placeholder event data (joke addresses like "1984 Somewhere Ave.", all "TICKETS" links pointing at `https://www.ticketmaster.com`). That data is preserved verbatim in `Dates.astro` — replace before going live. Same for the Formspree endpoint in `Contact.astro` and the empty `reels[]` array in `Videos.astro`.
+The seed content in `src/data/defaults.ts` ships with no shows (`shows: []`), so the
+SHOWS section renders "Updates Coming Soon!" until the owner adds dates in `/admin`.
+Contact has no Formspree ID by default (the form falls back to a `mailto:` link).
+The shop is still "opening soon" (`Shop.astro` is a placeholder; the catalog in
+`src/data/products.ts` reuses generic mockup images — see its `TODO(artwork)`).
 
 ## Deploy
 

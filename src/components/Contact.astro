@@ -1,15 +1,18 @@
 ---
-const FORMSPREE_ID = "";
-const action = FORMSPREE_ID
-  ? `https://formspree.io/f/${FORMSPREE_ID}`
-  : "mailto:josefanolin@gmail.com";
+import { defaultContent } from "../data/defaults";
+
+interface Props {
+  contact?: { heading: string; lede: string; email: string; formspreeId: string };
+}
+const { contact = defaultContent.contact } = Astro.props;
+const action = contact.formspreeId
+  ? `https://formspree.io/f/${contact.formspreeId}`
+  : `mailto:${contact.email}`;
 ---
 
 <div id="contact-inner">
-  <h2 class="section-h2 section-h2--lead">HIT ME UP</h2>
-  <p class="contact-lede">
-    Bookings, press, and general hellos. I read everything.
-  </p>
+  <h2 class="section-h2 section-h2--lead">{contact.heading}</h2>
+  <p class="contact-lede">{contact.lede}</p>
 
   <form action={action} method="POST" class="contact-form">
     <div class="contact-form__row">

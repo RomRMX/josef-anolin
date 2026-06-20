@@ -2,6 +2,13 @@
 import { statSync } from "node:fs";
 import { join } from "node:path";
 import SocialIcon from "./SocialIcon.astro";
+import { defaultContent, type Social } from "../data/defaults";
+
+interface Props {
+  hero?: { bio: string; followLine: string };
+  socials?: Social[];
+}
+const { hero = defaultContent.hero, socials = defaultContent.socials } = Astro.props;
 
 // Cache-bust the portrait by file mtime. Resolve from the project root so it
 // works in `astro dev` AND the SSR build (import.meta.url points into dist/ at
@@ -20,15 +27,6 @@ const navLinks = [
   { href: "#media", label: "MEDIA" },
   { href: "#shop", label: "SHOP" },
   { href: "#contact", label: "HIT ME UP" },
-];
-
-const socials = [
-  { label: "YouTube",   href: "https://www.youtube.com/@comedianjoe510",                                  icon: "youtube"   as const },
-  { label: "Instagram", href: "https://www.instagram.com/comedianjoe510/",                                icon: "instagram" as const },
-  { label: "TikTok",    href: "https://www.tiktok.com/@comedianjoe510?is_from_webapp=1&sender_device=pc", icon: "tiktok"    as const },
-  { label: "Facebook",  href: "https://www.facebook.com/JosefAnolinComedian",                             icon: "facebook"  as const },
-  { label: "Threads",   href: "https://www.threads.com/@comedianjoe510",                                  icon: "threads"   as const },
-  { label: "Email",     href: "mailto:josefanolin@gmail.com",                                             icon: "email"     as const },
 ];
 ---
 
@@ -55,16 +53,9 @@ const socials = [
   </div>
 
   <div class="hero-bio">
-    <p class="hero-bio__p">
-      Josef Anolin is an Oakland-bred, LA-based stand-up comedian and actor
-      whose mischievous, anecdotal humor has made him a standout on the Southern
-      California circuit.
-      He's been featured at Punch Line SF, Cobb's Comedy Club, and Netflix Is A
-      Joke Fest 2026, and performs regularly at the Hollywood Improv Lab. Off
-      stage, he's on his Android, mostly to annoy you with green text bubbles.
-    </p>
+    <p class="hero-bio__p">{hero.bio}</p>
     <p class="hero-bio__p hero-bio__contact">
-      Follow him at @comedianjoe510.<br />
+      {hero.followLine}<br />
       Join the most out of pocket mailing list
       <a href="#" class="hero-bio__join">JOIN</a>
     </p>

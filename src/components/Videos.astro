@@ -1,18 +1,17 @@
 ---
-type Video = { id: string; title?: string };
+import { defaultContent, type Video } from "../data/defaults";
 
-const videos: Video[] = [
-  { id: "1shEtqNu1Ms", title: "Counting Farsees with Josef Anolin" },
-  { id: "PfS_FJM735U" },
-  { id: "W4qgq3mXbgI" },
-  { id: "q1iKMftySOA" },
-];
+interface Props {
+  videos?: Video[];
+}
+const { videos = defaultContent.videos } = Astro.props;
+const liveVideos = videos.filter((v) => v.id);
 ---
 
 <div id="videos">
   <h2 class="section-h2">VIDEOS</h2>
   <div class="videos-grid">
-    {videos.map((v) => (
+    {liveVideos.map((v) => (
       <button
         type="button"
         class="yt-facade"
